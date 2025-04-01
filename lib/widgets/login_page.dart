@@ -1,0 +1,163 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/material.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                //simulando el logo de la app
+                FlutterLogo(
+                  size: 150,
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                const Text(
+                  'Bienvenido',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w100,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                      shadows: [
+                        Shadow(
+                          color: Color.fromARGB(69, 0, 0, 0),
+                          offset: Offset(0.0, 6.0),
+                          blurRadius: 7.0,
+                        ),
+                      ]),
+                ),
+                const SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                  child: const TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Color.fromARGB(255, 21, 56, 102),
+                      ),
+                      labelText: 'Correo',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                  child: const TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Color.fromARGB(255, 21, 56, 102),
+                      ),
+                      labelText: 'Contraseña',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 21, 56, 102),
+                    fixedSize: Size(250, 50),
+                    shadowColor: Color.fromARGB(255, 21, 56, 102),
+                    elevation: 5,
+                  ),
+                  onPressed: () {
+                    // Handle login action
+                  },
+                  child: const Text(
+                    'Login',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Divider(
+                  height: 100,
+                  thickness: 1,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 197, 197, 197),
+                    fixedSize: Size(250, 50),
+                    shadowColor: Color.fromARGB(255, 21, 56, 102),
+                    elevation: 5,
+                  ),
+                  onPressed: () {
+                    // Handle login action
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      FlutterLogo(
+                        size: 30,
+                      ),
+                      Text(
+                        'Continuar con Google',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '¿No tienes cuenta?',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Pincha aqui',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

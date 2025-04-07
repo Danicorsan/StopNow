@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopnow/widgets/login_page.dart';
+import 'package:stopnow/screens/login_page.dart';
 
 void main() {
   runApp(const MainApp());

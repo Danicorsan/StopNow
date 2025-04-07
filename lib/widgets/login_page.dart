@@ -10,6 +10,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  bool isPasswordVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,11 +28,9 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                 ),
                 //simulando el logo de la app
-                FlutterLogo(
-                  size: 150,
-                ),
+                Image.asset('assets/logo-fondo-blanco.png', height: 200,),
                 SizedBox(
-                  height: 50,
+                  height: 25,
                 ),
                 const Text(
                   'Bienvenido',
@@ -64,8 +65,21 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 18),
                 Padding(
                   padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: const TextField(
+                  child: TextField(
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Color.fromARGB(255, 21, 56, 102),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                      ),
                       prefixIcon: Icon(
                         Icons.lock,
                         color: Color.fromARGB(255, 21, 56, 102),
@@ -74,7 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
+
                     ),
+                    obscureText: isPasswordVisible,
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -90,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text(
                     'Login',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w300,
                       color: Colors.white,
@@ -131,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 25),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -144,11 +160,15 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      'Pincha aqui',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
+                    TextButton(
+                      onPressed: () => {},
+                      child: Text(
+                        'Pincha aqui',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ),
                   ],

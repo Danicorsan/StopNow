@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stopnow/providers/login_provider.dart';
+import 'package:stopnow/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,11 +13,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final authService = AuthService();
 
   bool isPasswordVisible = true;
 
+  //Controladores de texto para el correo y la contraseña
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void login() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    try {
+      await authService.signIn(email, password);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -28,7 +52,10 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                 ),
                 //simulando el logo de la app
-                Image.asset('assets/logo-fondo-blanco.png', height: 200,),
+                Image.asset(
+                  'assets/logo-fondo-blanco.png',
+                  height: 200,
+                ),
                 SizedBox(
                   height: 25,
                 ),
@@ -49,7 +76,8 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: const TextField(
+                  child: TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.person,
@@ -66,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                   child: TextField(
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -88,31 +117,35 @@ class _LoginPageState extends State<LoginPage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
-
                     ),
                     obscureText: isPasswordVisible,
                   ),
                 ),
                 const SizedBox(height: 30),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 21, 56, 102),
-                    fixedSize: Size(250, 50),
-                    shadowColor: Color.fromARGB(255, 21, 56, 102),
-                    elevation: 5,
-                  ),
-                  onPressed: () {
-                    // Handle login action
-                  },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+
+                loginProvider.isLoading
+                    ? CircularProgressIndicator()
+                    : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 21, 56, 102),
+                          fixedSize: Size(250, 50),
+                          shadowColor: Color.fromARGB(255, 21, 56, 102),
+                          elevation: 5,
+                        ),
+                        onPressed: () {
+                          loginProvider.email = _emailController.text;
+                          loginProvider.password = _passwordController.text;
+                          loginProvider.login(context);
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                 Divider(
                   height: 100,
                   thickness: 1,

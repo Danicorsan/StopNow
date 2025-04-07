@@ -27,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 50,
                 ),
-                //simulando el logo de la app
                 Image.asset('assets/logo-fondo-blanco.png', height: 200,),
                 SizedBox(
                   height: 25,

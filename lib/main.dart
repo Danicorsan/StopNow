@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/ui/pages/login/login_page.dart';
-import 'package:stopnow/ui/pages/login/login_provider.dart';
+import 'package:stopnow/ui/login/login_page.dart';
+import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {

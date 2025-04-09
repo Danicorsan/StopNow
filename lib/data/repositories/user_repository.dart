@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepository {
   static final AuthService _authService = AuthService();
 
-  static Future<bool> login(String correo, String pass) async {
+  static Future<BaseResult> login(String correo, String pass) async {
     try {
       final response =
           await _authService.signIn(correo, pass);
       if (response.user == null) {
-        return false;
+        return BaseResultError("Usuario o contraseña incorrectos");
       }
     } catch (e) {
-      return false;
+      return BaseResultError(e.toString());
     }
 
-    return true;
+    return BaseResultSuccess(true);
 
   }
 

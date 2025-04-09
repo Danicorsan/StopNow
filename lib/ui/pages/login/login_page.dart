@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/providers/login_provider.dart';
-import 'package:stopnow/services/auth_service.dart';
+import 'package:stopnow/ui/pages/home/home_page.dart';
+import 'package:stopnow/ui/pages/login/login_provider.dart';
+import 'package:stopnow/data/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,20 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   //Controladores de texto para el correo y la contraseña
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  void login() async {
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
-
-    try {
-      await authService.signIn(email, password);
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.toString())));
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,30 +109,33 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 30),
-
-                loginProvider.isLoading
-                    ? CircularProgressIndicator()
-                    : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 21, 56, 102),
-                          fixedSize: Size(250, 50),
-                          shadowColor: Color.fromARGB(255, 21, 56, 102),
-                          elevation: 5,
-                        ),
-                        onPressed: () {
-                          loginProvider.email = _emailController.text;
-                          loginProvider.password = _passwordController.text;
-                          loginProvider.login(context);
-                        },
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 21, 56, 102),
+                    fixedSize: Size(250, 50),
+                    shadowColor: Color.fromARGB(255, 21, 56, 102),
+                    elevation: 5,
+                  ),
+                  onPressed: () async {
+                    loginProvider.setCorreo(_emailController.text);
+                    loginProvider.setPassword(_passwordController.text);
+                    await loginProvider.login();
+                    if (loginProvider.state == true) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      ));
+                      
+                    }
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
                 Divider(
                   height: 100,
                   thickness: 1,

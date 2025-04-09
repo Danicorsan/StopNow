@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopnow/services/auth_service.dart';
+import 'package:stopnow/data/services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

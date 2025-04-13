@@ -21,6 +21,16 @@ class UserRepository {
 
   }
 
+  static Future<BaseResult> register(String correo, String pass) async {
+    try {
+      await _authService.signUp(correo, pass);
+    } catch (e) {
+      return BaseResultError(e.toString());
+    }
+
+    return BaseResultSuccess(true);
+  }
+
   /*
   Future<bool> login(User usuario) async {
     try {

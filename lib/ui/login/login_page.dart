@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               //simulando el logo de la app
@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                 child: TextField(
                   controller: _emailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     prefixIcon: Icon(
                       Icons.person,
                       color: Color.fromARGB(255, 21, 56, 102),
@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                         isPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
-                        color: Color.fromARGB(255, 21, 56, 102),
+                        color: const Color.fromARGB(255, 21, 56, 102),
                       ),
                       onPressed: () {
                         setState(() {
@@ -113,12 +113,12 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                     ),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.lock,
                       color: Color.fromARGB(255, 21, 56, 102),
                     ),
                     labelText: 'Contraseña',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
@@ -128,9 +128,9 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 21, 56, 102),
-                  fixedSize: Size(250, 50),
-                  shadowColor: Color.fromARGB(255, 0, 0, 0),
+                  backgroundColor: const Color.fromARGB(255, 21, 56, 102),
+                  fixedSize: const Size(250, 50),
+                  shadowColor: const Color.fromARGB(255, 0, 0, 0),
                   elevation: 5,
                 ),
                 onPressed: () async {
@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
     
                   if (loginProvider.loginState == LoginState.success) {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) => const HomePage(),
                     ));
                   } else if (loginProvider.loginState == LoginState.error) {
                     // Mostrar SnackBar con el error
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                         content: Text(loginProvider.errorMessage == ""
                             ? 'Error desconocido'
                             : loginProvider.errorMessage),
-                        duration: Duration(seconds: 2),
+                        duration: const Duration(seconds: 2),
                         backgroundColor: const Color.fromARGB(255, 138, 0, 0),
                         behavior: SnackBarBehavior.floating,
                         shape: RoundedRectangleBorder(
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
                 child: loginProvider.loginState == LoginState.loading
-                    ? Container(
+                    ? const SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(
@@ -177,25 +177,25 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
               ),
-              Divider(
+              const Divider(
                 height: 100,
                 thickness: 1,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 197, 197, 197),
-                  fixedSize: Size(250, 50),
-                  shadowColor: Color.fromARGB(255, 21, 56, 102),
+                  backgroundColor: const Color.fromARGB(255, 197, 197, 197),
+                  fixedSize: const Size(250, 50),
+                  shadowColor: const Color.fromARGB(255, 21, 56, 102),
                   elevation: 5,
                 ),
                 onPressed: () {
                   // Handle login action
                 },
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     FlutterLogo(
                       size: 30,
                     ),
@@ -210,25 +210,25 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     '¿No tienes cuenta?',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   TextButton(
                     onPressed: () => {
                       Navigator.pushReplacementNamed(context, '/register'),
                     },
-                    child: Text(
+                    child: const Text(
                       'Pincha aqui',
                       textAlign: TextAlign.center,
                       style: TextStyle(

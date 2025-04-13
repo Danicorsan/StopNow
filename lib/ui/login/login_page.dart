@@ -205,7 +205,10 @@ class _LoginPageState extends State<LoginPage> {
                     width: 10,
                   ),
                   TextButton(
-                    onPressed: () => {},
+                    onPressed: () => {
+                      // Aquí puedes navegar a la página de registro o realizar otra acción
+                      Navigator.pushNamed(context, '/register'),
+                    },
                     child: Text(
                       'Pincha aqui',
                       textAlign: TextAlign.center,

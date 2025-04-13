@@ -1,52 +1,30 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/ui/home/home_page.dart';
-import 'package:stopnow/ui/login/login_provider.dart';
-import 'package:stopnow/ui/login/login_state.dart';
+import 'package:stopnow/routes/app_routes.dart';
+import 'package:stopnow/ui/login/login_page.dart';
+import 'package:stopnow/ui/register/register_provider.dart';
+import 'package:stopnow/ui/register/register_state.dart';
 
-class LoginPage extends StatefulWidget {
-  
-  String? email = '';
-  String? password = '';
-  
-  LoginPage({super.key, this.email, this.password});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
 
-  @override
-  void initState() {
-    super.initState();
-    // Inicializar los controladores con los valores pasados
-    setState(() {
-      _emailController.text = widget.email ?? '';
-      _passwordController.text = widget.password ?? '';
-    });
-  }
-
-  //Controladores de texto para el correo y la contraseña
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  final TextEditingController _confirmPasswordController = TextEditingController();
   bool isPasswordVisible = true;
+  bool isConfirmPasswordVisible = true;
 
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final loginProvider = Provider.of<LoginProvider>(context);
-
+    var registerProvider = Provider.of<RegisterProvider>(context);
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -64,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 250,
               ),
               const Text(
-                'Bienvenido',
+                'Register',
                 style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.w100,
@@ -134,21 +112,22 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 5,
                 ),
                 onPressed: () async {
-                  loginProvider.setCorreo(_emailController.text);
-                  loginProvider.setPassword(_passwordController.text);
-                  await loginProvider.login();
+                  registerProvider.setCorreo(_emailController.text);
+                  registerProvider.setPassword(_passwordController.text);
+                  await registerProvider.register();
     
-                  if (loginProvider.loginState == LoginState.success) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ));
-                  } else if (loginProvider.loginState == LoginState.error) {
+                  if (registerProvider.registerState == RegisterState.success) {
+                    Navigator.of(context).pushNamed(AppRoutes.login, arguments: {
+                      'email': _emailController.text,
+                      'password': _passwordController.text,
+                    });
+                  } else if (registerProvider.registerState == RegisterState.error) {
                     // Mostrar SnackBar con el error
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(loginProvider.errorMessage == ""
+                        content: Text(registerProvider.errorMessage == ""
                             ? 'Error desconocido'
-                            : loginProvider.errorMessage),
+                            : registerProvider.errorMessage),
                         duration: Duration(seconds: 2),
                         backgroundColor: const Color.fromARGB(255, 138, 0, 0),
                         behavior: SnackBarBehavior.floating,
@@ -159,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   }
                 },
-                child: loginProvider.loginState == LoginState.loading
+                child: registerProvider.registerState == RegisterState.loading
                     ? Container(
                         width: 20,
                         height: 20,
@@ -226,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextButton(
                     onPressed: () => {
-                      Navigator.pushReplacementNamed(context, '/register'),
+                      Navigator.pushNamed(context, '/register'),
                     },
                     child: Text(
                       'Pincha aqui',

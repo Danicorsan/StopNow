@@ -13,18 +13,17 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool isPasswordVisible = true;
   bool isConfirmPasswordVisible = true;
-
 
   @override
   Widget build(BuildContext context) {
     var registerProvider = Provider.of<RegisterProvider>(context);
-    
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -103,6 +102,37 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: isPasswordVisible,
                 ),
               ),
+              const SizedBox(height: 18),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                child: TextField(
+                  controller: _confirmPasswordController,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isConfirmPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Color.fromARGB(255, 21, 56, 102),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Confirmar contraseña',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                  obscureText: isConfirmPasswordVisible,
+                ),
+              ),
               const SizedBox(height: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -115,13 +145,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   registerProvider.setCorreo(_emailController.text);
                   registerProvider.setPassword(_passwordController.text);
                   await registerProvider.register();
-    
+
                   if (registerProvider.registerState == RegisterState.success) {
-                    Navigator.of(context).pushNamed(AppRoutes.login, arguments: {
+                    Navigator.of(context)
+                        .pushNamed(AppRoutes.login, arguments: {
                       'email': _emailController.text,
                       'password': _passwordController.text,
                     });
-                  } else if (registerProvider.registerState == RegisterState.error) {
+                  } else if (registerProvider.registerState ==
+                      RegisterState.error) {
                     // Mostrar SnackBar con el error
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -148,7 +180,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       )
                     : const Text(
-                        'Login',
+                        'Register',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w300,
@@ -160,41 +192,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 100,
                 thickness: 1,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 197, 197, 197),
-                  fixedSize: Size(250, 50),
-                  shadowColor: Color.fromARGB(255, 21, 56, 102),
-                  elevation: 5,
-                ),
-                onPressed: () {
-                  // Handle login action
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    FlutterLogo(
-                      size: 30,
-                    ),
-                    Text(
-                      'Continuar con Google',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '¿No tienes cuenta?',
+                    'Ya tienes cuenta?',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.normal,
@@ -205,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   TextButton(
                     onPressed: () => {
-                      Navigator.pushNamed(context, '/register'),
+                      Navigator.pushNamed(context, '/login'),
                     },
                     child: Text(
                       'Pincha aqui',

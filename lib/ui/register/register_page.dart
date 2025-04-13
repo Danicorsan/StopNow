@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               //simulando el logo de la app
@@ -59,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                 child: TextField(
                   controller: _emailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     prefixIcon: Icon(
                       Icons.person,
                       color: Color.fromARGB(255, 21, 56, 102),
@@ -82,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         isPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
-                        color: Color.fromARGB(255, 21, 56, 102),
+                        color: const Color.fromARGB(255, 21, 56, 102),
                       ),
                       onPressed: () {
                         setState(() {
@@ -90,12 +90,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.lock,
                       color: Color.fromARGB(255, 21, 56, 102),
                     ),
                     labelText: 'Contraseña',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
@@ -113,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         isConfirmPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
-                        color: Color.fromARGB(255, 21, 56, 102),
+                        color: const Color.fromARGB(255, 21, 56, 102),
                       ),
                       onPressed: () {
                         setState(() {
@@ -121,12 +121,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.lock,
                       color: Color.fromARGB(255, 21, 56, 102),
                     ),
                     labelText: 'Confirmar contraseña',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     ),
                   ),
@@ -136,9 +136,9 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 21, 56, 102),
-                  fixedSize: Size(250, 50),
-                  shadowColor: Color.fromARGB(255, 0, 0, 0),
+                  backgroundColor: const Color.fromARGB(255, 21, 56, 102),
+                  fixedSize: const Size(250, 50),
+                  shadowColor: const Color.fromARGB(255, 0, 0, 0),
                   elevation: 5,
                 ),
                 onPressed: () async {
@@ -160,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         content: Text(registerProvider.errorMessage == ""
                             ? 'Error desconocido'
                             : registerProvider.errorMessage),
-                        duration: Duration(seconds: 2),
+                        duration: const Duration(seconds: 2),
                         backgroundColor: const Color.fromARGB(255, 138, 0, 0),
                         behavior: SnackBarBehavior.floating,
                         shape: RoundedRectangleBorder(
@@ -174,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ? Container(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(
+                        child: const CircularProgressIndicator(
                           strokeWidth: 1,
                           color: Color.fromARGB(255, 255, 255, 255),
                         ),
@@ -188,28 +188,28 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
               ),
-              Divider(
+              const Divider(
                 height: 100,
                 thickness: 1,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Ya tienes cuenta?',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   TextButton(
                     onPressed: () => {
                       Navigator.pushNamed(context, '/login'),
                     },
-                    child: Text(
+                    child: const Text(
                       'Pincha aqui',
                       textAlign: TextAlign.center,
                       style: TextStyle(

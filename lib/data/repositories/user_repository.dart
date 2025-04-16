@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepository {
   static final AuthService _authService = AuthService();

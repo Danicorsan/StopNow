@@ -23,6 +23,7 @@ class AuthService {
     await _client.auth.signOut();
   }
 
+  // Obtener el email del usuario actual
   String? getEmail() {
     final user = _client.auth.currentUser?.email ?? "No email";
     return user;

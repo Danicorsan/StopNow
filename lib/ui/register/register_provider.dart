@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
@@ -17,7 +19,6 @@ class RegisterProvider extends ChangeNotifier {
     registerState = RegisterState.loading;
     print(email);
     print(password);
-
     print(registerState);
 
     notifyListeners();

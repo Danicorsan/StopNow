@@ -1,16 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:stopnow/data/models/user.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
-import 'package:stopnow/data/services/auth_service.dart';
 import 'package:stopnow/ui/login/login_state.dart';
 
 class LoginProvider extends ChangeNotifier {
-  //State en kotlin era un archivo aparte
   String errorMessage = "";
   String correo = "";
   String contrasenia = "";

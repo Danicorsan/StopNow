@@ -13,13 +13,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () => _auth.signOut(),
-          child: const Text("Salir"),
-        )
-      ],
+    return Scaffold(
+      body: Center(
+          child: TextButton(
+        onPressed: () {
+          _auth.signOut();
+          Navigator.pushReplacementNamed(context, '/login');
+          },
+        child: const Text("Salir"),
+      )),
     );
   }
 }

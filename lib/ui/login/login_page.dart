@@ -35,12 +35,11 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isPasswordVisible = true;
 
-
   @override
   void dispose() {
-    super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -134,14 +133,15 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 5,
                 ),
                 onPressed: () async {
+
                   loginProvider.setCorreo(_emailController.text);
                   loginProvider.setPassword(_passwordController.text);
+
                   await loginProvider.login();
     
                   if (loginProvider.loginState == LoginState.success) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ));
+                    // Navegar a la página de inicio
+                    Navigator.pushReplacementNamed(context, '/home');
                   } else if (loginProvider.loginState == LoginState.error) {
                     // Mostrar SnackBar con el error
                     ScaffoldMessenger.of(context).showSnackBar(

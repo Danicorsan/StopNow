@@ -21,8 +21,6 @@ class LoginProvider extends ChangeNotifier {
     loginState = LoginState.loading;
     notifyListeners();
 
-    await Future.delayed(const Duration(milliseconds: 5000));
-
     if (correo.isEmpty || contrasenia.isEmpty) {
       loginState = LoginState.error;
       errorMessage = "Por favor, ingrese su correo y contraseña";
@@ -34,7 +32,7 @@ class LoginProvider extends ChangeNotifier {
 
     if (result is BaseResultError) {
       loginState = LoginState.error;
-      errorMessage = result.message;
+      errorMessage = "Revisa el correo y la contraseña";
       notifyListeners();
       return;
     } else if (result is BaseResultSuccess) {

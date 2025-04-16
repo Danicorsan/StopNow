@@ -17,8 +17,30 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _userNameController =
+      TextEditingController();
+  final TextEditingController _cigarrosAlDiaController = TextEditingController();
+  final TextEditingController _fechaDejarDeFumarController = TextEditingController();
+  final TextEditingController _cigarrosPaqueteController = TextEditingController();    
+  final TextEditingController _precioPaqueteController = TextEditingController();
+  
   bool isPasswordVisible = true;
   bool isConfirmPasswordVisible = true;
+
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _userNameController.dispose();
+    _cigarrosAlDiaController.dispose();
+    _fechaDejarDeFumarController.dispose();
+    _cigarrosPaqueteController.dispose();
+    _precioPaqueteController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +57,6 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(
                 height: 50,
               ),
-              //simulando el logo de la app
               Image.asset(
                 'assets/logo-fondo-blanco.png',
                 height: 250,
@@ -55,6 +76,23 @@ class _RegisterPageState extends State<RegisterPage> {
                     ]),
               ),
               const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                child: TextField(
+                  controller: _userNameController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.person,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Nombre de usuario',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
               Padding(
                 padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                 child: TextField(
@@ -133,6 +171,74 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: isConfirmPasswordVisible,
                 ),
               ),
+              const SizedBox(height: 18),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                child: TextField(
+                  controller: _cigarrosAlDiaController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.numbers,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Cigarros al dia',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                child: TextField(
+                  controller: _fechaDejarDeFumarController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.calendar_today,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Fecha dejar de fumar',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                child: TextField(
+                  controller: _cigarrosPaqueteController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.numbers,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Cigarros por paquete',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                child: TextField(
+                  controller: _precioPaqueteController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.euro,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Precio por paquete',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -148,7 +254,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   if (registerProvider.registerState == RegisterState.success) {
                     Navigator.of(context)
-                        .pushNamed(AppRoutes.login, arguments: {
+                        .pushReplacementNamed(AppRoutes.login, arguments: {
                       'email': _emailController.text,
                       'password': _passwordController.text,
                     });
@@ -171,10 +277,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   }
                 },
                 child: registerProvider.registerState == RegisterState.loading
-                    ? Container(
+                    ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: const CircularProgressIndicator(
+                        child: CircularProgressIndicator(
                           strokeWidth: 1,
                           color: Color.fromARGB(255, 255, 255, 255),
                         ),
@@ -207,7 +313,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   TextButton(
                     onPressed: () => {
-                      Navigator.pushNamed(context, '/login'),
+                      Navigator.pushReplacementNamed(context, '/login'),
                     },
                     child: const Text(
                       'Pincha aqui',

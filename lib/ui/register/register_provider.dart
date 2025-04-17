@@ -12,6 +12,12 @@ class RegisterProvider extends ChangeNotifier {
   String email = '';
   String password = '';
   String confirmPassword = '';
+  String nombreUsuario = '';
+  String fotoEmail = '';
+  DateTime fechaDejarFumar = DateTime.now();
+  int cigarrosAlDia = 0;
+  int cigarrosPorPaquete = 0;
+  double precioPaquete = 0.0;
 
   var errorMessage = "";
 
@@ -24,7 +30,9 @@ class RegisterProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await UserRepository.register(email, password).then((value) {
+      await UserRepository.register(email, password, nombreUsuario, fotoEmail,
+              fechaDejarFumar, cigarrosAlDia, cigarrosPorPaquete, precioPaquete)
+          .then((value) {
         if (value is BaseResultError) {
           registerState = RegisterState.error;
           errorMessage = value.message;
@@ -57,4 +65,32 @@ class RegisterProvider extends ChangeNotifier {
     confirmPassword = value;
     notifyListeners();
   }
+
+  void setNombreUsuario(String value) {
+    nombreUsuario = value;
+    notifyListeners();
+  }
+
+  void setFotoEmail(String value) {
+    fotoEmail = value;
+    notifyListeners();
+  }
+
+  void setFechaDejarFumar(DateTime value) {
+    fechaDejarFumar = value;
+    notifyListeners();
+  }
+  void setCigarrosAlDia(int value) {
+    cigarrosAlDia = value;
+    notifyListeners();
+  }
+  void setCigarrosPorPaquete(int value) {
+    cigarrosPorPaquete = value;
+    notifyListeners();
+  }
+  void setPrecioPaquete(double value) {
+    precioPaquete = value;
+    notifyListeners();
+  }
+
 }

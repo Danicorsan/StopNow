@@ -253,6 +253,15 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: () async {
                   registerProvider.setCorreo(_emailController.text);
                   registerProvider.setPassword(_passwordController.text);
+                  registerProvider.setConfirmPassword(
+                      _confirmPasswordController.text);
+                  registerProvider.setNombreUsuario(_userNameController.text);
+                  registerProvider.setFechaDejarFumar(
+                      DateTime.parse(_fechaDejarDeFumarController.text));
+                  registerProvider.setCigarrosAlDia(int.parse(_cigarrosAlDiaController.text));
+                  registerProvider.setCigarrosPorPaquete(int.parse(_cigarrosPaqueteController.text));
+                  registerProvider.setPrecioPaquete(double.parse(_precioPaqueteController.text));
+                  registerProvider.setFotoEmail(_emailController.text);
                   await registerProvider.register();
 
                   if (registerProvider.registerState == RegisterState.success) {

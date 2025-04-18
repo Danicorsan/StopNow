@@ -1,8 +1,7 @@
-// ignore_for_file: must_be_immutable, use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/ui/home/home_page.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/login/login_state.dart';
 
@@ -189,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 5,
                 ),
                 onPressed: () {
-                  // Handle login action
+                  // Boton de google aún no implementado
                 },
                 child: const Row(
                   mainAxisSize: MainAxisSize.max,

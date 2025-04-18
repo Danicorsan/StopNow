@@ -76,7 +76,8 @@ class WelcomePage extends StatelessWidget {
                           Navigator.pushNamed(context, '/login');
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 21, 56, 102),
+                          backgroundColor:
+                              const Color.fromARGB(255, 21, 56, 102),
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           textStyle: const TextStyle(fontSize: 18),
@@ -95,10 +96,12 @@ class WelcomePage extends StatelessWidget {
                           Navigator.pushNamed(context, '/register');
                         },
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color.fromARGB(255, 21, 56, 102),
+                          foregroundColor:
+                              const Color.fromARGB(255, 21, 56, 102),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           textStyle: const TextStyle(fontSize: 18),
-                          side: const BorderSide(color: Color.fromARGB(255, 21, 56, 102)),
+                          side: const BorderSide(
+                              color: Color.fromARGB(255, 21, 56, 102)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

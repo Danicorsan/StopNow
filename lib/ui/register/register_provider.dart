@@ -8,7 +8,6 @@ import 'package:stopnow/ui/register/register_state.dart';
 class RegisterProvider extends ChangeNotifier {
   var registerState = RegisterState.initial;
 
-  //formkey
   String email = '';
   String password = '';
   String confirmPassword = '';
@@ -80,17 +79,19 @@ class RegisterProvider extends ChangeNotifier {
     fechaDejarFumar = value;
     notifyListeners();
   }
+
   void setCigarrosAlDia(int value) {
     cigarrosAlDia = value;
     notifyListeners();
   }
+
   void setCigarrosPorPaquete(int value) {
     cigarrosPorPaquete = value;
     notifyListeners();
   }
+
   void setPrecioPaquete(double value) {
     precioPaquete = value;
     notifyListeners();
   }
-
 }

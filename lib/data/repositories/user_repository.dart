@@ -8,6 +8,7 @@ class UserRepository {
   static final AuthService _authService = AuthService();
   static final supabase = Supabase.instance.client;
 
+  // Método para iniciar sesión
   static Future<BaseResult> login(String correo, String pass) async {
     try {
       final response = await _authService.signIn(correo, pass);
@@ -21,6 +22,7 @@ class UserRepository {
     return BaseResultSuccess(true);
   }
 
+  // Metodo para registrarse
   static Future<BaseResult> register(
     String correo,
     String pass,
@@ -55,6 +57,7 @@ class UserRepository {
     }
   }
 
+  //metodo para obtener el usuario actual
   static UserModel? usuarioActual() {
     final user = _authService.getCurrentUser();
     if (user == null) return null;

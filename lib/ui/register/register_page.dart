@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
-import 'package:stopnow/ui/login/login_page.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/ui/register/register_state.dart';
 import 'package:stopnow/utils/validators/validator.dart';
@@ -123,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: (value) => Validator.isValidEmail(value!)
                         ? null
-                        : 'Email no valido',
+                        : 'Introduce un correo válido',
                   ),
                 ),
                 const SizedBox(height: 18),
@@ -454,7 +453,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 )
               ],

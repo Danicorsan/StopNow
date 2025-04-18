@@ -237,6 +237,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                       return null;
                     },
+                    //TODO VER PORQUE NO FUNCIONA CUANDO SE BORRA TODO
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(2),
                       FilteringTextInputFormatter.digitsOnly, // Solo números
@@ -249,7 +250,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: TextFormField(
                     controller: _fechaDejarDeFumarController,
                     readOnly:
-                        true, // <- Importante para que no puedan escribir manualmente
+                        true, // Para que no puedan escribir manualmente
                     decoration: const InputDecoration(
                       prefixIcon: Icon(
                         Icons.calendar_today,
@@ -312,6 +313,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                       return null;
                     },
+                    //TODO VER PORQUE NO FUNCIONA CUANDO SE BORRA TODO
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(3),
                       FilteringTextInputFormatter.digitsOnly, // Solo números
@@ -326,6 +328,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         .setPrecioPaquete(double.tryParse(value)!),
                     keyboardType: TextInputType.number,
                     autocorrect: false,
+                    //TODO VER PORQUE NO FUNCIONA CUANDO SE BORRA TODO
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^\d+\.?\d{0,2}')),

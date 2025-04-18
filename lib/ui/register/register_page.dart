@@ -214,8 +214,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                   child: TextFormField(
-                    onChanged: (value) =>
-                        registerProvider.setCigarrosAlDia(int.tryParse(value)!),
+                    onChanged: (value) => registerProvider
+                        .setCigarrosAlDia(int.tryParse(value) ?? 0),
                     keyboardType: TextInputType.number,
                     autocorrect: false,
                     controller: _cigarrosAlDiaController,
@@ -237,7 +237,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                       return null;
                     },
-                    //TODO VER PORQUE NO FUNCIONA CUANDO SE BORRA TODO
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(2),
                       FilteringTextInputFormatter.digitsOnly, // Solo números
@@ -249,8 +248,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                   child: TextFormField(
                     controller: _fechaDejarDeFumarController,
-                    readOnly:
-                        true, // Para que no puedan escribir manualmente
+                    readOnly: true, // Para que no puedan escribir manualmente
                     decoration: const InputDecoration(
                       prefixIcon: Icon(
                         Icons.calendar_today,
@@ -291,7 +289,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                   child: TextFormField(
                     onChanged: (value) => registerProvider
-                        .setCigarrosPorPaquete(int.tryParse(value)!),
+                        .setCigarrosPorPaquete(int.tryParse(value) ?? 0),
                     keyboardType: TextInputType.number,
                     autocorrect: false,
                     controller: _cigarrosPaqueteController,
@@ -313,10 +311,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                       return null;
                     },
-                    //TODO VER PORQUE NO FUNCIONA CUANDO SE BORRA TODO
+                    // Permite solo 3 números
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(3),
-                      FilteringTextInputFormatter.digitsOnly, // Solo números
+                      FilteringTextInputFormatter.digitsOnly,
                     ],
                   ),
                 ),
@@ -325,11 +323,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                   child: TextFormField(
                     onChanged: (value) => registerProvider
-                        .setPrecioPaquete(double.tryParse(value)!),
+                        .setPrecioPaquete(double.tryParse(value) ?? 0),
                     keyboardType: TextInputType.number,
                     autocorrect: false,
-                    //TODO VER PORQUE NO FUNCIONA CUANDO SE BORRA TODO
                     inputFormatters: [
+                      // Permite solo 2 decimales y 6 dígitos en total
+                      LengthLimitingTextInputFormatter(6),
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^\d+\.?\d{0,2}')),
                     ],

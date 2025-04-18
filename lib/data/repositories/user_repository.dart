@@ -1,4 +1,5 @@
 import 'package:stopnow/data/dao/user_dao.dart';
+import 'package:stopnow/data/models/user.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,37 +22,50 @@ class UserRepository {
   }
 
   static Future<BaseResult> register(
-  String correo,
-  String pass,
-  String nombreUsuario,
-  String fotoEmail,
-  DateTime fechaDejarFumar,
-  int cigarrosAlDia,
-  int cigarrosPorPaquete,
-  double precioPaquete,
-) async {
-  try {
-    final response = await _authService.signUp(correo, pass);
+    String correo,
+    String pass,
+    String nombreUsuario,
+    String fotoEmail,
+    DateTime fechaDejarFumar,
+    int cigarrosAlDia,
+    int cigarrosPorPaquete,
+    double precioPaquete,
+  ) async {
+    try {
+      final response = await _authService.signUp(correo, pass);
 
-    final userId = response.user?.id;
-    if (userId == null) {
-      return BaseResultError('No se pudo registrar el usuario.');
+      final userId = response.user?.id;
+      if (userId == null) {
+        return BaseResultError('No se pudo registrar el usuario.');
+      }
+
+      await UserDao.insertarUsuario(
+        id: userId,
+        nombreUsuario: nombreUsuario,
+        fotoEmail: fotoEmail,
+        fechaDejarFumar: fechaDejarFumar,
+        cigarrosAlDia: cigarrosAlDia,
+        cigarrosPorPaquete: cigarrosPorPaquete,
+        precioPaquete: precioPaquete,
+      );
+
+      return BaseResultSuccess(true);
+    } catch (e) {
+      return BaseResultError(e.toString());
     }
-
-    await UserDao.insertarUsuario(
-      id: userId,
-      nombreUsuario: nombreUsuario,
-      fotoEmail: fotoEmail,
-      fechaDejarFumar: fechaDejarFumar,
-      cigarrosAlDia: cigarrosAlDia,
-      cigarrosPorPaquete: cigarrosPorPaquete,
-      precioPaquete: precioPaquete,
-    );
-
-    return BaseResultSuccess(true);
-  } catch (e) {
-    return BaseResultError(e.toString());
   }
-}
+
+  static UserModel? usuarioActual() {
+    final user = _authService.getCurrentUser();
+    if (user == null) return null;
+    return UserModel(
+      nombreUsuario: user.nombreUsuario,
+      fotoPerfil: user.fotoPerfil,
+      fechaDejarFumar: user.fechaDejarFumar,
+      cigarrosAlDia: user.cigarrosAlDia,
+      cigarrosPorPaquete: user.cigarrosPorPaquete,
+      precioPaquete: user.precioPaquete,
+    );
+  } 
 
 }

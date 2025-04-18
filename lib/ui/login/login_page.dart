@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       )
                     : const Text(
-                        'Login',
+                        'Iniciar Sesión',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w300,

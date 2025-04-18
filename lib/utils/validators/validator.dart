@@ -1,5 +1,4 @@
 class Validator {
-  
   // Validar email
   static bool isValidEmail(String email) {
     final RegExp emailRegex =

@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class UserDao {
   static final supabase = Supabase.instance.client;
 
+  // Método para insertar un nuevo usuario en la base de datos cuando se registra
   static Future<void> insertarUsuario({
     required String id,
     required String nombreUsuario,

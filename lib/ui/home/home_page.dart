@@ -19,8 +19,17 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           _auth.signOut();
           Navigator.pushReplacementNamed(context, '/login');
-          },
-        child: const Text("Salir"),
+        },
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Home Page"),
+            SizedBox(
+              height: 20,
+            ),
+            Text("Salir"),
+          ],
+        ),
       )),
     );
   }

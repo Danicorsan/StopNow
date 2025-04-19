@@ -16,9 +16,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.menu, color: Colors.white),
-        title: const Text('Inicio'),
+        title: const Text(
+          'Inicio',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         backgroundColor: const Color.fromARGB(255, 21, 56, 102),
-        centerTitle: true,
         elevation: 0,
       ),
       body: Center(

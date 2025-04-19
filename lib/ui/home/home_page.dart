@@ -14,6 +14,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: const Icon(Icons.menu, color: Colors.white),
+        title: const Text('Inicio'),
+        backgroundColor: const Color.fromARGB(255, 21, 56, 102),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -80,6 +80,24 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          const SizedBox(height: 20),
+          Text(
+            "Si tienes un ataque de ansiedad, puedes usar el boton de tranquilidad",
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black.withOpacity(0.7),
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          TextButton(
+            onPressed: () {
+              _auth.signOut();
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+            child: const Text("Boton de tranquilidad"),
+          ),
+          const SizedBox(height: 20),
           TextButton(
             onPressed: () {
               _auth.signOut();

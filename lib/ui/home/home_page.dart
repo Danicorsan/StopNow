@@ -32,7 +32,54 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text("Bienvenido a la pantalla principal"),
+          const Text("Bienvenido a la pantalla principal}"),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 40.0, right: 40.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: const Color.fromARGB(255, 219, 225, 225),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 50,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              width: double.infinity,
+              child: const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("0"),
+                        Text("12"),
+                        Text("24"),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("Años"),
+                        Text("Meses"),
+                        Text("Dias"),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
           TextButton(
             onPressed: () {
               _auth.signOut();

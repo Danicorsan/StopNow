@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      initialRoute: AppRoutes.welcome,
+      initialRoute: AppRoutes.home,
       onGenerateRoute: AppRoutes.generateRoute,
       debugShowCheckedModeBanner: false,
       title: 'StopNow',

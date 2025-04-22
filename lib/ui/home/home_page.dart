@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text("Bienvenido a la pantalla principal}"),
@@ -81,15 +81,25 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 20),
-          Text(
-            "Si tienes un ataque de ansiedad, puedes usar el boton de tranquilidad",
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black.withOpacity(0.7),
-            ),
+          Column(
+            children: [
+              Text(
+                "¿Te encuetras con ganas de fumar?",
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.black.withOpacity(0.7),
+                ),
+              ),
+              Text(
+                "Prueba con nuestro metodo de relajacion",
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.black.withOpacity(0.7),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 20),
-
           TextButton(
             onPressed: () {
               _auth.signOut();

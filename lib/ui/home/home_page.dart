@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stopnow/data/services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,98 +17,114 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.menu, color: Colors.white),
-        title: const Text(
+        centerTitle: true,
+        title: Text(
           'Inicio',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 21, 56, 102),
         elevation: 0,
       ),
-      body: Center(
-          child: Column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text("Bienvenido a la pantalla principal}"),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 40.0, right: 40.0),
+          Expanded(
+            flex: 1,
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: const Color.fromARGB(255, 219, 225, 225),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 50,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
+              height: 150.h,
+              alignment: Alignment.center,
+              child: Text(
+                "Bienvenido a la pantalla principal",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16.sp),
               ),
-              width: double.infinity,
-              child: const Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text("0"),
-                        Text("12"),
-                        Text("24"),
-                      ],
+            ),
+          ),
+          SizedBox(height: 20.h),
+          Expanded(
+            flex: 4,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.r),
+                  color: const Color.fromARGB(255, 219, 225, 225),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 50.r,
+                      offset: Offset(0, 5.h),
                     ),
-                    Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("Años"),
-                        Text("Meses"),
-                        Text("Dias"),
-                      ],
-                    )
                   ],
+                ),
+                width: double.infinity,
+                child: const Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("0"),
+                          Text("12"),
+                          Text("24"),
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.black,
+                        thickness: 1,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Años"),
+                          Text("Meses"),
+                          Text("Días"),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          Column(
-            children: [
-              Text(
-                "¿Te encuetras con ganas de fumar?",
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.black.withOpacity(0.7),
+          SizedBox(height: 20.h),
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                Text(
+                  "¿Te encuentras con ganas de fumar?",
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
                 ),
-              ),
-              Text(
-                "Prueba con nuestro metodo de relajacion",
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.black.withOpacity(0.7),
+                Text(
+                  "Prueba con nuestro método de relajación",
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           TextButton(
             onPressed: () {
-              _auth.signOut();
-              Navigator.pushReplacementNamed(context, '/login');
+              print(MediaQuery.of(context).size.width);
+              print(MediaQuery.of(context).size.height);
             },
-            child: const Text("Boton de tranquilidad"),
+            child: const Text("Botón de tranquilidad"),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           TextButton(
             onPressed: () {
               _auth.signOut();
@@ -116,7 +133,7 @@ class _HomePageState extends State<HomePage> {
             child: const Text("Salir"),
           ),
         ],
-      )),
+      ),
     );
   }
 }

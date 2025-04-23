@@ -7,6 +7,7 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/ui/register/register_state.dart';
 import 'package:stopnow/utils/validators/validator.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,6 +17,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -33,8 +36,6 @@ class _RegisterPageState extends State<RegisterPage> {
   bool isPasswordVisible = true;
   bool isConfirmPasswordVisible = true;
 
-  final _formKey = GlobalKey<FormState>();
-
   @override
   void dispose() {
     _emailController.dispose();
@@ -48,9 +49,46 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
+    bool obscureText = false,
+    Widget? suffixIcon,
+    void Function(String)? onChanged,
+    void Function()? onTap,
+    bool readOnly = false,
+    List<TextInputFormatter>? inputFormatters,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 9.h),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: const Color(0xFF153866)),
+          labelText: label,
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          suffixIcon: suffixIcon,
+        ),
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        validator: validator,
+        onChanged: onChanged,
+        onTap: onTap,
+        readOnly: readOnly,
+        inputFormatters: inputFormatters,
+        autocorrect: false,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var registerProvider = Provider.of<RegisterProvider>(context);
+    final registerProvider = Provider.of<RegisterProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -59,305 +97,165 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                Image.asset(
-                  'assets/logo-fondo-blanco.png',
-                  height: 250,
-                ),
-                const Text(
+                SizedBox(height: 50.h),
+                Image.asset('assets/logo-fondo-blanco.png', height: 250.h),
+                Text(
                   'Register',
                   style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w100,
-                      color: Color.fromARGB(255, 21, 56, 102),
-                      shadows: [
-                        Shadow(
-                          color: Color.fromARGB(69, 0, 0, 0),
-                          offset: Offset(0.0, 6.0),
-                          blurRadius: 7.0,
-                        ),
-                      ]),
-                ),
-                const SizedBox(height: 25),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    onChanged: (value) =>
-                        registerProvider.setNombreUsuario(value),
-                    keyboardType: TextInputType.name,
-                    controller: _userNameController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Color.fromARGB(255, 21, 56, 102),
+                    fontSize: 35.sp,
+                    fontWeight: FontWeight.w100,
+                    color: const Color(0xFF153866),
+                    shadows: const [
+                      Shadow(
+                        color: Color.fromARGB(69, 0, 0, 0),
+                        offset: Offset(0.0, 6.0),
+                        blurRadius: 7.0,
                       ),
-                      labelText: 'Nombre de usuario',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    onChanged: (value) => registerProvider.setCorreo(value),
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Color.fromARGB(255, 21, 56, 102),
-                      ),
-                      labelText: 'Correo',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                    validator: (value) => Validator.isValidEmail(value!)
-                        ? null
-                        : 'Introduce un correo válido',
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    onChanged: (value) => registerProvider.setPassword(value),
-                    keyboardType: TextInputType.visiblePassword,
-                    autocorrect: false,
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          isPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: const Color.fromARGB(255, 21, 56, 102),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Color.fromARGB(255, 21, 56, 102),
-                      ),
-                      labelText: 'Contraseña',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                    obscureText: isPasswordVisible,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, introduce una contraseña';
-                      } else if (!Validator.isValidPassword(value)) {
-                        return 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    onChanged: (value) =>
-                        registerProvider.setConfirmPassword(value),
-                    keyboardType: TextInputType.visiblePassword,
-                    autocorrect: false,
-                    controller: _confirmPasswordController,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          isConfirmPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: const Color.fromARGB(255, 21, 56, 102),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isConfirmPasswordVisible =
-                                !isConfirmPasswordVisible;
-                          });
-                        },
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Color.fromARGB(255, 21, 56, 102),
-                      ),
-                      labelText: 'Confirmar contraseña',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                    obscureText: isConfirmPasswordVisible,
-                    validator: (value) {
-                      if (value != _passwordController.text) {
-                        return 'Las contraseñas no coinciden';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    onChanged: (value) => registerProvider
-                        .setCigarrosAlDia(int.tryParse(value) ?? 0),
-                    keyboardType: TextInputType.number,
-                    autocorrect: false,
-                    controller: _cigarrosAlDiaController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.numbers,
-                        color: Color.fromARGB(255, 21, 56, 102),
-                      ),
-                      labelText: 'Cigarros al dia',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, introduce la cantidad de cigarros al día';
-                      } else if (int.tryParse(value) == null) {
-                        return 'Por favor, introduce un número válido';
-                      }
-                      return null;
-                    },
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(2),
-                      FilteringTextInputFormatter.digitsOnly, // Solo números
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    controller: _fechaDejarDeFumarController,
-                    readOnly: true, // Para que no puedan escribir manualmente
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.calendar_today,
-                        color: Color.fromARGB(255, 21, 56, 102),
-                      ),
-                      labelText: 'Fecha dejar de fumar',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                    onTap: () async {
-                      FocusScope.of(context).requestFocus(
-                          FocusNode()); // Cierra el teclado si está abierto
-                      final DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                      );
-                      if (pickedDate != null) {
-                        _fechaDejarDeFumarController.text =
-                            "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
-                        registerProvider.setFechaDejarFumar(pickedDate);
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, introduce la fecha en la que dejarás de fumar';
-                      } else if (DateTime.tryParse(value) == null) {
-                        return 'Por favor, introduce una fecha válida';
-                      }
-                      return null;
-                    },
-                  ),
+                SizedBox(height: 25.h),
+                _buildTextField(
+                  controller: _userNameController,
+                  label: 'Nombre de usuario',
+                  icon: Icons.person,
+                  onChanged: registerProvider.setNombreUsuario,
                 ),
-                const SizedBox(height: 18),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    onChanged: (value) => registerProvider
-                        .setCigarrosPorPaquete(int.tryParse(value) ?? 0),
-                    keyboardType: TextInputType.number,
-                    autocorrect: false,
-                    controller: _cigarrosPaqueteController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.numbers,
-                        color: Color.fromARGB(255, 21, 56, 102),
-                      ),
-                      labelText: 'Cigarros por paquete',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, introduce la cantidad de cigarros por paquete';
-                      } else if (int.tryParse(value) == null) {
-                        return 'Por favor, introduce un número válido';
-                      }
-                      return null;
-                    },
-                    // Permite solo 3 números
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(3),
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                  ),
+                _buildTextField(
+                  controller: _emailController,
+                  label: 'Correo',
+                  icon: Icons.email,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: registerProvider.setCorreo,
+                  validator: (value) => Validator.isValidEmail(value ?? '')
+                      ? null
+                      : 'Introduce un correo válido',
                 ),
-                const SizedBox(height: 18),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                  child: TextFormField(
-                    onChanged: (value) => registerProvider
-                        .setPrecioPaquete(double.tryParse(value) ?? 0),
-                    keyboardType: TextInputType.number,
-                    autocorrect: false,
-                    inputFormatters: [
-                      // Permite solo 2 decimales y 6 dígitos en total
-                      LengthLimitingTextInputFormatter(6),
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d+\.?\d{0,2}')),
-                    ],
-                    controller: _precioPaqueteController,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.euro,
-                        color: Color.fromARGB(255, 21, 56, 102),
-                      ),
-                      labelText: 'Precio por paquete',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
+                _buildTextField(
+                  controller: _passwordController,
+                  label: 'Contraseña',
+                  icon: Icons.lock,
+                  obscureText: isPasswordVisible,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: const Color(0xFF153866),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, introduce el precio del paquete';
-                      } else if (double.tryParse(value) == null) {
-                        return 'Por favor, introduce un número válido';
-                      }
-                      return null;
-                    },
+                    onPressed: () =>
+                        setState(() => isPasswordVisible = !isPasswordVisible),
                   ),
+                  onChanged: registerProvider.setPassword,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'Introduce una contraseña';
+                    if (!Validator.isValidPassword(value))
+                      return 'Debe tener 8 caracteres, mayúscula, minúscula y número';
+                    return null;
+                  },
                 ),
-                const SizedBox(height: 30),
+                _buildTextField(
+                  controller: _confirmPasswordController,
+                  label: 'Confirmar contraseña',
+                  icon: Icons.lock,
+                  obscureText: isConfirmPasswordVisible,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isConfirmPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: const Color(0xFF153866),
+                    ),
+                    onPressed: () => setState(() =>
+                        isConfirmPasswordVisible = !isConfirmPasswordVisible),
+                  ),
+                  onChanged: registerProvider.setConfirmPassword,
+                  validator: (value) => value == _passwordController.text
+                      ? null
+                      : 'Las contraseñas no coinciden',
+                ),
+                _buildTextField(
+                  controller: _cigarrosAlDiaController,
+                  label: 'Cigarros al día',
+                  icon: Icons.smoking_rooms,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => registerProvider
+                      .setCigarrosAlDia(int.tryParse(value) ?? 0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'Introduce la cantidad';
+                    if (int.tryParse(value) == null)
+                      return 'Introduce un número válido';
+                    return null;
+                  },
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(2),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                _buildTextField(
+                  controller: _fechaDejarDeFumarController,
+                  label: 'Fecha dejar de fumar',
+                  icon: Icons.calendar_today,
+                  readOnly: true,
+                  onTap: () async {
+                    FocusScope.of(context).unfocus();
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
+                    if (picked != null) {
+                      _fechaDejarDeFumarController.text =
+                          "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+                      registerProvider.setFechaDejarFumar(picked);
+                    }
+                  },
+                  validator: (value) => (value == null || value.isEmpty)
+                      ? 'Introduce una fecha'
+                      : null,
+                ),
+                _buildTextField(
+                  controller: _cigarrosPaqueteController,
+                  label: 'Cigarros por paquete',
+                  icon: Icons.local_fire_department,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => registerProvider
+                      .setCigarrosPorPaquete(int.tryParse(value) ?? 0),
+                  validator: (value) =>
+                      (value == null || int.tryParse(value) == null)
+                          ? 'Introduce un número válido'
+                          : null,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(3),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                _buildTextField(
+                  controller: _precioPaqueteController,
+                  label: 'Precio por paquete',
+                  icon: Icons.euro,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) => registerProvider
+                      .setPrecioPaquete(double.tryParse(value) ?? 0),
+                  validator: (value) =>
+                      (value == null || double.tryParse(value) == null)
+                          ? 'Introduce un número válido'
+                          : null,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(6),
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
+                  ],
+                ),
+                SizedBox(height: 30.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 21, 56, 102),
-                    fixedSize: const Size(250, 50),
-                    shadowColor: const Color.fromARGB(255, 0, 0, 0),
+                    backgroundColor: const Color(0xFF153866),
+                    fixedSize: Size(250.w, 50.h),
                     elevation: 5,
                   ),
                   onPressed: () async {
@@ -366,12 +264,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         SnackBar(
                           content:
                               const Text('Por favor, revisa todos los campos'),
+                          backgroundColor: const Color(0xFF8A0000),
                           duration: const Duration(seconds: 2),
-                          backgroundColor: const Color.fromARGB(255, 138, 0, 0),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
                         ),
                       );
                       return;
@@ -381,81 +275,57 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     if (registerProvider.registerState ==
                         RegisterState.success) {
-                      Navigator.of(context)
-                          .pushReplacementNamed(AppRoutes.login, arguments: {
-                        'email': _emailController.text,
-                        'password': _passwordController.text,
-                      });
-                    } else if (registerProvider.registerState ==
-                        RegisterState.error) {
+                      Navigator.pushReplacementNamed(context, AppRoutes.login,
+                          arguments: {
+                            'email': _emailController.text,
+                            'password': _passwordController.text,
+                          });
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(registerProvider.errorMessage == ""
+                          content: Text(registerProvider.errorMessage.isEmpty
                               ? 'Error desconocido'
                               : registerProvider.errorMessage),
+                          backgroundColor: const Color(0xFF8A0000),
                           duration: const Duration(seconds: 2),
-                          backgroundColor: const Color.fromARGB(255, 138, 0, 0),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
                         ),
                       );
                     }
                   },
                   child: registerProvider.registerState == RegisterState.loading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 1,
-                            color: Color.fromARGB(255, 255, 255, 255),
+                      ? SizedBox(
+                          width: 20.w,
+                          height: 20.w,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
                           ),
                         )
-                      : const Text(
+                      : Text(
                           'Register',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.w300,
                             color: Colors.white,
                           ),
                         ),
                 ),
-                const Divider(
-                  height: 100,
-                  thickness: 1,
-                ),
+                Divider(height: 100.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Ya tienes cuenta?',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    Text('¿Ya tienes cuenta?',
+                        style: TextStyle(fontSize: 15.sp)),
+                    SizedBox(width: 10.w),
                     TextButton(
-                      onPressed: () => {
-                        Navigator.pushReplacementNamed(context, '/login'),
-                      },
-                      child: const Text(
-                        'Pincha aqui',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/login'),
+                      child: Text('Pincha aquí',
+                          style: TextStyle(fontSize: 15.sp)),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 50,
-                )
+                SizedBox(height: 50.h),
               ],
             ),
           ),

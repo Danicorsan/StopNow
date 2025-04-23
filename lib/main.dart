@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
@@ -30,11 +31,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      initialRoute: AppRoutes.home,
-      onGenerateRoute: AppRoutes.generateRoute,
-      debugShowCheckedModeBanner: false,
-      title: 'StopNow',
+    return ScreenUtilInit(
+      designSize: const Size(392.72727272727275, 826.9090909090909),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, __) => MaterialApp(
+        initialRoute: AppRoutes.welcome,
+        onGenerateRoute: AppRoutes.generateRoute,
+        debugShowCheckedModeBanner: false,
+        title: 'StopNow',
+      ),
     );
   }
 }

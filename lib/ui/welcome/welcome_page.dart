@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -9,50 +10,50 @@ class WelcomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.w),
           child: Column(
             children: [
-              const SizedBox(height: 50),
+              SizedBox(height: 50.h),
               Expanded(
                 flex: 4,
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(15.r),
                       color: const Color.fromARGB(255, 219, 225, 225),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
-                          blurRadius: 50,
-                          offset: const Offset(0, 5),
+                          blurRadius: 50.r,
+                          offset: Offset(0, 5.h),
                         ),
                       ],
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(18.0),
+                      padding: EdgeInsets.all(18.w),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Flexible(
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(15.r),
                               child: Image.asset(
                                 'assets/logo-fondo-azul.png',
                                 fit: BoxFit.contain,
                               ),
                             ),
                           ),
-                          const Text(
-                            "Bienvenido a StopNow!",
+                          Text(
+                            "¡Bienvenido a StopNow!",
                             style: TextStyle(
-                              fontSize: 27,
+                              fontSize: 27.sp,
                               fontWeight: FontWeight.w400,
-                              color: Color.fromARGB(255, 21, 56, 102),
+                              color: const Color.fromARGB(255, 21, 56, 102),
                               shadows: [
                                 Shadow(
-                                  color: Color.fromARGB(69, 0, 0, 0),
-                                  offset: Offset(0.0, 6.0),
-                                  blurRadius: 7.0,
+                                  color: const Color.fromARGB(69, 0, 0, 0),
+                                  offset: Offset(0, 6.h),
+                                  blurRadius: 7.r,
                                 ),
                               ],
                             ),
@@ -79,16 +80,16 @@ class WelcomePage extends StatelessWidget {
                           backgroundColor:
                               const Color.fromARGB(255, 21, 56, 102),
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: const TextStyle(fontSize: 18),
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          textStyle: TextStyle(fontSize: 18.sp),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
-                        child: const Text('Ya tengo cuenta'),
+                        child: const Text('Iniciar sesión'),
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    SizedBox(height: 15.h),
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
@@ -98,15 +99,15 @@ class WelcomePage extends StatelessWidget {
                         style: OutlinedButton.styleFrom(
                           foregroundColor:
                               const Color.fromARGB(255, 21, 56, 102),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: const TextStyle(fontSize: 18),
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          textStyle: TextStyle(fontSize: 18.sp),
                           side: const BorderSide(
                               color: Color.fromARGB(255, 21, 56, 102)),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
-                        child: const Text('Crea tu cuenta'),
+                        child: const Text('Crear cuenta'),
                       ),
                     ),
                   ],

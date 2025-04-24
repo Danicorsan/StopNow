@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/data/models/user.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';

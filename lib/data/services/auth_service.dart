@@ -1,3 +1,4 @@
+import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/models/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -30,20 +31,16 @@ class AuthService {
     return user;
   }
 
-  // Obtener el usuario actual
-  UserModel? getCurrentUser() {
+  // Obtener el usuario actual desde la base de datos usando el `sub`
+  Future<UserModel?> getCurrentUser() async {
     final user = _client.auth.currentUser;
     if (user == null) return null;
 
-    final json = user.userMetadata ?? {};
+    print(user.id); // Imprime el ID del usuario actual para depuración
 
-    return UserModel(
-      nombreUsuario: json['nombre_usuario'] as String,
-      fotoPerfil: json['foto_perfil'] as String,
-      fechaDejarFumar: DateTime.parse(json['fecha_dejar_fumar'] as String),
-      cigarrosAlDia: json['cigarros_al_dia'] as int,
-      cigarrosPorPaquete: json['cigarros_por_paquete'] as int,
-      precioPaquete: (json['precio_paquete'] as num).toDouble(),
-    );
+    final usuarioActual = await UserDao.traerUsuario(
+        user.id); // Llama al DAO para obtener el usuario
+
+    return usuarioActual; // Convierte el resultado a un modelo de usuario
   }
 }

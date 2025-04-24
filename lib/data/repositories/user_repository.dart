@@ -58,17 +58,9 @@ class UserRepository {
   }
 
   //metodo para obtener el usuario actual
-  static UserModel? usuarioActual() {
-    final user = _authService.getCurrentUser();
+  static Future<UserModel?> usuarioActual() async {
+    final user = await _authService.getCurrentUser();
     if (user == null) return null;
-    return UserModel(
-      nombreUsuario: user.nombreUsuario,
-      fotoPerfil: user.fotoPerfil,
-      fechaDejarFumar: user.fechaDejarFumar,
-      cigarrosAlDia: user.cigarrosAlDia,
-      cigarrosPorPaquete: user.cigarrosPorPaquete,
-      precioPaquete: user.precioPaquete,
-    );
-  } 
-
+    return user;
+  }
 }

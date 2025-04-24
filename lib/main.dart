@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
@@ -23,6 +24,7 @@ Future<void> main() async {
       ChangeNotifierProvider(
         create: (context) => RegisterProvider(),
       ),
+      ChangeNotifierProvider(create: (context) => UserProvider()),
     ],
     child: const MyApp(),
   ));

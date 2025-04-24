@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   loginProvider.setCorreo(_emailController.text);
                   loginProvider.setPassword(_passwordController.text);
 
-                  await loginProvider.login();
+                  await loginProvider.login(context);
 
                   if (loginProvider.loginState == LoginState.success) {
                     Navigator.pushReplacementNamed(context, '/home');

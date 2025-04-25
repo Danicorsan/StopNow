@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -56,10 +58,6 @@ class HomeProvider with ChangeNotifier {
     if (user == null) return 0;
     DateTime now = DateTime.now();
     DateTime start = user!.fechaDejarFumar;
-
-    DateTime thisMonthStart = DateTime(now.year, now.month, now.day);
-    DateTime lastMonthStart =
-        DateTime(thisMonthStart.year, thisMonthStart.month - 1, start.day);
 
     Duration duration =
         now.difference(DateTime(now.year, now.month, start.day));

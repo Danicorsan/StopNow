@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,8 +33,8 @@ class _HomePageState extends State<HomePage> {
     return ChangeNotifierProvider<HomeProvider>.value(
       value: homeProvider,
       child: Scaffold(
+        drawer: baseDrawer(context),
         appBar: AppBar(
-          leading: const Icon(Icons.menu, color: Colors.white),
           centerTitle: true,
           title: const Text(
             'Inicio',

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, __) => MaterialApp(
-        initialRoute: AppRoutes.welcome,
+        initialRoute: AppRoutes.profile,
         onGenerateRoute: AppRoutes.generateRoute,
         debugShowCheckedModeBanner: false,
         title: 'StopNow',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
 
@@ -34,18 +35,7 @@ class _HomePageState extends State<HomePage> {
       value: homeProvider,
       child: Scaffold(
         drawer: baseDrawer(context),
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-            'Inicio',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          backgroundColor: const Color.fromARGB(255, 21, 56, 102),
-          elevation: 0,
-        ),
+        appBar: baseAppBar("Inicio"),
         body: Consumer<HomeProvider>(
           builder: (context, homeProvider, _) {
             final user = homeProvider.user;

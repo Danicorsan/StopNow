@@ -149,10 +149,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   onChanged: registerProvider.setPassword,
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return 'Introduce una contraseña';
-                    if (!Validator.isValidPassword(value))
+                    }
+                    if (!Validator.isValidPassword(value)) {
                       return 'Debe tener 8 caracteres, mayúscula, minúscula y número';
+                    }
                     return null;
                   },
                 ),
@@ -184,10 +186,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: (value) => registerProvider
                       .setCigarrosAlDia(int.tryParse(value) ?? 0),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return 'Introduce la cantidad';
-                    if (int.tryParse(value) == null)
+                    }
+                    if (int.tryParse(value) == null) {
                       return 'Introduce un número válido';
+                    }
                     return null;
                   },
                   inputFormatters: [
@@ -261,11 +265,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: () async {
                     if (!_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content:
-                              const Text('Por favor, revisa todos los campos'),
-                          backgroundColor: const Color(0xFF8A0000),
-                          duration: const Duration(seconds: 2),
+                              Text('Por favor, revisa todos los campos'),
+                          backgroundColor: Color(0xFF8A0000),
+                          duration: Duration(seconds: 2),
                         ),
                       );
                       return;

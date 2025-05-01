@@ -105,6 +105,15 @@ class _HomePageState extends State<HomePage> {
                                 Text("${homeProvider.getSegundos()}s"),
                               ],
                             ),
+                            const Divider(color: Colors.black, thickness: 1),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("Años"),
+                                Text("Meses"),
+                                Text("Días"),
+                              ],
+                            ),
                           ],
                         ),
                       ),

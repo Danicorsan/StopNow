@@ -108,13 +108,6 @@ class _HomePageState extends State<HomePage> {
             child: const Text("Boton de tranquilidad"),
           ),
           const SizedBox(height: 20),
-          TextButton(
-            onPressed: () {
-              _auth.signOut();
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-            child: const Text("Salir"),
-          ),
         ],
       )),
     );

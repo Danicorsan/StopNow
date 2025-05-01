@@ -1,3 +1,4 @@
+import 'package:stopnow/data/models/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserDao {
@@ -22,5 +23,17 @@ class UserDao {
       'cigarros_por_paquete': cigarrosPorPaquete,
       'precio_paquete': precioPaquete,
     });
+  }
+
+  static Future<UserModel?> traerUsuario(String id) async {
+    final response =
+        await supabase.from('public.users').select('*').eq('id', id).single();
+
+    print(response);
+
+    final json = response;
+    return UserModel.fromSupabase(
+      json,
+    );
   }
 }

@@ -2,7 +2,9 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stopnow/data/network/base_result.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/login/login_state.dart';
 
@@ -13,7 +15,7 @@ class LoginProvider extends ChangeNotifier {
 
   LoginState loginState = LoginState.initial;
 
-  Future<void> login() async {
+  Future<void> login(BuildContext context) async {
     loginState = LoginState.loading;
     notifyListeners();
 
@@ -32,6 +34,18 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
       return;
     } else if (result is BaseResultSuccess) {
+      //Obtenemos el usuario actual
+      final user = await UserRepository.usuarioActual();
+      if (user == null) {
+        loginState = LoginState.error;
+        errorMessage = "No se pudo obtener el usuario actual";
+        notifyListeners();
+        return;
+      }
+
+      // Guardar el usuario en el UserProvider
+      Provider.of<UserProvider>(context, listen: false).setUser(user);
+
       loginState = LoginState.success;
       notifyListeners();
       return;

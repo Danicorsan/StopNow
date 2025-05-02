@@ -97,4 +97,10 @@ class HomeProvider with ChangeNotifier {
 
     return diff.inSeconds % 60;
   }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 }

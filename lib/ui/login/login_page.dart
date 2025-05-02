@@ -3,11 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/ui/base/widgets/base_error.dart';
-import 'package:stopnow/ui/base/widgets/base_textfield.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/login/login_state.dart';
-import 'package:stopnow/utils/validators/validator.dart';
 
 class LoginPage extends StatefulWidget {
   String? email = '';
@@ -69,26 +66,52 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 25.h),
-              buildTextField(
-                controller: _emailController,
-                label: "Correo Electronico",
-                icon: Icons.person,
-                onChanged: loginProvider.setCorreo,
-              ),
-              buildTextField(
-                controller: _passwordController,
-                label: 'Contraseña',
-                icon: Icons.lock,
-                obscureText: isPasswordVisible,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-                    color: const Color(0xFF153866),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                child: TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.person,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Correo',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
                   ),
-                  onPressed: () =>
-                      setState(() => isPasswordVisible = !isPasswordVisible),
                 ),
-                onChanged: loginProvider.setPassword,
+              ),
+              SizedBox(height: 18.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                child: TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: const Color.fromARGB(255, 21, 56, 102),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.lock,
+                      color: Color.fromARGB(255, 21, 56, 102),
+                    ),
+                    labelText: 'Contraseña',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                  ),
+                  obscureText: isPasswordVisible,
+                ),
               ),
               SizedBox(height: 30.h),
               ElevatedButton(
@@ -107,7 +130,21 @@ class _LoginPageState extends State<LoginPage> {
                   if (loginProvider.loginState == LoginState.success) {
                     Navigator.pushReplacementNamed(context, '/home');
                   } else if (loginProvider.loginState == LoginState.error) {
-                    buildErrorMessage(loginProvider.errorMessage, context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          loginProvider.errorMessage == ""
+                              ? 'Error desconocido'
+                              : loginProvider.errorMessage,
+                        ),
+                        duration: const Duration(seconds: 2),
+                        backgroundColor: const Color.fromARGB(255, 138, 0, 0),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                      ),
+                    );
                   }
                 },
                 child: loginProvider.loginState == LoginState.loading

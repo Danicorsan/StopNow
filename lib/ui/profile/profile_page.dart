@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stopnow/ui/base/widgets/base_appbar.dart';
+import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -7,6 +9,8 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: baseAppBar("Perfil"),
+      drawer: baseDrawer(context),
       body: Column(
         children: [
           Expanded(

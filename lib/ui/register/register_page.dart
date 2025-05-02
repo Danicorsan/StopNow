@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/ui/register/register_state.dart';
 import 'package:stopnow/utils/validators/validator.dart';
@@ -67,6 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
+          errorMaxLines: 2,
           prefixIcon: Icon(icon, color: const Color(0xFF153866)),
           labelText: label,
           border: const OutlineInputBorder(
@@ -121,6 +123,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   label: 'Nombre de usuario',
                   icon: Icons.person,
                   onChanged: registerProvider.setNombreUsuario,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Introduce un nombre de usuario';
+                    }
+                    if (value.length < 3) {
+                      return 'El nombre de usuario debe tener al menos 3 caracteres';
+                    }
+                    return null;
+                  },
                 ),
                 _buildTextField(
                   controller: _emailController,
@@ -128,9 +139,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   icon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                   onChanged: registerProvider.setCorreo,
-                  validator: (value) => Validator.isValidEmail(value ?? '')
-                      ? null
-                      : 'Introduce un correo válido',
+                  validator: (value) {
+                    if (!Validator.isValidEmail(value ?? '')) {
+                      return 'Introduce un correo válido';
+                    }
+                    
+                    return null;
+                  },
                 ),
                 _buildTextField(
                   controller: _passwordController,

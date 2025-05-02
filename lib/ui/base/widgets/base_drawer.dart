@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:stopnow/routes/app_routes.dart';
 
 Drawer baseDrawer(BuildContext context) {
   return Drawer(
@@ -30,14 +33,18 @@ Drawer baseDrawer(BuildContext context) {
           leading: const Icon(Icons.home),
           title: const Text('Inicio'),
           onTap: () {
-            Navigator.pop(context); // Cierra el drawer
+            Navigator.pushReplacementNamed(
+                context, '/home'); // Cierra el drawer
           },
         ),
         ListTile(
           leading: const Icon(Icons.person),
           title: const Text('Perfil'),
-          onTap: () {
-            Navigator.pop(context); // Cierra el drawer
+          onTap: () async {
+            Navigator.pop(context); // Cierra el Drawer primero
+            await Future.delayed(const Duration(milliseconds: 250)); // Espera animación
+            Navigator.pushNamed(
+                context, AppRoutes.profile); // Navega luego
           },
         ),
         ListTile(

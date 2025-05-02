@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
@@ -145,8 +146,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 20.h),
                 TextButton(
                   onPressed: () {
-                    print(MediaQuery.of(context).size.width);
-                    print(MediaQuery.of(context).size.height);
+                    Navigator.pushNamed(context, AppRoutes.calma);
                   },
                   child: const Text("Botón de tranquilidad"),
                 ),

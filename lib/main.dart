@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
+import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/utils/constants/supabase.dart';
@@ -18,6 +19,9 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(
+        create: (context) => CalmProvider(),
+      ),
       ChangeNotifierProvider(
         create: (context) => LoginProvider(),
       ),
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, __) => MaterialApp(
-        initialRoute: AppRoutes.welcome,
+        initialRoute: AppRoutes.home,
         onGenerateRoute: AppRoutes.generateRoute,
         debugShowCheckedModeBanner: false,
         title: 'StopNow',

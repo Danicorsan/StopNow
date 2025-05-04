@@ -26,9 +26,9 @@ class CalmPage extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-                  child: const Text("Técnica 4-7-8",
+                  child: Text("Técnica 4-7-8",
                       style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                          TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold)),
                 ),
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.w,),

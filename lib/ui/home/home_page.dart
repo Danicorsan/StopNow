@@ -57,71 +57,94 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.h),
+                const Divider(),
                 Expanded(
-                  flex: 4,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.r),
-                        color: const Color.fromARGB(255, 219, 225, 225),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 50.r,
-                            offset: Offset(0, 5.h),
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.r),
+                            color: const Color(0xFF608AAE),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                blurRadius: 5.r,
+                                offset: Offset(0, 5.h),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text("${homeProvider.getAnios()}"),
-                                Text("${homeProvider.getMeses()}"),
-                                Text("${homeProvider.getDias()}"),
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        _buildTextHora("${homeProvider.getAnios()}"),
+                                        _buildTextHora("${homeProvider.getMeses()}"),
+                                        _buildTextHora("${homeProvider.getDias()}"),
+                                      ],
+                                    ),
+                                    const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text("Años"),
+                                        Text("Meses"),
+                                        Text("Días"),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Divider(color: Colors.white, thickness: 1),
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        _buildTextHora(
+                                            homeProvider.getHoras().toString().padLeft(2, '0')),
+                                        _buildTextHora(
+                                            homeProvider.getMinutos().toString().padLeft(2, '0')),
+                                        _buildTextHora(
+                                            homeProvider.getSegundos().toString().padLeft(2, '0')),
+                                      ],
+                                    ),
+                                    const Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text("Horas"),
+                                        Text("Minutos"),
+                                        Text("Segundos"),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
-                            const Divider(color: Colors.black, thickness: 1),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("Años"),
-                                Text("Meses"),
-                                Text("Días"),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("${homeProvider.getHoras()}h"),
-                                Text("${homeProvider.getMinutos()}m"),
-                                Text("${homeProvider.getSegundos()}s"),
-                              ],
-                            ),
-                            const Divider(color: Colors.black, thickness: 1),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("Años"),
-                                Text("Meses"),
-                                Text("Días"),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                      const Text("****")
+                    ],
                   ),
                 ),
                 SizedBox(height: 20.h),
+                const Divider(),
                 Expanded(
                   flex: 1,
                   child: Column(
@@ -140,24 +163,26 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.black.withOpacity(0.7),
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 10.h),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                            foregroundColor:
+                                const Color.fromARGB(255, 255, 255, 255),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50.w, vertical: 20.h),
+                            textStyle: TextStyle(fontSize: 15.sp),
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, AppRoutes.calma);
+                          },
+                          child: const Text("Botón de tranquilidad"),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(height: 20.h),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.calma);
-                  },
-                  child: const Text("Botón de tranquilidad"),
-                ),
-                SizedBox(height: 20.h),
-                TextButton(
-                  onPressed: () {
-                    Provider.of<UserProvider>(context, listen: false)
-                        .clearUser();
-                    Navigator.pushReplacementNamed(context, '/login');
-                  },
-                  child: const Text("Salir"),
                 ),
               ],
             );
@@ -166,4 +191,17 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  _buildTextHora(String text) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontSize: 40,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    );
+  }
+
 }

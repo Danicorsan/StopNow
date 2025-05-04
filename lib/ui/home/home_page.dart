@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                     height: 150.h,
                     alignment: Alignment.center,
                     child: Text(
-                      "Bienvenido a la pantalla principal @${user?.nombreUsuario ?? "Usuario"}",
+                      "Bienvenido ${user?.nombreUsuario ?? "Usuario"}",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16.sp),
                     ),

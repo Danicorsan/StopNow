@@ -35,26 +35,27 @@ class _GoalsPageState extends State<GoalsPage> {
             width: double.infinity,
             height: 90.h,
             child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: FlutterLogo(
-                          size: 50,
-                        )),
-                    Expanded(
-                        flex: 5,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Text(
-                            "Bicicleta nueva",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 19.sp),
-                          ),
-                        ))
-                  ],
-                )),
+              padding: EdgeInsets.symmetric(horizontal: 20.0.h),
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: FlutterLogo(
+                        size: 50,
+                      ),),
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        "Bicicleta nueva",
+                        style: TextStyle(color: Colors.white, fontSize: 19.sp),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),

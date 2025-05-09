@@ -94,7 +94,9 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
     final registerProvider = Provider.of<RegisterProvider>(context);
 
     return Scaffold(
-      appBar: baseAppBar("Añadir objetivo"),
+      appBar: baseAppBar("Añadir objetivo", volver: true, onTap: () {
+        Navigator.pop(context);
+      },),
       drawer: baseDrawer(context),
       backgroundColor: Colors.white,
       body: Form(

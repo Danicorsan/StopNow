@@ -1,8 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 
 Drawer baseDrawer(BuildContext context) {
@@ -76,27 +74,17 @@ Drawer baseDrawer(BuildContext context) {
                   Navigator.pop(context);
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Configuración'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
             ],
           ),
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.door_front_door, color: Colors.red),
-          title: const Text(
-            'Salir',
-            style: TextStyle(color: Colors.red),
-          ),
-          onTap: () {
+          leading: const Icon(Icons.settings),
+          title: const Text('Ajustes'),
+          onTap: () async {
             Navigator.pop(context);
-            Provider.of<UserProvider>(context, listen: false).clearUser();
-            Navigator.pushReplacementNamed(context, AppRoutes.login);
+            await Future.delayed(const Duration(milliseconds: 250));
+            Navigator.pushNamed(context, AppRoutes.settingsPage);
           },
         ),
       ],

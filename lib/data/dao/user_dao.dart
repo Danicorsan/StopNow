@@ -25,11 +25,10 @@ class UserDao {
     });
   }
 
+  // Método para actualizar un usuario existente en la base de datos
   static Future<UserModel?> traerUsuario(String id) async {
     final response =
         await supabase.from('public.users').select('*').eq('id', id).single();
-
-    print(response);
 
     final json = response;
     return UserModel.fromSupabase(

@@ -17,21 +17,31 @@ class CalmPage extends StatelessWidget {
         volver: true,
         context: context,
         onTap: () => {
-          Provider.of<CalmProvider>(context, listen: false).reset(),
-          Navigator.pop(context) // Cierra el drawer
+          if (calmProvider.init)
+            {
+              Provider.of<CalmProvider>(context, listen: false).reset(),
+              calmProvider.reset()
+            }
+          else
+            {
+              Navigator.pop(context),
+            }
         },
       ),
       body: !calmProvider.init
           ? Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
                   child: Text("Técnica 4-7-8",
-                      style:
-                          TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 30.sp, fontWeight: FontWeight.bold)),
                 ),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w,),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                    ),
                     child: Text(
                       textAlign: TextAlign.center,
                       "Esta respiración ayuda a prevenir la hiperventilación y se utiliza como técnica de distracción durante momentos de ansiedad o estrés.\n\nInhalar durante 4 segundos, retener la respiración por 7 segundos y exhalar durante 8 segundos.",
@@ -45,7 +55,8 @@ class CalmPage extends StatelessWidget {
                   child: TextButton(
                       style: TextButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         padding: EdgeInsets.symmetric(
                             horizontal: 50.w, vertical: 20.h),
                         textStyle: TextStyle(fontSize: 20.sp),

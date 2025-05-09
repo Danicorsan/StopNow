@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
-import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/ui/register/register_state.dart';
 import 'package:stopnow/utils/validators/validator.dart';

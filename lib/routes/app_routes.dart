@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stopnow/ui/calm/calm.dart';
-import 'package:stopnow/ui/goals/goals_page.dart';
+import 'package:stopnow/ui/goals/add/add_goals.dart';
+import 'package:stopnow/ui/goals/home/goals_page.dart';
 import 'package:stopnow/ui/home/home_page.dart';
 import 'package:stopnow/ui/login/login_page.dart';
 import 'package:stopnow/ui/profile/profile_page.dart';
@@ -15,6 +16,7 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String calma = '/calma';
   static const String goals = '/goals';
+  static const String addGoal = '/addGoal';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -46,6 +48,9 @@ class AppRoutes {
 
       case goals:
         return MaterialPageRoute(builder: (_) => const GoalsPage());
+
+      case addGoal:
+        return MaterialPageRoute(builder: (_) => const AddGoalsPage());
 
       default:
         return MaterialPageRoute(

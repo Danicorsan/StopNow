@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
+import 'package:stopnow/ui/goals/add/add_goals.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/utils/constants/supabase.dart';
@@ -44,10 +45,11 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, __) => MaterialApp(
-        initialRoute: AppRoutes.home,
+        //initialRoute: AppRoutes.profile,
         onGenerateRoute: AppRoutes.generateRoute,
         debugShowCheckedModeBanner: false,
         title: 'StopNow',
+        home: AddGoalsPage(),
       ),
     );
   }

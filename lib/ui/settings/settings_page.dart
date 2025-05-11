@@ -38,8 +38,30 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.account_circle),
                 title: const Text('Cuenta'),
                 onTap: () {
-                  Provider.of<UserProvider>(context, listen: false).clearUser();
-                  Navigator.pushReplacementNamed(context, AppRoutes.login);
+                  Navigator.pushReplacementNamed(context, AppRoutes.settingsAcount);
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                border: Border.all(
+                  width: 2,
+                  color: Colors.black,
+                ),
+                color: const Color(0xFF608AAE),
+              ),
+              child: ListTile(
+                textColor: Colors.white,
+                iconColor: Colors.white,
+                leading: const Icon(Icons.replay),
+                title: const Text('Recaida'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, AppRoutes.settingsAcount);
                 },
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
+import 'package:stopnow/ui/settings/account/account_page.dart';
 import 'package:stopnow/utils/constants/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: AppRoutes.generateRoute,
         debugShowCheckedModeBanner: false,
         title: 'StopNow',
+        //home: AccountPage(),
       ),
     );
   }

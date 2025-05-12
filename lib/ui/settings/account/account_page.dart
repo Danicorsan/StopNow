@@ -81,7 +81,16 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: baseAppBar("Perfil"),
+      appBar: baseAppBar("Perfil", actions: [
+        IconButton(
+          icon: Icon(isEditable ? Icons.check : Icons.edit),
+          onPressed: () {
+            setState(() {
+              isEditable = !isEditable;
+            });
+          },
+        ),
+      ]),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -155,14 +164,6 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
               readOnly: !isEditable,
             ),
             SizedBox(height: 20.h),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  isEditable = !isEditable;
-                });
-              },
-              child: Text(isEditable ? 'Guardar' : 'Editar'),
-            ),
           ],
         ),
       ),

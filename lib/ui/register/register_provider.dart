@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
@@ -17,36 +19,62 @@ class RegisterProvider extends ChangeNotifier {
   int cigarrosAlDia = 0;
   int cigarrosPorPaquete = 0;
   double precioPaquete = 0.0;
+  File? _profileImageFile;
 
   var errorMessage = "";
 
+  Future<void> setProfileImage(File imageFile) async {
+    try {
+      // Supón que tienes un método para subir y obtener la URL
+      final uploadedImageUrl =
+          await UserRepository.uploadProfileImage(imageFile);
+      fotoEmail = uploadedImageUrl;
+      print(fotoEmail);
+      notifyListeners();
+    } catch (e) {
+      print('Error al subir imagen: $e');
+    }
+  }
+
+  // Modifica el método register
   Future<void> register() async {
     registerState = RegisterState.loading;
-    print(email);
-    print(password);
-    print(registerState);
-
     notifyListeners();
 
     try {
-      await UserRepository.register(email, password, nombreUsuario, fotoEmail,
-              fechaDejarFumar, cigarrosAlDia, cigarrosPorPaquete, precioPaquete)
-          .then((value) {
-        if (value is BaseResultError) {
-          registerState = RegisterState.error;
-          errorMessage = value.message;
-          print("El obketp esta dentro de error $errorMessage");
-          notifyListeners();
-        } else if (value is BaseResultSuccess) {
-          registerState = RegisterState.success;
-          notifyListeners();
-          return;
-        }
-      });
+      String imageUrl = '';
+
+      // Subir imagen primero si existe
+      if (_profileImageFile != null) {
+        imageUrl = await UserRepository.uploadProfileImage(_profileImageFile!);
+      }
+
+      print(
+          "\n\n\n\n\n\n\n\n\n\n\n\nimageUrl: $imageUrl\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+      print(
+          "\n\n\n\n\n\n\n\n\n\n\n\nimageUrl: $fotoEmail\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+      final result = await UserRepository.register(
+          email,
+          password,
+          nombreUsuario,
+          fotoEmail,
+          fechaDejarFumar,
+          cigarrosAlDia,
+          cigarrosPorPaquete,
+          precioPaquete);
+
+      if (result is BaseResultError) {
+        registerState = RegisterState.error;
+        errorMessage = result.message;
+      } else {
+        registerState = RegisterState.success;
+      }
     } catch (e) {
       registerState = RegisterState.error;
       errorMessage = e.toString();
     }
+
     notifyListeners();
   }
 

@@ -1,7 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
@@ -35,6 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool isPasswordVisible = true;
   bool isConfirmPasswordVisible = true;
+  File? _selectedImage;
 
   @override
   void dispose() {
@@ -47,6 +51,20 @@ class _RegisterPageState extends State<RegisterPage> {
     _cigarrosPaqueteController.dispose();
     _precioPaqueteController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+      // Solo guardamos el archivo en el provider, no lo subimos aún
+      Provider.of<RegisterProvider>(context, listen: false)
+          .setProfileImage(_selectedImage!);
+    }
   }
 
   Widget _buildTextField({
@@ -116,6 +134,31 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                 ),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 40.w, vertical: 9.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Foto de perfil', style: TextStyle(fontSize: 16.sp)),
+                      SizedBox(height: 10.h),
+                      GestureDetector(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        child: CircleAvatar(
+                          radius: 50.r,
+                          backgroundImage: _selectedImage != null
+                              ? FileImage(_selectedImage!)
+                              : null,
+                          child: _selectedImage == null
+                              ? const Icon(Icons.add_a_photo, size: 30)
+                              : null,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 25.h),
                 _buildTextField(
                   controller: _userNameController,
@@ -142,7 +185,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (!Validator.isValidEmail(value ?? '')) {
                       return 'Introduce un correo válido';
                     }
-                    
                     return null;
                   },
                 ),
@@ -280,8 +322,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (!_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content:
-                              Text('Por favor, revisa todos los campos'),
+                          content: Text('Por favor, revisa todos los campos'),
                           backgroundColor: Color(0xFF8A0000),
                           duration: Duration(seconds: 2),
                         ),

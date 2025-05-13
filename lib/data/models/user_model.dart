@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class UserModel {
   final String nombreUsuario;
   final String fotoPerfil;
@@ -5,6 +7,7 @@ class UserModel {
   final int cigarrosAlDia;
   final int cigarrosPorPaquete;
   final double precioPaquete;
+  final DateTime fechaRegistro;
 
   UserModel({
     required this.nombreUsuario,
@@ -13,6 +16,7 @@ class UserModel {
     required this.cigarrosAlDia,
     required this.cigarrosPorPaquete,
     required this.precioPaquete,
+    required this.fechaRegistro,
   });
 
   UserModel copyWith({
@@ -22,6 +26,7 @@ class UserModel {
     int? cigarrosAlDia,
     int? cigarrosPorPaquete,
     double? precioPaquete,
+    DateTime? fechaRegistro,
   }) {
     return UserModel(
       nombreUsuario: nombreUsuario ?? this.nombreUsuario,
@@ -30,6 +35,7 @@ class UserModel {
       cigarrosAlDia: cigarrosAlDia ?? this.cigarrosAlDia,
       cigarrosPorPaquete: cigarrosPorPaquete ?? this.cigarrosPorPaquete,
       precioPaquete: precioPaquete ?? this.precioPaquete,
+      fechaRegistro: fechaRegistro ?? this.fechaRegistro,
     );
   }
 
@@ -44,6 +50,18 @@ class UserModel {
       cigarrosAlDia: json['cigarros_al_dia'] as int? ?? 0,
       cigarrosPorPaquete: json['cigarros_por_paquete'] as int? ?? 0,
       precioPaquete: (json['precio_paquete'] as num?)?.toDouble() ?? 0.0,
+      fechaRegistro: json['fecha_registro'] != null
+          ? DateTime.tryParse(json['fecha_registro'] as String) ??
+              DateTime.now()
+          : DateTime.now(),
+    );
+  }
+
+  Widget getFotoPerfil() {
+    return CircleAvatar(
+      radius: 50,
+      backgroundColor: Colors.grey,
+      child: Icon(Icons.person, size: 50),
     );
   }
 

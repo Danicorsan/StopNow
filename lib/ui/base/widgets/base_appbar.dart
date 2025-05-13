@@ -5,6 +5,7 @@ AppBar baseAppBar(String title,
     BuildContext? context,
     Function()? onTap,
     List<Widget>? actions}) {
+      
   return AppBar(
       centerTitle: true,
       title: Text(

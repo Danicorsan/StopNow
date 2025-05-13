@@ -1,5 +1,5 @@
 import 'package:stopnow/data/dao/user_dao.dart';
-import 'package:stopnow/data/models/user.dart';
+import 'package:stopnow/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Servicio de autenticación que encapsula las funciones de login, registro y logout

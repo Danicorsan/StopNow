@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,8 +19,16 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasAccount', false);
+    await prefs.remove('email');
+    await prefs.remove('password');
+
+    Provider.of<UserProvider>(context, listen: false).clearUser();
+
     // Redirige al usuario a la página de bienvenida
-    Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      AppRoutes.welcome,
+      (Route<dynamic> route) => false, // Elimina todas las rutas anteriores
+    );
   }
 
   @override

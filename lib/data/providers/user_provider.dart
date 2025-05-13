@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopnow/data/models/user.dart';
+import 'package:stopnow/data/models/user_model.dart';
 
 class UserProvider extends ChangeNotifier {
   UserModel? _currentUser;

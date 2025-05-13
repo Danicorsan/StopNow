@@ -1,5 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:io';
+
+import 'package:mime/mime.dart';
+import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
-import 'package:stopnow/data/models/user.dart';
+import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -62,5 +68,29 @@ class UserRepository {
     final user = await _authService.getCurrentUser();
     if (user == null) return null;
     return user;
+  }
+
+  static Future<String> uploadProfileImage(File imageFile) async {
+    try {
+      final userId =
+          supabase.auth.currentUser?.id ?? Exception('Usuario no autenticado');
+
+      final fileExt = extension(imageFile.path);
+      final fileName = 'profile_$userId$fileExt';
+
+      // Subir imagen
+      await supabase.storage
+          .from('avatars')
+          .upload(fileName, imageFile, fileOptions: FileOptions(upsert: true));
+
+      final signedUrl = await supabase.storage
+          .from('avatars')
+          .createSignedUrl(fileName, 60 * 60 * 24 * 365); // 1 año en segundos
+
+      return signedUrl;
+    } catch (e) {
+      print('Error al subir imagen: $e');
+      throw Exception('Error al subir la imagen de perfil');
+    }
   }
 }

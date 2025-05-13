@@ -98,6 +98,29 @@ class HomeProvider with ChangeNotifier {
     return diff.inSeconds % 60;
   }
 
+  int getDineroAhorrado() {
+    if (user == null) return 0;
+
+    double precioPorCigarro = user!.precioPaquete / user!.cigarrosPorPaquete;
+
+    return (getCigarrosEvitados() * precioPorCigarro).round();
+  }
+  int getCigarrosEvitados() {
+    if (user == null) return 0;
+
+    DateTime start = user!.fechaDejarFumar;
+    DateTime now = DateTime.now();
+
+    int diff = now.difference(start).inDays;
+
+    return diff * user!.cigarrosAlDia;
+  }
+
+  int getTiempoDeVidaGanado() {
+    if (user == null) return 0;
+    return getCigarrosEvitados() * 11;
+  }
+
   @override
   void dispose() {
     _timer?.cancel();

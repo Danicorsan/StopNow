@@ -40,11 +40,11 @@ class CalmPage extends StatelessWidget {
                 ),
                 Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
+                      horizontal: 15.w,
                     ),
                     child: Text(
-                      textAlign: TextAlign.center,
-                      "Esta respiración ayuda a prevenir la hiperventilación y se utiliza como técnica de distracción durante momentos de ansiedad o estrés.\n\nInhalar durante 4 segundos, retener la respiración por 7 segundos y exhalar durante 8 segundos.\nAyuda a calmar el sistema nervioso y a reducir la ansiedad.",
+                      textAlign: TextAlign.justify,
+                      "Esta respiración ayuda a prevenir la hiperventilación y se utiliza como técnica de distracción durante momentos de ansiedad o estrés.\n\nInhalar durante 4 segundos, retener la respiración por 7 segundos y exhalar durante 8 segundo ayuda a calmar el sistema nervioso y a reducir la ansiedad.",
                       style: TextStyle(fontSize: 16.sp),
                     )),
                 SizedBox(

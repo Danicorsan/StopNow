@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
+import 'package:stopnow/data/shared_preferences/shared_preferences.dart';
 import 'package:stopnow/ui/login/login_state.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -45,7 +46,7 @@ class LoginProvider extends ChangeNotifier {
 
       // Guardar el usuario en el UserProvider
       Provider.of<UserProvider>(context, listen: false).setUser(user);
-
+      await saveUserStatus(true);
       loginState = LoginState.success;
       notifyListeners();
       return;

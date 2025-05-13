@@ -60,10 +60,12 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
     required IconData icon,
     TextInputType keyboardType = TextInputType.text,
     bool readOnly = false,
+    Function()? onTap,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: TextFormField(
+        onTap: onTap,
         controller: controller,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: const Color(0xFF153866)),
@@ -132,7 +134,6 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
               label: 'Fecha dejar de fumar',
               icon: Icons.calendar_today,
               readOnly: true,
-              /*
               onTap: isEditable
                   ? () async {
                       final picked = await showDatePicker(
@@ -147,7 +148,7 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
                       }
                     }
                   : null,
-                  */
+
             ),
             _buildTextField(
               controller: _cigarrosPaqueteController,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stopnow/ui/calm/calm.dart';
+import 'package:stopnow/ui/calm/calm_page.dart';
 import 'package:stopnow/ui/goals/add/add_goals.dart';
 import 'package:stopnow/ui/goals/home/goals_page.dart';
 import 'package:stopnow/ui/home/home_page.dart';

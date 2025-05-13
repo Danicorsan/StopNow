@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeProvider homeProvider;
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -26,6 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     homeProvider.disposeTimer();
     super.dispose();
   }
@@ -63,83 +66,36 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.r),
-                            color: const Color(0xFF608AAE),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 5.r,
-                                offset: Offset(0, 5.h),
-                              ),
-                            ],
-                          ),
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        _buildTextHora("${homeProvider.getAnios()}"),
-                                        _buildTextHora("${homeProvider.getMeses()}"),
-                                        _buildTextHora("${homeProvider.getDias()}"),
-                                      ],
-                                    ),
-                                    const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text("Años"),
-                                        Text("Meses"),
-                                        Text("Días"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Divider(color: Colors.white, thickness: 1),
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        _buildTextHora(
-                                            homeProvider.getHoras().toString().padLeft(2, '0')),
-                                        _buildTextHora(
-                                            homeProvider.getMinutos().toString().padLeft(2, '0')),
-                                        _buildTextHora(
-                                            homeProvider.getSegundos().toString().padLeft(2, '0')),
-                                      ],
-                                    ),
-                                    const Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text("Horas"),
-                                        Text("Minutos"),
-                                        Text("Segundos"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                      SizedBox(
+                        height: 300.h,
+                        child: PageView(
+                          controller: _pageController,
+                          children: [
+                            _buildTimerContainer(homeProvider),
+                            _buildContainer(
+                                "Dinero ahorrado",
+                                "${homeProvider.getDineroAhorrado()} €"),
+                            _buildContainer(
+                                "Cigarros evitados",
+                                "${homeProvider.getCigarrosEvitados()}"),
+                            _buildContainer(
+                                "Tiempo de vida ganado",
+                                "${homeProvider.getTiempoDeVidaGanado()} minutos"),
+                          ],
                         ),
                       ),
-                      const Text("****")
+                      SizedBox(height: 16.h),
+                      SmoothPageIndicator(
+                        controller: _pageController,
+                        count: 4,
+                        effect: WormEffect(
+                          dotHeight: 10.h,
+                          dotWidth: 10.w,
+                          spacing: 10.w,
+                          activeDotColor: Colors.blueAccent,
+                          dotColor: Colors.grey.shade400,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -152,14 +108,14 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         "¿Te encuentras con ganas de fumar?",
                         style: TextStyle(
-                          fontSize: 10.sp,
+                          fontSize: 12.sp,
                           color: Colors.black.withOpacity(0.7),
                         ),
                       ),
                       Text(
                         "Prueba con nuestro método de relajación",
                         style: TextStyle(
-                          fontSize: 10.sp,
+                          fontSize: 12.sp,
                           color: Colors.black.withOpacity(0.7),
                         ),
                       ),
@@ -192,16 +148,141 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _buildTextHora(String text) {
-    return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: const TextStyle(
-        fontSize: 40,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
+  Widget _buildTimerContainer(HomeProvider homeProvider) {
+    TextStyle labelStyle = TextStyle(
+      fontSize: 12.sp,
+      color: Colors.white.withOpacity(0.8),
+      fontWeight: FontWeight.w500,
+    );
+
+    TextStyle valueStyle = TextStyle(
+      fontSize: 28.sp,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.r),
+          color: const Color(0xFF608AAE),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text("Tiempo sin fumar",
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                )),
+            const Divider(),
+            // Tiempo total (años, meses, días)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildTimeBlock("${homeProvider.getAnios()}", "Años",
+                    valueStyle, labelStyle),
+                _buildTimeBlock("${homeProvider.getMeses()}", "Meses",
+                    valueStyle, labelStyle),
+                _buildTimeBlock("${homeProvider.getDias()}", "Días", valueStyle,
+                    labelStyle),
+              ],
+            ),
+            Divider(color: Colors.white.withOpacity(0.8), thickness: 1),
+            // Tiempo actual (horas, minutos, segundos)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildTimeBlock(
+                    homeProvider.getHoras().toString().padLeft(2, '0'),
+                    "Horas",
+                    valueStyle,
+                    labelStyle),
+                _buildTimeBlock(
+                    homeProvider.getMinutos().toString().padLeft(2, '0'),
+                    "Min",
+                    valueStyle,
+                    labelStyle),
+                _buildTimeBlock(
+                    homeProvider.getSegundos().toString().padLeft(2, '0'),
+                    "Seg",
+                    valueStyle,
+                    labelStyle),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  Widget _buildTimeBlock(
+      String value, String label, TextStyle valueStyle, TextStyle labelStyle) {
+    return Column(
+      children: [
+        Text(value, style: valueStyle),
+        SizedBox(height: 4.h),
+        Text(label, style: labelStyle),
+      ],
+    );
+  }
+
+  Widget _buildContainer(String titulo, String contenido) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFF608AAE),
+          borderRadius: BorderRadius.circular(15.r),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: Text(
+                  titulo,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            Divider(
+              color: Colors.white.withOpacity(0.8),
+              thickness: 1,
+            ),
+            Expanded(
+              flex: 3,
+              child: Center(
+                child: Text(
+                  contenido,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

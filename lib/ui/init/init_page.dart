@@ -39,7 +39,7 @@ class _InitPageState extends State<InitPage> {
       body: Center(
         child: CircularProgressIndicator(
           color: Color(0xFF608AAE),
-        ), // Muestra un indicador de carga mientras se verifica
+        ),
       ),
     );
   }

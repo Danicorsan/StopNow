@@ -3,6 +3,7 @@ import 'package:stopnow/ui/calm/calm_page.dart';
 import 'package:stopnow/ui/goals/add/add_goals.dart';
 import 'package:stopnow/ui/goals/home/goals_page.dart';
 import 'package:stopnow/ui/home/home_page.dart';
+import 'package:stopnow/ui/init/init_page.dart';
 import 'package:stopnow/ui/login/login_page.dart';
 import 'package:stopnow/ui/profile/profile_page.dart';
 import 'package:stopnow/ui/register/register_page.dart';
@@ -21,6 +22,7 @@ class AppRoutes {
   static const String addGoal = '/addGoal';
   static const String settingsPage = '/settings';
   static const String settingsAcount = '/settings/account';
+  static const String init = '/init';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -61,6 +63,9 @@ class AppRoutes {
 
       case settingsAcount:
         return MaterialPageRoute(builder: (_) => const SettingsAccountPage());
+
+      case init:
+        return MaterialPageRoute(builder: (_) => const InitPage());
 
       default:
         return MaterialPageRoute(

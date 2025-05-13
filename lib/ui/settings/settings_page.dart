@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
@@ -13,6 +14,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasAccount', false);
+    // Redirige al usuario a la página de bienvenida
+    Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +46,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.account_circle),
                 title: const Text('Cuenta'),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.settingsAcount);
+                  Navigator.pushReplacementNamed(
+                      context, AppRoutes.settingsAcount);
                 },
               ),
             ),
@@ -61,7 +70,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.replay),
                 title: const Text('Recaida'),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.settingsAcount);
+                  Navigator.pushReplacementNamed(
+                      context, AppRoutes.settingsAcount);
                 },
               ),
             ),
@@ -85,7 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 title: const Text('Cerrar sesión'),
                 onTap: () {
                   Provider.of<UserProvider>(context, listen: false).clearUser();
-                  Navigator.pushReplacementNamed(context, AppRoutes.login);
+                  logout();
                 },
               ),
             ),

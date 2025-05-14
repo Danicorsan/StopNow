@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
                 Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-                    child: UserAvatar()),
+                    child: const UserAvatar()),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +44,7 @@ class ProfilePage extends StatelessWidget {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Miembro desde: ${user?.fechaRegistro.year ?? ""}''", // Ejemplo
+                      "Miembro desde: ${user?.fechaRegistro.year ?? ""}",
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],

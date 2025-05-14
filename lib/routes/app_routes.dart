@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/ui/calm/calm_page.dart';
-import 'package:stopnow/ui/goals/add/add_goals.dart';
-import 'package:stopnow/ui/goals/home/goals_page.dart';
+import 'package:stopnow/ui/goals/add_goals.dart';
+import 'package:stopnow/ui/goals/detail_goals.dart';
+import 'package:stopnow/ui/goals/goals_page.dart';
 import 'package:stopnow/ui/home/home_page.dart';
 import 'package:stopnow/ui/init/init_page.dart';
 import 'package:stopnow/ui/login/login_page.dart';
@@ -23,6 +25,7 @@ class AppRoutes {
   static const String settingsPage = '/settings';
   static const String settingsAcount = '/settings/account';
   static const String init = '/init';
+  static const String detailGoal = '/detailGoal';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -66,6 +69,12 @@ class AppRoutes {
 
       case init:
         return MaterialPageRoute(builder: (_) => const InitPage());
+
+      case detailGoal:
+        final goal = settings.arguments as GoalModel;
+        return MaterialPageRoute(
+          builder: (_) => DetailGoalsPage(goal: goal),
+        );
 
       default:
         return MaterialPageRoute(

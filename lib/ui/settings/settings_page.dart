@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
     // Redirige al usuario a la página de bienvenida
     Navigator.of(context).pushNamedAndRemoveUntil(
       AppRoutes.welcome,
-      (Route<dynamic> route) => false, // Elimina todas las rutas anteriores
+      (Route<dynamic> route) => false,
     );
   }
 
@@ -36,81 +34,103 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: baseAppBar("Ajustes"),
       drawer: baseDrawer(context),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(
-                  width: 2,
-                  color: Colors.black,
+      body: Container(
+        width: double.infinity,
+        /*
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF153866), Color(0xFF608AAE)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          )*/
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+          children: [
+            _buildSettingsCard(
+              icon: Icons.account_circle,
+              title: 'Cuenta',
+              subtitle: 'Gestiona tu información personal',
+              color: Colors.blueAccent,
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                    context, AppRoutes.settingsAcount);
+              },
+            ),
+            _buildSettingsCard(
+              icon: Icons.replay,
+              title: 'Recaída',
+              subtitle: '¿Tuviste una recaída? Reinicia tu progreso',
+              color: Colors.orangeAccent,
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                    context, AppRoutes.settingsAcount);
+              },
+            ),
+            _buildSettingsCard(
+              icon: Icons.logout,
+              title: 'Cerrar sesión',
+              subtitle: 'Salir de tu cuenta',
+              color: Colors.redAccent,
+              onTap: () {
+                Provider.of<UserProvider>(context, listen: false).clearUser();
+                logout();
+              },
+            ),
+            const SizedBox(height: 40),
+            Center(
+              child: Text(
+                "StopNow v0.1.0",
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.7),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  letterSpacing: 1.2,
                 ),
-                color: const Color(0xFF608AAE),
-              ),
-              child: ListTile(
-                textColor: Colors.white,
-                iconColor: Colors.white,
-                leading: const Icon(Icons.account_circle),
-                title: const Text('Cuenta'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, AppRoutes.settingsAcount);
-                },
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingsCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: color.withOpacity(0.15),
+          child: Icon(icon, color: color, size: 28),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: Color(0xFF153866),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(
-                  width: 2,
-                  color: Colors.black,
-                ),
-                color: const Color(0xFF608AAE),
-              ),
-              child: ListTile(
-                textColor: Colors.white,
-                iconColor: Colors.white,
-                leading: const Icon(Icons.replay),
-                title: const Text('Recaida'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, AppRoutes.settingsAcount);
-                },
-              ),
-            ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+            color: Colors.grey[700],
+            fontSize: 13,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(
-                  width: 2,
-                  color: Colors.black,
-                ),
-                color: const Color(0xFF608AAE),
-              ),
-              child: ListTile(
-                textColor: Colors.white,
-                iconColor: Colors.white,
-                leading: const Icon(Icons.logout),
-                title: const Text('Cerrar sesión'),
-                onTap: () {
-                  Provider.of<UserProvider>(context, listen: false).clearUser();
-                  logout();
-                },
-              ),
-            ),
-          ),
-        ],
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios_rounded,
+            color: Color(0xFF153866)),
+        onTap: onTap,
       ),
     );
   }

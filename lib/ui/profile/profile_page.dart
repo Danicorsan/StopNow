@@ -1,16 +1,11 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -23,86 +18,140 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: baseAppBar("Perfil"),
       drawer: baseDrawer(context),
-      body: Column(
-        children: [
-          // Sección de información básica del usuario
-          Expanded(
-            flex: 1,
-            child: Row(
-              children: [
-                Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-                    child: const UserAvatar()),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "danics969",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Miembro desde: ${user?.fechaRegistro.year ?? ""}",
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Sección de información del usuario
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF608AAE), Color.fromARGB(255, 209, 209, 209)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-              ],
-            ),
-          ),
-          const Divider(),
-          // Sección de estadísticas
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              ),
+              child: Row(
                 children: [
-                  const Center(
-                    child: Text(
-                      "Estadísticas",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  _buildStatisticRow(
-                    "Tiempo sin fumar:",
-                    "${homeProvider.getAnios()} años, ${homeProvider.getMeses()} meses, ${homeProvider.getDias()} días",
-                  ),
-                  _buildStatisticRow(
-                    "Cigarros evitados:",
-                    "${homeProvider.getCigarrosEvitados()}",
-                  ),
-                  _buildStatisticRow(
-                    "Dinero ahorrado:",
-                    "${homeProvider.getDineroAhorrado()} €",
-                  ),
-                  _buildStatisticRow(
-                    "Tiempo de vida ganado:",
-                    "${homeProvider.getTiempoDeVidaGanado()} m",
+                  const UserAvatar(),
+                  SizedBox(width: 20.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user?.nombreUsuario ?? "Usuario",
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      Text(
+                        "Miembro desde: ${user?.fechaRegistro.year ?? ""}",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.white.withOpacity(0.8),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
-          const Divider(),
+            SizedBox(height: 20.h),
 
-          // Sección de logros
-          const Expanded(
-            flex: 1,
-            child: Center(
-              child: Text(
-                "Logros 0/12",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            // Sección de estadísticas
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Estadísticas",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF153866),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      _buildStatisticRow(
+                        "Tiempo sin fumar:",
+                        "${homeProvider.getAnios()} años, ${homeProvider.getMeses()} meses, ${homeProvider.getDias()} días",
+                      ),
+                      _buildStatisticRow(
+                        "Cigarros evitados:",
+                        "${homeProvider.getCigarrosEvitados()}",
+                      ),
+                      _buildStatisticRow(
+                        "Dinero ahorrado:",
+                        "${homeProvider.getDineroAhorrado()} €",
+                      ),
+                      _buildStatisticRow(
+                        "Tiempo de vida ganado:",
+                        "${homeProvider.getTiempoDeVidaGanado()} m",
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 20.h),
+
+            // Sección de logros
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Logros",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF153866),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        "0/12",
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF608AAE),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        "¡Sigue avanzando para desbloquear más logros!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -115,11 +164,19 @@ class ProfilePage extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
           ),
           Text(
             value,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF153866),
+            ),
           ),
         ],
       ),

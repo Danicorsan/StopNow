@@ -48,19 +48,25 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Bienvenida y frase motivadora
                 Expanded(
                   flex: 1,
                   child: Container(
                     height: 150.h,
                     alignment: Alignment.center,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Bienvenido ${user?.nombreUsuario ?? "Usuario"}",
+                          "Bienvenido, ${user?.nombreUsuario ?? "Usuario"}",
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp),
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
+                        SizedBox(height: 10.h),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Text(
@@ -70,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 16.sp,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black.withOpacity(0.6),
+                              color: Colors.black.withOpacity(0.8),
                               height: 1.4,
                             ),
                           ),
@@ -80,6 +86,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const Divider(),
+
+                // Estadísticas en tarjetas deslizables
                 Expanded(
                   flex: 3,
                   child: Column(
@@ -91,12 +99,21 @@ class _HomePageState extends State<HomePage> {
                           controller: _pageController,
                           children: [
                             _buildTimerContainer(homeProvider),
-                            _buildContainer("Dinero ahorrado",
-                                "${homeProvider.getDineroAhorrado()} €"),
-                            _buildContainer("Cigarros evitados",
-                                "${homeProvider.getCigarrosEvitados()}"),
-                            _buildContainer("Tiempo de vida ganado",
-                                "${homeProvider.getTiempoDeVidaGanado()} minutos"),
+                            _buildStatisticCard(
+                              "Dinero ahorrado",
+                              "${homeProvider.getDineroAhorrado()} €",
+                              Icons.attach_money,
+                            ),
+                            _buildStatisticCard(
+                              "Cigarros evitados",
+                              "${homeProvider.getCigarrosEvitados()}",
+                              Icons.smoke_free,
+                            ),
+                            _buildStatisticCard(
+                              "Tiempo de vida ganado",
+                              "${homeProvider.getTiempoDeVidaGanado()} minutos",
+                              Icons.favorite,
+                            ),
                           ],
                         ),
                       ),
@@ -117,6 +134,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 20.h),
                 const Divider(),
+
+                // Método de relajación
                 Expanded(
                   flex: 1,
                   child: Column(
@@ -124,33 +143,37 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         "¿Te encuentras con ganas de fumar?",
                         style: TextStyle(
-                          fontSize: 12.sp,
+                          fontSize: 14.sp,
                           color: Colors.black.withOpacity(0.7),
                         ),
                       ),
                       Text(
                         "Prueba con nuestro método de relajación",
                         style: TextStyle(
-                          fontSize: 12.sp,
+                          fontSize: 14.sp,
                           color: Colors.black.withOpacity(0.7),
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: 10.h),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                            foregroundColor:
-                                const Color.fromARGB(255, 255, 255, 255),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF153866),
+                            foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 50.w, vertical: 20.h),
-                            textStyle: TextStyle(fontSize: 15.sp),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, AppRoutes.calma);
                           },
-                          child: const Text("Botón de tranquilidad"),
+                          child: Text(
+                            "Método de relajación",
+                            style: TextStyle(fontSize: 16.sp),
+                          ),
                         ),
                       ),
                     ],
@@ -182,7 +205,11 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
-          color: const Color(0xFF608AAE),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF608AAE), Color(0xFF153866)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -191,18 +218,19 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+        padding: EdgeInsets.all(20.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Tiempo sin fumar",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                )),
-            const Divider(),
+            Text(
+              "Tiempo sin fumar",
+              style: TextStyle(
+                fontSize: 18.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Divider(color: Colors.white, thickness: 1),
             // Tiempo total (años, meses, días)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -215,26 +243,29 @@ class _HomePageState extends State<HomePage> {
                     labelStyle),
               ],
             ),
-            Divider(color: Colors.white.withOpacity(0.8), thickness: 1),
+            const Divider(color: Colors.white, thickness: 1),
             // Tiempo actual (horas, minutos, segundos)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildTimeBlock(
-                    homeProvider.getHoras().toString().padLeft(2, '0'),
-                    "Horas",
-                    valueStyle,
-                    labelStyle),
+                  homeProvider.getHoras().toString().padLeft(2, '0'),
+                  "Horas",
+                  valueStyle,
+                  labelStyle,
+                ),
                 _buildTimeBlock(
-                    homeProvider.getMinutos().toString().padLeft(2, '0'),
-                    "Min",
-                    valueStyle,
-                    labelStyle),
+                  homeProvider.getMinutos().toString().padLeft(2, '0'),
+                  "Min",
+                  valueStyle,
+                  labelStyle,
+                ),
                 _buildTimeBlock(
-                    homeProvider.getSegundos().toString().padLeft(2, '0'),
-                    "Seg",
-                    valueStyle,
-                    labelStyle),
+                  homeProvider.getSegundos().toString().padLeft(2, '0'),
+                  "Seg",
+                  valueStyle,
+                  labelStyle,
+                ),
               ],
             ),
           ],
@@ -254,46 +285,46 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildContainer(String titulo, String contenido) {
+  Widget _buildStatisticCard(String title, String value, IconData icon) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
       child: Container(
-        width: double.infinity,
         decoration: BoxDecoration(
-          color: const Color(0xFF608AAE),
           borderRadius: BorderRadius.circular(15.r),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF608AAE), Color(0xFF153866)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
+        padding: EdgeInsets.all(20.w),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Text(
-                  titulo,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+            Icon(icon, size: 40.sp, color: Colors.white),
+            SizedBox(height: 10.h),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            Divider(
-              color: Colors.white.withOpacity(0.8),
-              thickness: 1,
-            ),
-            Expanded(
-              flex: 3,
-              child: Center(
-                child: Text(
-                  contenido,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+            SizedBox(height: 10.h),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
           ],

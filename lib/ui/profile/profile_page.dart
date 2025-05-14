@@ -24,13 +24,6 @@ class ProfilePage extends StatelessWidget {
             // Sección de información del usuario
             Container(
               padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF608AAE), Color.fromARGB(255, 209, 209, 209)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
               child: Row(
                 children: [
                   const UserAvatar(),
@@ -43,7 +36,7 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 5.h),
@@ -51,13 +44,18 @@ class ProfilePage extends StatelessWidget {
                         "Miembro desde: ${user?.fechaRegistro.year ?? ""}",
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.black.withOpacity(0.8),
                         ),
                       ),
                     ],
                   ),
                 ],
               ),
+            ),
+            Divider(
+              color: Colors.black.withOpacity(0.5),
+              thickness: 2,
+              height: 20.h,
             ),
             SizedBox(height: 20.h),
 
@@ -72,10 +70,10 @@ class ProfilePage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(20.w),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Estadísticas",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
@@ -173,7 +171,7 @@ class ProfilePage extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
-              fontSize: 12.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF153866),
             ),

@@ -75,10 +75,10 @@ class CalmPage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          color: const Color.fromARGB(255, 1, 93, 39),
+          color: const Color.fromARGB(255, 255, 255, 255),
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 1, 93, 39).withOpacity(0.5),
+              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
               spreadRadius: 5.r,
               blurRadius: 7.r,
               offset: Offset(0.r, 3.r), // changes position of shadow

@@ -53,10 +53,29 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     height: 150.h,
                     alignment: Alignment.center,
-                    child: Text(
-                      "Bienvenido ${user?.nombreUsuario ?? "Usuario"}",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16.sp),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "Bienvenido ${user?.nombreUsuario ?? "Usuario"}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18.sp),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: Text(
+                            '"${homeProvider.getFrase()}"',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black.withOpacity(0.6),
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -72,14 +91,11 @@ class _HomePageState extends State<HomePage> {
                           controller: _pageController,
                           children: [
                             _buildTimerContainer(homeProvider),
-                            _buildContainer(
-                                "Dinero ahorrado",
+                            _buildContainer("Dinero ahorrado",
                                 "${homeProvider.getDineroAhorrado()} €"),
-                            _buildContainer(
-                                "Cigarros evitados",
+                            _buildContainer("Cigarros evitados",
                                 "${homeProvider.getCigarrosEvitados()}"),
-                            _buildContainer(
-                                "Tiempo de vida ganado",
+                            _buildContainer("Tiempo de vida ganado",
                                 "${homeProvider.getTiempoDeVidaGanado()} minutos"),
                           ],
                         ),

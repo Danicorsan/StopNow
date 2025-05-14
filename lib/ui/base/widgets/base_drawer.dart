@@ -18,7 +18,7 @@ Drawer baseDrawer(BuildContext context) {
           width: double.infinity,
           child: DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: const Color.fromARGB(255, 12, 71, 99),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

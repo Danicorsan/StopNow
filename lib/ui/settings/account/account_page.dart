@@ -83,16 +83,23 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: baseAppBar("Perfil", actions: [
-        IconButton(
-          icon: Icon(isEditable ? Icons.check : Icons.edit),
-          onPressed: () {
-            setState(() {
-              isEditable = !isEditable;
-            });
-          },
-        ),
-      ]),
+      appBar: baseAppBar(
+        "Perfil",
+        actions: [
+          IconButton(
+            icon: Icon(isEditable ? Icons.check : Icons.edit),
+            onPressed: () {
+              setState(() {
+                isEditable = !isEditable;
+              });
+            },
+          ),
+        ],
+        volver: true,
+        onTap: () {
+          Navigator.pop(context);
+        },
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -148,7 +155,6 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
                       }
                     }
                   : null,
-
             ),
             _buildTextField(
               controller: _cigarrosPaqueteController,

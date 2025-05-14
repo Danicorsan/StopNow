@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
+import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/home/home_page.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
@@ -21,6 +22,9 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(
+        create: (context) => GoalsProvider(),
+      ),
       ChangeNotifierProvider(
         create: (context) => CalmProvider(),
       ),

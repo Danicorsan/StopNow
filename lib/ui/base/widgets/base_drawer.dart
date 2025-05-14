@@ -1,15 +1,22 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, sized_box_for_whitespace, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
+import 'package:stopnow/ui/base/widgets/user_avatar.dart';
+import 'package:stopnow/ui/calm/calm_page.dart';
 
 Drawer baseDrawer(BuildContext context) {
+  final userProvider =
+      Provider.of<UserProvider>(context, listen: false).currentUser;
   return Drawer(
     child: Column(
       children: <Widget>[
         Container(
           width: double.infinity,
-          child: const DrawerHeader(
+          child: DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -17,14 +24,15 @@ Drawer baseDrawer(BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
               children: [
-                CircleAvatar(
-                  child: FlutterLogo(),
-                ),
-                Text(
-                  'Menú',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
+                SizedBox(height: 80, width: 80, child: UserAvatar()),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Menú',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24.sp,
+                    ),
                   ),
                 ),
               ],

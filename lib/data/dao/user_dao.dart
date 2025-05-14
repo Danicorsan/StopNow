@@ -1,4 +1,8 @@
-import 'package:stopnow/data/models/user.dart';
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:stopnow/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserDao {
@@ -31,8 +35,47 @@ class UserDao {
         await supabase.from('public.users').select('*').eq('id', id).single();
 
     final json = response;
+
+    print(json);
+
     return UserModel.fromSupabase(
       json,
     );
+  }
+
+  Future<void> uploadProfilePicture() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile == null) return;
+
+    final file = File(pickedFile.path);
+    final fileExt = extension(file.path);
+    final userId = supabase.auth.currentUser!.id;
+    final fileName = '$userId$fileExt';
+    final filePath = 'avatars/$fileName';
+
+    final storageResponse = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, fileOptions: FileOptions(upsert: true));
+
+    if (storageResponse != null) {
+      print('Error al subir imagen: ${storageResponse}');
+      return;
+    }
+
+    // Obtener la URL pública
+    final publicUrl = supabase.storage.from('avatars').getPublicUrl(filePath);
+
+    // Guardar en la base de datos
+    final updateResponse = await supabase.from('public.users').update({
+      'avatar_url': publicUrl,
+    }).eq('id', userId);
+
+    if (updateResponse.error != null) {
+      print('Error al actualizar perfil: ${updateResponse.error!.message}');
+    } else {
+      print('Avatar actualizado correctamente.');
+    }
   }
 }

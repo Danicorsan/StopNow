@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:stopnow/data/models/user.dart';
+import 'package:stopnow/data/models/user_model.dart';
 
 class HomeProvider with ChangeNotifier {
   final UserModel? user;

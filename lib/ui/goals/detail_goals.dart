@@ -26,7 +26,7 @@ class DetailGoalsPage extends StatelessWidget {
               _buildContainerPrincipal(),
               _buildContainerSecundario(dinero: true),
               _buildContainerSecundario(cigarros: true),
-              _buildContainerSecundario(fecha:true),
+              _buildContainerSecundario(fecha: true),
               _buildContainerBarra(0.7)
             ],
           ),
@@ -55,26 +55,26 @@ class DetailGoalsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
+            goal.usuarioId,
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+          ),
+          Text(
             goal.nombre,
             style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           Text(
-            goal.usuarioId,
-            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            "${goal.precio.toStringAsFixed(2)} €",
+            style: const TextStyle(
+                fontSize: 18, color: Color.fromARGB(255, 0, 0, 0)),
           ),
-          const SizedBox(height: 16),
-          if (goal.precio != null)
-            Text(
-              "${goal.precio.toStringAsFixed(2)} €",
-              style: const TextStyle(fontSize: 18, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
         ],
       ),
     );
   }
 
-  _buildContainerSecundario({bool dinero = false, bool cigarros = false, bool fecha = false}) {
+  _buildContainerSecundario(
+      {bool dinero = false, bool cigarros = false, bool fecha = false}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(

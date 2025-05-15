@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -67,20 +69,6 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         key: _formKey,
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: Colors.black26),
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                ),
-                child: const CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.add, size: 40, color: Color(0xFF153866)),
-                ),
-              ),
-            ),
             _buildTextField(
               controller: _nombreController,
               label: 'Nombre',
@@ -140,8 +128,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
 
           Provider.of<GoalsProvider>(context, listen: false).addGoal(
             GoalModel(
-              usuarioId:
-                  "1",
+              usuarioId: UserRepository.getId(),
               nombre: _nombreController.text.trim(),
               precio: _precioController.text.trim().isEmpty
                   ? 0.0

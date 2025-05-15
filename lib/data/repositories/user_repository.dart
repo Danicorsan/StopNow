@@ -28,6 +28,14 @@ class UserRepository {
     return BaseResultSuccess(true);
   }
 
+  static String getId(){
+    final userId = supabase.auth.currentUser?.id;
+    if (userId == null) {
+      throw Exception('Usuario no autenticado');
+    }
+    return userId;
+  }
+
   // Metodo para registrarse
   static Future<BaseResult> register(
     String correo,

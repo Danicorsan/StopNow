@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
@@ -27,7 +29,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
       drawer: baseDrawer(context),
       body: chatProvider.isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Column(
@@ -85,7 +87,7 @@ class _ChatPageState extends State<ChatPage> {
                                       : CrossAxisAlignment.start,
                                   children: [
                                     if (mensaje.nombreUsuario != null &&
-                                        mensaje.nombreUsuario!.isNotEmpty)
+                                        mensaje.nombreUsuario.isNotEmpty)
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 2),
@@ -93,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
                                           width: double.infinity,
                                           color: Colors.amber,
                                           child: Text(
-                                            mensaje.nombreUsuario!,
+                                            mensaje.nombreUsuario,
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                               color: esMio

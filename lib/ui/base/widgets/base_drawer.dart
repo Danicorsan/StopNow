@@ -5,6 +5,7 @@ import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 
+//TODO: Si esta en la pantalla que pulsa el icono de la barra de navegacion, no se cierra el drawer.
 Drawer baseDrawer(BuildContext context) {
   final user = Provider.of<UserProvider>(context, listen: false).currentUser;
 
@@ -62,7 +63,7 @@ Drawer baseDrawer(BuildContext context) {
                 context,
                 icon: Icons.group,
                 title: "Comunidad",
-                route: AppRoutes.profile, // Cambia según tu ruta
+                route: AppRoutes.chat, // Cambia según tu ruta
               ),
               _buildDrawerItem(
                 context,

@@ -118,7 +118,6 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               children: [
                 SizedBox(height: 50.h),
-                Image.asset('assets/logo-fondo-blanco.png', height: 250.h),
                 Text(
                   'Register',
                   style: TextStyle(

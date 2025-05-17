@@ -83,6 +83,9 @@ class _GoalsPageState extends State<GoalsPage> {
                 );
         },
       ),
+
+      //TODO: poner como funciona 
+
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           backgroundColor: const Color(0xFF153866),

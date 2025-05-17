@@ -7,6 +7,7 @@ import 'package:stopnow/ui/goals/goals_page.dart';
 import 'package:stopnow/ui/home/home_page.dart';
 import 'package:stopnow/ui/init/init_page.dart';
 import 'package:stopnow/ui/login/login_page.dart';
+import 'package:stopnow/ui/messages/message_page.dart';
 import 'package:stopnow/ui/profile/profile_page.dart';
 import 'package:stopnow/ui/register/register_page.dart';
 import 'package:stopnow/ui/settings/account/account_page.dart';
@@ -26,6 +27,7 @@ class AppRoutes {
   static const String settingsAcount = '/settings/account';
   static const String init = '/init';
   static const String detailGoal = '/detailGoal';
+  static const String chat = '/chat';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -74,6 +76,12 @@ class AppRoutes {
         final goal = settings.arguments as GoalModel;
         return MaterialPageRoute(
           builder: (_) => DetailGoalsPage(goal: goal),
+        );
+
+      case chat:
+        // Aquí puedes manejar la lógica para la página de chat
+        return MaterialPageRoute(
+          builder: (_) => const ChatPage()
         );
 
       default:

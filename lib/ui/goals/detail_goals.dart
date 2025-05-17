@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 
 class DetailGoalsPage extends StatelessWidget {
@@ -8,6 +10,34 @@ class DetailGoalsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context, listen: false).currentUser;
+
+    final double precioPaquete = user?.precioPaquete ?? 0;
+    final int cigarrosPorPaquete = user?.cigarrosPorPaquete ?? 1;
+    final int cigarrosAlDia = user?.cigarrosAlDia ?? 1;
+    final DateTime fechaDejarFumar = user?.fechaDejarFumar ?? DateTime.now();
+
+    final int diasSinFumar = DateTime.now().difference(fechaDejarFumar).inDays;
+    final int cigarrosEvitados = diasSinFumar * cigarrosAlDia;
+    final double precioPorCigarro =
+        precioPaquete / (cigarrosPorPaquete == 0 ? 1 : cigarrosPorPaquete);
+    final double dineroAhorrado = cigarrosEvitados * precioPorCigarro;
+    final int minutosGanados = cigarrosEvitados * 11;
+    final double horasGanadas = minutosGanados / 60;
+
+    final double dineroFaltante =
+        (goal.precio - dineroAhorrado).clamp(0, goal.precio);
+    final int cigarrosFaltantes =
+        ((goal.precio - dineroAhorrado) / precioPorCigarro)
+            .ceil()
+            .clamp(0, double.infinity)
+            .toInt();
+    final double horasFaltantes =
+        ((goal.precio - dineroAhorrado) / precioPorCigarro * 11 / 60)
+            .clamp(0, double.infinity);
+
+    final double porcentaje = (dineroAhorrado / goal.precio).clamp(0, 1);
+
     return Scaffold(
       appBar: baseAppBar(
         goal.nombre,
@@ -18,16 +48,128 @@ class DetailGoalsPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: SizedBox(
-          width: double.infinity,
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildContainerPrincipal(),
-              _buildContainerSecundario(dinero: true),
-              _buildContainerSecundario(cigarros: true),
-              _buildContainerSecundario(fecha: true),
-              _buildContainerBarra(0.7)
+              // Resumen motivacional
+              Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      "¡Estás ahorrando para:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: Colors.blue[900],
+                      ),
+                    ),
+                    Text(
+                      goal.nombre,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Color(0xFF153866),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Precio objetivo: ${goal.precio.toStringAsFixed(2)} €",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blueGrey[700],
+                      ),
+                    ),
+                    if (goal.usuarioId != null &&
+                        goal.usuarioId!.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          goal.usuarioId!,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.blueGrey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Progreso actual
+              _buildContainerBarra(porcentaje),
+              const SizedBox(height: 16),
+              Text(
+                "¡Has ahorrado ${dineroAhorrado.toStringAsFixed(2)} € evitando fumar ${cigarrosEvitados} cigarros!",
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.green,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              // Detalles de lo que falta
+              _buildContainerSecundario(
+                label: "Dinero que falta",
+                value: "${dineroFaltante.toStringAsFixed(2)} €",
+              ),
+              const SizedBox(height: 10),
+              _buildContainerSecundario(
+                label: "Cigarros que faltan",
+                value: "$cigarrosFaltantes",
+              ),
+              const SizedBox(height: 10),
+              _buildContainerSecundario(
+                label: "Horas que faltan",
+                value: "${horasFaltantes.toStringAsFixed(1)} h",
+              ),
+              const SizedBox(height: 24),
+              // Info extra
+              Card(
+                color: Colors.yellow[50],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "¿Cómo se calcula?",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange[900],
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        "Cada cigarro que no fumas te ahorra dinero y tiempo de vida. "
+                        "El cálculo se basa en el precio de tu paquete, los cigarros que fumabas al día y el tiempo desde que dejaste de fumar.",
+                        style: TextStyle(
+                          color: Colors.orange[800],
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "¡Sigue así! Estás cada vez más cerca de tu objetivo 🚀",
+                        style: TextStyle(
+                          color: Colors.green[800],
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -35,46 +177,8 @@ class DetailGoalsPage extends StatelessWidget {
     );
   }
 
-  _buildContainerPrincipal() {
-    return Container(
-      height: 250,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            goal.usuarioId,
-            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            goal.nombre,
-            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            "${goal.precio.toStringAsFixed(2)} €",
-            style: const TextStyle(
-                fontSize: 18, color: Color.fromARGB(255, 0, 0, 0)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  _buildContainerSecundario(
-      {bool dinero = false, bool cigarros = false, bool fecha = false}) {
+  Widget _buildContainerSecundario(
+      {required String label, required String value}) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -93,9 +197,8 @@ class DetailGoalsPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          if (dinero) const Text("Dinero"),
-          if (cigarros) const Text("Cigarros"),
-          if (fecha) const Text("Fecha"),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );

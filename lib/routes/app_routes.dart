@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/models/goal_model.dart';
+import 'package:stopnow/ui/achievement/achievement_page.dart';
 import 'package:stopnow/ui/calm/calm_page.dart';
 import 'package:stopnow/ui/goals/add_goals.dart';
 import 'package:stopnow/ui/goals/detail_goals.dart';
@@ -28,6 +29,7 @@ class AppRoutes {
   static const String init = '/init';
   static const String detailGoal = '/detailGoal';
   static const String chat = '/chat';
+  static const String achievement = '/achievement';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -79,9 +81,11 @@ class AppRoutes {
         );
 
       case chat:
-        // Aquí puedes manejar la lógica para la página de chat
+        return MaterialPageRoute(builder: (_) => const ChatPage());
+
+      case achievement:
         return MaterialPageRoute(
-          builder: (_) => const ChatPage()
+          builder: (_) => const AchievementsPage(),
         );
 
       default:

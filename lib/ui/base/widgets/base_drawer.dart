@@ -75,7 +75,7 @@ Drawer baseDrawer(BuildContext context) {
                 context,
                 icon: Icons.local_attraction_sharp,
                 title: "Logros",
-                route: AppRoutes.profile, // Cambia según tu ruta
+                route: AppRoutes.achievement, // Cambia según tu ruta
               ),
             ],
           ),

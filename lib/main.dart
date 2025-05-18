@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
+import 'package:stopnow/ui/achievement/achievement_page.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: AppRoutes.generateRoute,
         debugShowCheckedModeBanner: false,
         title: 'StopNow',
-        //home: AccountPage(),
+        //home: AchievementsPage(),
       ),
     );
   }

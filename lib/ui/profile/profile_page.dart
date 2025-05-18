@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/models/achievement_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -15,13 +16,20 @@ class ProfilePage extends StatelessWidget {
     final user = Provider.of<UserProvider>(context).currentUser;
     final homeProvider = HomeProvider(user);
 
+    // Cálculo de logros desbloqueados
+    final now = DateTime.now();
+    final fechaDejarFumar = user?.fechaDejarFumar ?? now;
+    final tiempoSinFumar = now.difference(fechaDejarFumar);
+    final unlockedAchievements =
+        achievements.where((a) => tiempoSinFumar >= a.duration).toList();
+
     return Scaffold(
       appBar: baseAppBar("Perfil"),
       drawer: baseDrawer(context),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Sección de información del usuario
+            // ... Sección de información y estadísticas igual ...
             Container(
               padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
               child: Row(
@@ -82,8 +90,8 @@ class ProfilePage extends StatelessWidget {
                       ),
                       SizedBox(height: 10.h),
                       _buildStatisticRow(
-                        "Tiempo sin fumar:",
-                        "${homeProvider.getAnios()} años, ${homeProvider.getMeses()} meses, ${homeProvider.getDias()} días",
+                        "Días sin fumar:",
+                        "${homeProvider.getDiasSinFumar()} días",
                       ),
                       _buildStatisticRow(
                         "Cigarros evitados:",
@@ -95,7 +103,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       _buildStatisticRow(
                         "Tiempo de vida ganado:",
-                        "${homeProvider.getTiempoDeVidaGanado()} m",
+                        "${(homeProvider.getTiempoDeVidaGanado() / 60).floor()} horas",
                       ),
                     ],
                   ),
@@ -104,7 +112,7 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
 
-            // Sección de logros
+            // Carrusel de logros conseguidos
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Card(
@@ -118,31 +126,93 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Logros",
+                        "Logros conseguidos",
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFF153866),
                         ),
                       ),
-                      SizedBox(height: 10.h),
-                      Text(
-                        "0/12",
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF608AAE),
-                        ),
-                      ),
-                      SizedBox(height: 10.h),
-                      Text(
-                        "¡Sigue avanzando para desbloquear más logros!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      SizedBox(height: 16.h),
+                      unlockedAchievements.isEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              child: Text(
+                                "¡Aún no has conseguido logros!\nSigue adelante, cada día cuenta",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 180.h,
+                              child: PageView.builder(
+                                itemCount: unlockedAchievements.length,
+                                controller:
+                                    PageController(viewportFraction: 0.85),
+                                itemBuilder: (context, index) {
+                                  final achievement =
+                                      unlockedAchievements[index];
+                                  return AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.w, vertical: 8.h),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green[50],
+                                      borderRadius: BorderRadius.circular(18.r),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.07),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(18.w),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          const CircleAvatar(
+                                            backgroundColor: Colors.green,
+                                            radius: 28,
+                                            child: Icon(
+                                                Icons.emoji_events,
+                                                color: Colors.white,
+                                                size: 32),
+                                          ),
+                                          SizedBox(height: 12.h),
+                                          Text(
+                                            achievement.title,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.sp,
+                                              color: Colors.green[900],
+                                            ),
+                                          ),
+                                          SizedBox(height: 8.h),
+                                          /*
+                                          Text(
+                                            achievement.description,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.green[800],
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                          */
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                     ],
                   ),
                 ),

@@ -162,6 +162,13 @@ class HomeProvider with ChangeNotifier {
     return getCigarrosEvitados() * 11;
   }
 
+  int getDiasSinFumar() {
+    if (user == null) return 0;
+    DateTime start = user!.fechaDejarFumar;
+    DateTime now = DateTime.now();
+    return now.difference(start).inDays;
+  }
+
   @override
   void dispose() {
     _timer?.cancel();

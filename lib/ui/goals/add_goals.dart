@@ -63,7 +63,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       appBar: baseAppBar("Añadir objetivo", volver: true, onTap: () {
         Navigator.pop(context);
       }),
-      drawer: baseDrawer(context),
+      drawer: baseDrawer(context,),
       backgroundColor: Colors.white,
       body: Form(
         key: _formKey,

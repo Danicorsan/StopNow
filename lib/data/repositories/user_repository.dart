@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
+import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
@@ -28,7 +29,7 @@ class UserRepository {
     return BaseResultSuccess(true);
   }
 
-  static String getId(){
+  static String getId() {
     final userId = supabase.auth.currentUser?.id;
     if (userId == null) {
       throw Exception('Usuario no autenticado');
@@ -99,6 +100,49 @@ class UserRepository {
     } catch (e) {
       print('Error al subir imagen: $e');
       throw Exception('Error al subir la imagen de perfil');
+    }
+  }
+
+  static Future<bool> subirObjetivo(GoalModel goal) async {
+    try {
+      await UserDao.insertarObjetivo(
+        idUsuario: goal.usuarioId,
+        nombreObjetivo: goal.nombre,
+        descripcion: goal.descripcion,
+        precio: goal.precio,
+      );
+      return true;
+    } catch (e) {
+      print('Error al subir objetivo: $e');
+      return false;
+    }
+  }
+
+  static Future<BaseResult> obtenerObjetivos() async {
+    try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) {
+        return BaseResultError('Usuario no autenticado');
+      }
+
+      final response = await UserDao.obtenerObjetivos(userId);
+      if (response.isEmpty) {
+        return BaseResultSuccess([]);
+      }
+
+      return BaseResultSuccess(response);
+    } catch (e) {
+      return BaseResultError(e.toString());
+    }
+  }
+
+  static Future<void> borrarObjetivo(GoalModel goal) async {
+    try {
+      await UserDao.borrarObjetivo(
+        goal: goal,
+      );
+    } catch (e) {
+      print('Error al borrar objetivo: $e');
     }
   }
 }

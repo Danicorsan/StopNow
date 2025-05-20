@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -27,6 +28,34 @@ class UserDao {
       'cigarros_por_paquete': cigarrosPorPaquete,
       'precio_paquete': precioPaquete,
     });
+  }
+
+  // Método para insertar un nuevo objetivo en la base de datos cuando se registra
+  static Future<void> insertarObjetivo({
+    required String idUsuario,
+    required String nombreObjetivo,
+    required String descripcion,
+    required double precio,
+  }) async {
+    await supabase.from('public.objetivos').insert({
+      'usuario_id': idUsuario,
+      'nombre': nombreObjetivo,
+      'precio': precio,
+      'descripcion': descripcion,
+    });
+  }
+
+  // Método para insertar un nuevo objetivo en la base de datos cuando se registra
+  static Future<void> borrarObjetivo({
+    required GoalModel goal,
+  }) async {
+    await supabase
+        .from('public.objetivos')
+        .delete()
+        .eq('usuario_id', goal.usuarioId)
+        .eq('nombre', goal.nombre)
+        .eq('precio', goal.precio)
+        .single();
   }
 
   // Método para actualizar un usuario existente en la base de datos
@@ -57,7 +86,7 @@ class UserDao {
 
     final storageResponse = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, fileOptions: FileOptions(upsert: true));
+        .upload(filePath, file, fileOptions: const FileOptions(upsert: true));
 
     if (storageResponse != null) {
       print('Error al subir imagen: ${storageResponse}');
@@ -77,5 +106,22 @@ class UserDao {
     } else {
       print('Avatar actualizado correctamente.');
     }
+  }
+
+  static Future<List<Map<String, dynamic>>> obtenerObjetivos(
+      String userId) async {
+    final response = await supabase
+        .from('public.objetivos')
+        .select('*')
+        .eq('usuario_id', userId)
+        .order('fecha_creado', ascending: false);
+
+    if (response.isEmpty) {
+      throw Exception('Error al obtener objetivos: ${response}');
+    }
+
+    print('Objetivos obtenidos: ${response}');
+
+    return List<Map<String, dynamic>>.from(response);
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
-import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
@@ -63,7 +62,9 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       appBar: baseAppBar("Añadir objetivo", volver: true, onTap: () {
         Navigator.pop(context);
       }),
-      drawer: baseDrawer(context,),
+      drawer: baseDrawer(
+        context,
+      ),
       backgroundColor: Colors.white,
       body: Form(
         key: _formKey,
@@ -112,9 +113,8 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.check),
         backgroundColor: const Color(0xFF153866),
-        onPressed: () {
+        onPressed: () async {
           if (!_formKey.currentState!.validate()) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -126,18 +126,20 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             return;
           }
 
-          Provider.of<GoalsProvider>(context, listen: false).addGoal(
-            GoalModel(
-              usuarioId: UserRepository.getId(),
-              nombre: _nombreController.text.trim(),
-              precio: _precioController.text.trim().isEmpty
-                  ? 0.0
-                  : double.tryParse(_precioController.text.trim())!,
-            ),
-          );
-
-          Navigator.pop(context);
+          bool exito =
+              await Provider.of<GoalsProvider>(context, listen: false).addGoal(
+                  GoalModel(
+                    usuarioId: UserRepository.getId(),
+                    nombre: _nombreController.text.trim(),
+                    descripcion: _descripcionController.text.trim(),
+                    precio: _precioController.text.trim().isEmpty
+                        ? 0.0
+                        : double.tryParse(_precioController.text.trim())!,
+                  ),
+                  context);
+          Navigator.pop(context, exito);
         },
+        child: const Icon(Icons.check),
       ),
     );
   }

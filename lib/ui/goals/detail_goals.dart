@@ -84,8 +84,7 @@ class DetailGoalsPage extends StatelessWidget {
                         color: Colors.blueGrey[700],
                       ),
                     ),
-                    if (goal.usuarioId != null &&
-                        goal.usuarioId!.isNotEmpty)
+                    if (goal.usuarioId != null && goal.usuarioId!.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(

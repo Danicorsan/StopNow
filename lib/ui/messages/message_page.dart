@@ -17,6 +17,8 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
 
+
+  //TODO HACER LO MISMO QUE EL GOALS_PAGE PARA QUE CADA VEZ QUE SE ENTRA SE CARGUEN LOS MENSAJES
   @override
   Widget build(BuildContext context) {
     final chatProvider = context.watch<ChatProvider>();

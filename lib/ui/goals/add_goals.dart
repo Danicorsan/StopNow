@@ -7,6 +7,7 @@ import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddGoalsPage extends StatefulWidget {
   const AddGoalsPage({super.key});
@@ -58,8 +59,9 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: baseAppBar("Añadir objetivo", volver: true, onTap: () {
+      appBar: baseAppBar(localizations.anadirObjetivo, volver: true, onTap: () {
         Navigator.pop(context);
       }),
       drawer: baseDrawer(
@@ -72,34 +74,34 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
           children: [
             _buildTextField(
               controller: _nombreController,
-              label: 'Nombre',
+              label: localizations.nombre,
               icon: Icons.workspaces_outlined,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Introduce el nombre del objetivo';
+                  return localizations.introduceNombreObjetivo;
                 }
                 if (value.length < 3) {
-                  return 'El nombre debe tener al menos 3 caracteres';
+                  return localizations.nombreMinimoCaracteres;
                 }
                 return null;
               },
             ),
             _buildTextField(
               controller: _descripcionController,
-              label: 'Descripción',
+              label: localizations.descripcion,
               icon: Icons.description,
               validator: (value) => null,
             ),
             _buildTextField(
               controller: _precioController,
-              label: '¿Cuánto cuesta?',
+              label: localizations.cuantoCuesta,
               icon: Icons.attach_money,
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value != null &&
                     value.isNotEmpty &&
                     double.tryParse(value) == null) {
-                  return 'Introduce un número válido';
+                  return localizations.introduceNumeroValido;
                 }
                 return null;
               },
@@ -117,8 +119,8 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         onPressed: () async {
           if (!_formKey.currentState!.validate()) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Por favor, revisa todos los campos'),
+              SnackBar(
+                content: Text(localizations.revisaCampos),
                 backgroundColor: Color(0xFF8A0000),
                 duration: Duration(seconds: 2),
               ),

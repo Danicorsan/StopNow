@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,7 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalsPage extends StatefulWidget {
   const GoalsPage({super.key});
@@ -13,6 +16,7 @@ class GoalsPage extends StatefulWidget {
   @override
   State<GoalsPage> createState() => _GoalsPageState();
 }
+
 //TODO verificar campos, nombre repetido, precio negativo, descripcion vacia, y poder editar el objetivo
 class _GoalsPageState extends State<GoalsPage> {
   var isLoading = false;
@@ -28,8 +32,9 @@ class _GoalsPageState extends State<GoalsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: baseAppBar("Objetivos"),
+      appBar: baseAppBar(localizations.objetivos),
       drawer: baseDrawer(context),
       body: Consumer<GoalsProvider>(
         builder: (context, provider, _) {
@@ -40,7 +45,7 @@ class _GoalsPageState extends State<GoalsPage> {
               : provider.goals.isEmpty
                   ? Center(
                       child: Text(
-                        "No tienes objetivos aún",
+                        localizations.noTienesObjetivos,
                         style: TextStyle(
                             color: const Color.fromARGB(255, 0, 0, 0),
                             fontSize: 18.sp),
@@ -107,31 +112,33 @@ class _GoalsPageState extends State<GoalsPage> {
         builder: (context) => FloatingActionButton(
           backgroundColor: const Color(0xFF153866),
           onPressed: () async {
-            bool exito = await Navigator.pushNamed(context, AppRoutes.addGoal) as bool;
-            if(exito){
+            bool exito =
+                await Navigator.pushNamed(context, AppRoutes.addGoal) as bool;
+            if (exito) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Objetivo añadido con éxito"),
-                  duration: Duration(seconds: 2),
-                  backgroundColor: Color(0xFF608AAE),
+                SnackBar(
+                  content: Text(localizations.objetivoExito),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: const Color(0xFF608AAE),
                 ),
               );
-              Provider.of<GoalsProvider>(context, listen: false).traerObjetivos();
-            }else{
+              Provider.of<GoalsProvider>(context, listen: false)
+                  .traerObjetivos();
+            } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Error al añadir el objetivo"),
-                  duration: Duration(seconds: 2),
-                  backgroundColor: Color(0xFF8A0000),
+                SnackBar(
+                  content: Text(localizations.errorObjetivo),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: const Color(0xFF8A0000),
                 ),
               );
             }
           },
-          child: const Icon(Icons.add, color: Colors.white),
           elevation: 6,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

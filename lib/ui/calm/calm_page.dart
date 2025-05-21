@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CalmPage extends StatelessWidget {
   const CalmPage({super.key});
@@ -10,10 +11,11 @@ class CalmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calmProvider = Provider.of<CalmProvider>(context);
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: baseAppBar(
-        "Calma",
+        localizations.calma,
         volver: true,
         context: context,
         onTap: () => {
@@ -34,7 +36,7 @@ class CalmPage extends StatelessWidget {
                 Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-                  child: Text("Técnica 4-7-8",
+                  child: Text(localizations.tecnica478,
                       style: TextStyle(
                           fontSize: 30.sp, fontWeight: FontWeight.bold)),
                 ),
@@ -43,8 +45,8 @@ class CalmPage extends StatelessWidget {
                       horizontal: 15.w,
                     ),
                     child: Text(
+                      localizations.descripcionTecnica478,
                       textAlign: TextAlign.justify,
-                      "Esta respiración ayuda a prevenir la hiperventilación y se utiliza como técnica de distracción durante momentos de ansiedad o estrés.\n\nInhalar durante 4 segundos, retener la respiración por 7 segundos y exhalar durante 8 segundo ayuda a calmar el sistema nervioso y a reducir la ansiedad.",
                       style: TextStyle(fontSize: 16.sp),
                     )),
                 SizedBox(
@@ -62,7 +64,7 @@ class CalmPage extends StatelessWidget {
                         textStyle: TextStyle(fontSize: 20.sp),
                       ),
                       onPressed: calmProvider.iniciar,
-                      child: const Text("Iniciar")),
+                      child: Text(localizations.iniciar)),
                 )
               ],
             )

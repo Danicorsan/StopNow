@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -6,6 +7,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -44,7 +46,7 @@ class WelcomePage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "¡Bienvenido a StopNow!",
+                            localizations.bienvenidoStopNow,
                             style: TextStyle(
                               fontSize: 27.sp,
                               fontWeight: FontWeight.w400,
@@ -86,7 +88,7 @@ class WelcomePage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
-                        child: const Text('Iniciar sesión'),
+                        child: Text(localizations.iniciarSesion),
                       ),
                     ),
                     SizedBox(height: 15.h),
@@ -107,7 +109,7 @@ class WelcomePage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
-                        child: const Text('Crear cuenta'),
+                        child: Text(localizations.crearCuenta),
                       ),
                     ),
                   ],

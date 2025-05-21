@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 //TODO: Si esta en la pantalla que pulsa el icono de la barra de navegacion, no se cierra el drawer.
 Drawer baseDrawer(BuildContext context) {
   final user = Provider.of<UserProvider>(context, listen: false).currentUser;
+  final localizations = AppLocalizations.of(context)!;
 
   return Drawer(
     child: Column(
@@ -32,7 +34,7 @@ Drawer baseDrawer(BuildContext context) {
                   child: UserAvatar(),
                 ),
                 Text(
-                  user?.nombreUsuario ?? "Usuario",
+                  user?.nombreUsuario ?? localizations.usuario,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.sp,
@@ -50,31 +52,31 @@ Drawer baseDrawer(BuildContext context) {
               _buildDrawerItem(
                 context,
                 icon: Icons.home,
-                title: "Inicio",
+                title: localizations.inicio,
                 route: AppRoutes.home,
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.person,
-                title: "Perfil",
+                title: localizations.perfil,
                 route: AppRoutes.profile,
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.group,
-                title: "Comunidad",
+                title: localizations.comunidad,
                 route: AppRoutes.chat, // Cambia según tu ruta
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.interests,
-                title: "Objetivos",
+                title: localizations.objetivos,
                 route: AppRoutes.goals,
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.local_attraction_sharp,
-                title: "Logros",
+                title: localizations.logros,
                 route: AppRoutes.achievement, // Cambia según tu ruta
               ),
             ],
@@ -87,7 +89,7 @@ Drawer baseDrawer(BuildContext context) {
         _buildDrawerItem(
           context,
           icon: Icons.settings,
-          title: "Ajustes",
+          title: localizations.ajustes,
           route: AppRoutes.settingsPage,
         ),
       ],

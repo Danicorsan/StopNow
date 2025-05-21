@@ -11,6 +11,7 @@ import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/ui/register/register_state.dart';
 import 'package:stopnow/utils/validators/validator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -108,6 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final registerProvider = Provider.of<RegisterProvider>(context);
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -119,7 +121,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 SizedBox(height: 50.h),
                 Text(
-                  'Register',
+                  localizations.crearCuenta,
                   style: TextStyle(
                     fontSize: 35.sp,
                     fontWeight: FontWeight.w100,
@@ -139,7 +141,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Foto de perfil', style: TextStyle(fontSize: 16.sp)),
+                      Text(localizations.fotoDePerfil,
+                          style: TextStyle(fontSize: 16.sp)),
                       SizedBox(height: 10.h),
                       GestureDetector(
                         onTap: () {
@@ -161,35 +164,35 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(height: 25.h),
                 _buildTextField(
                   controller: _userNameController,
-                  label: 'Nombre de usuario',
+                  label: localizations.nombreUsuario,
                   icon: Icons.person,
                   onChanged: registerProvider.setNombreUsuario,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Introduce un nombre de usuario';
+                      return localizations.introduceNombreUsuario;
                     }
                     if (value.length < 3) {
-                      return 'El nombre de usuario debe tener al menos 3 caracteres';
+                      return localizations.nombreMinimoCaracteres;
                     }
                     return null;
                   },
                 ),
                 _buildTextField(
                   controller: _emailController,
-                  label: 'Correo',
+                  label: localizations.correo,
                   icon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                   onChanged: registerProvider.setCorreo,
                   validator: (value) {
                     if (!Validator.isValidEmail(value ?? '')) {
-                      return 'Introduce un correo válido';
+                      return localizations.correoInvalido;
                     }
                     return null;
                   },
                 ),
                 _buildTextField(
                   controller: _passwordController,
-                  label: 'Contraseña',
+                  label: localizations.contrasenia,
                   icon: Icons.lock,
                   obscureText: isPasswordVisible,
                   suffixIcon: IconButton(
@@ -205,17 +208,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: registerProvider.setPassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Introduce una contraseña';
+                      return localizations.introduceContrasenia;
                     }
                     if (!Validator.isValidPassword(value)) {
-                      return 'Debe tener 8 caracteres, mayúscula, minúscula y número';
+                      return localizations.requisitosContrasenia;
                     }
                     return null;
                   },
                 ),
                 _buildTextField(
                   controller: _confirmPasswordController,
-                  label: 'Confirmar contraseña',
+                  label: localizations.confirmarContrasenia,
                   icon: Icons.lock,
                   obscureText: isConfirmPasswordVisible,
                   suffixIcon: IconButton(
@@ -231,21 +234,21 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: registerProvider.setConfirmPassword,
                   validator: (value) => value == _passwordController.text
                       ? null
-                      : 'Las contraseñas no coinciden',
+                      : localizations.contraseniasNoCoinciden,
                 ),
                 _buildTextField(
                   controller: _cigarrosAlDiaController,
-                  label: 'Cigarros al día',
+                  label: localizations.cigarrosPorDia,
                   icon: Icons.smoking_rooms,
                   keyboardType: TextInputType.number,
                   onChanged: (value) => registerProvider
                       .setCigarrosAlDia(int.tryParse(value) ?? 0),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Introduce la cantidad';
+                      return localizations.introduceCantidad;
                     }
                     if (int.tryParse(value) == null) {
-                      return 'Introduce un número válido';
+                      return localizations.introduceNumeroValido;
                     }
                     return null;
                   },
@@ -256,7 +259,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 _buildTextField(
                   controller: _fechaDejarDeFumarController,
-                  label: 'Fecha dejar de fumar',
+                  label: localizations.fechaDejarFumar,
                   icon: Icons.calendar_today,
                   readOnly: true,
                   onTap: () async {
@@ -274,19 +277,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                   },
                   validator: (value) => (value == null || value.isEmpty)
-                      ? 'Introduce una fecha'
+                      ? localizations.introduceFecha
                       : null,
                 ),
                 _buildTextField(
                   controller: _cigarrosPaqueteController,
-                  label: 'Cigarros por paquete',
+                  label: localizations.cigarrosPorPaquete,
                   icon: Icons.local_fire_department,
                   keyboardType: TextInputType.number,
                   onChanged: (value) => registerProvider
                       .setCigarrosPorPaquete(int.tryParse(value) ?? 0),
                   validator: (value) =>
                       (value == null || int.tryParse(value) == null)
-                          ? 'Introduce un número válido'
+                          ? localizations.introduceNumeroValido
                           : null,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(3),
@@ -295,14 +298,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 _buildTextField(
                   controller: _precioPaqueteController,
-                  label: 'Precio por paquete',
+                  label: localizations.precioPorPaquete,
                   icon: Icons.euro,
                   keyboardType: TextInputType.number,
                   onChanged: (value) => registerProvider
                       .setPrecioPaquete(double.tryParse(value) ?? 0),
                   validator: (value) =>
                       (value == null || double.tryParse(value) == null)
-                          ? 'Introduce un número válido'
+                          ? localizations.introduceNumeroValido
                           : null,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(6),
@@ -320,8 +323,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: () async {
                     if (!_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Por favor, revisa todos los campos'),
+                        SnackBar(
+                          content: Text(localizations.revisaCampos),
                           backgroundColor: Color(0xFF8A0000),
                           duration: Duration(seconds: 2),
                         ),
@@ -342,7 +345,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(registerProvider.errorMessage.isEmpty
-                              ? 'Error desconocido'
+                              ? localizations.errorDesconocido
                               : registerProvider.errorMessage),
                           backgroundColor: const Color(0xFF8A0000),
                           duration: const Duration(seconds: 2),
@@ -360,7 +363,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         )
                       : Text(
-                          'Register',
+                          localizations.crearCuenta,
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w300,
@@ -372,13 +375,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('¿Ya tienes cuenta?',
+                    Text(localizations.yaTienesCuenta,
                         style: TextStyle(fontSize: 15.sp)),
                     SizedBox(width: 10.w),
                     TextButton(
                       onPressed: () =>
                           Navigator.pushReplacementNamed(context, '/login'),
-                      child: Text('Pincha aquí',
+                      child: Text(localizations.pinchaAqui,
                           style: TextStyle(fontSize: 15.sp)),
                     ),
                   ],

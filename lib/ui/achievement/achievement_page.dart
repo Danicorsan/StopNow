@@ -4,6 +4,7 @@ import 'package:stopnow/data/models/achievement_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AchievementsPage extends StatelessWidget {
   const AchievementsPage({super.key});
@@ -14,13 +15,16 @@ class AchievementsPage extends StatelessWidget {
     final now = DateTime.now();
     final fechaDejarFumar = user?.fechaDejarFumar ?? now;
     final tiempoSinFumar = now.difference(fechaDejarFumar);
+    final localizations = AppLocalizations.of(context)!;
+    
+    //TODO: CAMBIAR LA LISTA DE LOGROS PARA CUANDO ESTA EN INGLES O EN ESPAÑOL
 
     int unlocked =
-        achievements.where((a) => tiempoSinFumar >= a.duration).length;
+        achievementsES.where((a) => tiempoSinFumar >= a.duration).length;
 
     return Scaffold(
       drawer: baseDrawer(context),
-      appBar: baseAppBar("Logros"),
+      appBar: baseAppBar(localizations.logros),
       body: Column(
         children: [
           Padding(
@@ -28,7 +32,8 @@ class AchievementsPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "¡Has desbloqueado $unlocked de ${achievements.length} logros!",
+                  localizations.hasDesbloqueadoLogros(
+                      unlocked, achievementsES.length),
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -37,7 +42,7 @@ class AchievementsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
-                  value: unlocked / achievements.length,
+                  value: unlocked / achievementsES.length,
                   minHeight: 10,
                   backgroundColor: Colors.grey[300],
                   color: const Color(0xFF608AAE),
@@ -49,10 +54,10 @@ class AchievementsPage extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: achievements.length,
+              itemCount: achievementsES.length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
-                final achievement = achievements[index];
+                final achievement = achievementsES[index];
                 final unlocked = tiempoSinFumar >= achievement.duration;
                 return Card(
                   elevation: unlocked ? 6 : 2,

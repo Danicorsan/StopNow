@@ -6,6 +6,7 @@ import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/messages/message_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -17,17 +18,17 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
 
-
   //TODO HACER LO MISMO QUE EL GOALS_PAGE PARA QUE CADA VEZ QUE SE ENTRA SE CARGUEN LOS MENSAJES
   @override
   Widget build(BuildContext context) {
     final chatProvider = context.watch<ChatProvider>();
     final mensajes = chatProvider.mensajes;
     final myUserId = Supabase.instance.client.auth.currentUser?.id;
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: baseAppBar(
-        'Chat',
+        localizations.chat,
       ),
       drawer: baseDrawer(context),
       body: chatProvider.isLoading
@@ -38,9 +39,9 @@ class _ChatPageState extends State<ChatPage> {
               children: [
                 Expanded(
                   child: mensajes.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
-                            "No hay mensajes aún. ¡Sé el primero en escribir!",
+                            localizations.noHayMensajes,
                             style: TextStyle(color: Colors.grey),
                           ),
                         )
@@ -146,7 +147,7 @@ class _ChatPageState extends State<ChatPage> {
                         child: TextField(
                           controller: _controller,
                           decoration: InputDecoration(
-                            hintText: 'Escribe un mensaje',
+                            hintText: localizations.escribeUnMensaje,
                             filled: true,
                             fillColor: Colors.grey[100],
                             contentPadding: const EdgeInsets.symmetric(

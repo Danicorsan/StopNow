@@ -7,6 +7,7 @@ import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -15,6 +16,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).currentUser;
     final homeProvider = HomeProvider(user);
+    final localizations = AppLocalizations.of(context)!;
 
     // Cálculo de logros desbloqueados
     final now = DateTime.now();
@@ -24,7 +26,7 @@ class ProfilePage extends StatelessWidget {
         achievements.where((a) => tiempoSinFumar >= a.duration).toList();
 
     return Scaffold(
-      appBar: baseAppBar("Perfil"),
+      appBar: baseAppBar(localizations.perfil),
       drawer: baseDrawer(context),
       body: SingleChildScrollView(
         child: Column(
@@ -39,7 +41,7 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user?.nombreUsuario ?? "Usuario",
+                        user?.nombreUsuario ?? localizations.usuario,
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.bold,
@@ -48,7 +50,8 @@ class ProfilePage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.h),
                       Text(
-                        "Miembro desde: ${user?.fechaRegistro.year ?? ""}",
+                        localizations
+                            .miembroDesde(user?.fechaRegistro.year ?? ""),
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.black.withOpacity(0.8),
@@ -79,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Estadísticas",
+                        localizations.estadisticas,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18.sp,
@@ -89,20 +92,20 @@ class ProfilePage extends StatelessWidget {
                       ),
                       SizedBox(height: 10.h),
                       _buildStatisticRow(
-                        "Días sin fumar:",
-                        "${homeProvider.getDiasSinFumar()} días",
+                        localizations.diasSinFumar,
+                        "${homeProvider.getDiasSinFumar()} ${localizations.dias}",
                       ),
                       _buildStatisticRow(
-                        "Cigarros evitados:",
+                        localizations.cigarrosEvitadosEstadistica,
                         "${homeProvider.getCigarrosEvitados()}",
                       ),
                       _buildStatisticRow(
-                        "Dinero ahorrado:",
+                        localizations.dineroAhorradoEstadistica,
                         "${homeProvider.getDineroAhorrado()} €",
                       ),
                       _buildStatisticRow(
-                        "Tiempo de vida ganado:",
-                        "${(homeProvider.getTiempoDeVidaGanado() / 60).floor()} horas",
+                        localizations.tiempoVidaGanadoEstadistica,
+                        "${(homeProvider.getTiempoDeVidaGanado() / 60).floor()} ${localizations.horas}",
                       ),
                     ],
                   ),
@@ -125,7 +128,7 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Logros conseguidos",
+                        localizations.logrosConseguidos,
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
@@ -137,7 +140,7 @@ class ProfilePage extends StatelessWidget {
                           ? Padding(
                               padding: const EdgeInsets.symmetric(vertical: 24),
                               child: Text(
-                                "¡Aún no has conseguido logros!\nSigue adelante, cada día cuenta",
+                                localizations.sinLogros,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16.sp,
@@ -180,10 +183,8 @@ class ProfilePage extends StatelessWidget {
                                           const CircleAvatar(
                                             backgroundColor: Colors.green,
                                             radius: 28,
-                                            child: Icon(
-                                                Icons.emoji_events,
-                                                color: Colors.white,
-                                                size: 32),
+                                            child: Icon(Icons.emoji_events,
+                                                color: Colors.white, size: 32),
                                           ),
                                           SizedBox(height: 12.h),
                                           Text(

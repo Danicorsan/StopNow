@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/login/login_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   String? email = '';
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -51,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 250.h,
               ),
               Text(
-                'Bienvenido',
+                localizations.bienvenido,
                 style: TextStyle(
                   fontSize: 35.sp,
                   fontWeight: FontWeight.w100,
@@ -70,12 +72,12 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(horizontal: 40.w),
                 child: TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.person,
                       color: Color.fromARGB(255, 21, 56, 102),
                     ),
-                    labelText: 'Correo',
+                    labelText: localizations.correo,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
@@ -101,11 +103,11 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                     ),
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.lock,
                       color: Color.fromARGB(255, 21, 56, 102),
                     ),
-                    labelText: 'Contraseña',
+                    labelText: localizations.contrasenia,
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
@@ -134,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                       SnackBar(
                         content: Text(
                           loginProvider.errorMessage == ""
-                              ? 'Error desconocido'
+                              ? localizations.errorDesconocido
                               : loginProvider.errorMessage,
                         ),
                         duration: const Duration(seconds: 2),
@@ -157,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       )
                     : Text(
-                        'Iniciar Sesión',
+                        localizations.iniciarSesion,
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w300,
@@ -201,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '¿No tienes cuenta?',
+                    localizations.noTienesCuenta,
                     style: TextStyle(
                       fontSize: 15.sp,
                     ),
@@ -212,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushReplacementNamed(context, '/register'),
                     },
                     child: Text(
-                      'Pincha aquí',
+                      localizations.pinchaAqui,
                       style: TextStyle(
                         fontSize: 15.sp,
                       ),

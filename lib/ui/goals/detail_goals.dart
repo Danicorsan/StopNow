@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailGoalsPage extends StatelessWidget {
   const DetailGoalsPage({super.key, required this.goal});
@@ -11,6 +12,7 @@ class DetailGoalsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false).currentUser;
+    final localizations = AppLocalizations.of(context)!;
 
     final double precioPaquete = user?.precioPaquete ?? 0;
     final int cigarrosPorPaquete = user?.cigarrosPorPaquete ?? 1;
@@ -61,7 +63,7 @@ class DetailGoalsPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "¡Estás ahorrando para:",
+                      localizations.estasAhorrandoPara,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -78,7 +80,8 @@ class DetailGoalsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "Precio objetivo: ${goal.precio.toStringAsFixed(2)} €",
+                      localizations
+                          .precioObjetivo(goal.precio.toStringAsFixed(2)),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.blueGrey[700],
@@ -104,7 +107,8 @@ class DetailGoalsPage extends StatelessWidget {
               _buildContainerBarra(porcentaje),
               const SizedBox(height: 16),
               Text(
-                "¡Has ahorrado ${dineroAhorrado.toStringAsFixed(2)} € evitando fumar ${cigarrosEvitados} cigarros!",
+                localizations.ahorroCigarros(
+                    cigarrosEvitados, dineroAhorrado.toStringAsFixed(2)),
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.green,
@@ -115,17 +119,17 @@ class DetailGoalsPage extends StatelessWidget {
               const SizedBox(height: 24),
               // Detalles de lo que falta
               _buildContainerSecundario(
-                label: "Dinero que falta",
+                label: localizations.dineroFaltante,
                 value: "${dineroFaltante.toStringAsFixed(2)} €",
               ),
               const SizedBox(height: 10),
               _buildContainerSecundario(
-                label: "Cigarros que faltan",
+                label: localizations.cigarrosFaltantes,
                 value: "$cigarrosFaltantes",
               ),
               const SizedBox(height: 10),
               _buildContainerSecundario(
-                label: "Horas que faltan",
+                label: localizations.horasFaltantes,
                 value: "${horasFaltantes.toStringAsFixed(1)} h",
               ),
               const SizedBox(height: 24),
@@ -140,7 +144,7 @@ class DetailGoalsPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "¿Cómo se calcula?",
+                        localizations.comoSeCalcula,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.orange[900],
@@ -148,8 +152,7 @@ class DetailGoalsPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        "Cada cigarro que no fumas te ahorra dinero y tiempo de vida. "
-                        "El cálculo se basa en el precio de tu paquete, los cigarros que fumabas al día y el tiempo desde que dejaste de fumar.",
+                        "${localizations.explicacionCalculo1}\n${localizations.explicacionCalculo2}",
                         style: TextStyle(
                           color: Colors.orange[800],
                           fontSize: 14,
@@ -158,7 +161,7 @@ class DetailGoalsPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "¡Sigue así! Estás cada vez más cerca de tu objetivo 🚀",
+                        localizations.sigueAsi,
                         style: TextStyle(
                           color: Colors.green[800],
                           fontWeight: FontWeight.w600,

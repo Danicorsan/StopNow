@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsAccountPage extends StatefulWidget {
   const SettingsAccountPage({super.key});
@@ -82,9 +83,11 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: baseAppBar(
-        "Perfil",
+        localizations.perfil,
         actions: [
           IconButton(
             icon: Icon(isEditable ? Icons.check : Icons.edit),
@@ -118,27 +121,27 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
             SizedBox(height: 20.h),
             _buildTextField(
               controller: _userNameController,
-              label: 'Nombre de usuario',
+              label: localizations.nombreUsuario,
               icon: Icons.person,
               readOnly: !isEditable,
             ),
             _buildTextField(
               controller: _emailController,
-              label: 'Correo',
+              label: localizations.correo,
               icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
               readOnly: !isEditable,
             ),
             _buildTextField(
               controller: _cigarrosAlDiaController,
-              label: 'Cigarros al día',
+              label: localizations.cigarrosPorDia,
               icon: Icons.smoking_rooms,
               keyboardType: TextInputType.number,
               readOnly: !isEditable,
             ),
             _buildTextField(
               controller: _fechaDejarDeFumarController,
-              label: 'Fecha dejar de fumar',
+              label: localizations.fechaDejarFumar,
               icon: Icons.calendar_today,
               readOnly: true,
               onTap: isEditable
@@ -158,14 +161,14 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
             ),
             _buildTextField(
               controller: _cigarrosPaqueteController,
-              label: 'Cigarros por paquete',
+              label: localizations.cigarrosPorPaquete,
               icon: Icons.local_fire_department,
               keyboardType: TextInputType.number,
               readOnly: !isEditable,
             ),
             _buildTextField(
               controller: _precioPaqueteController,
-              label: 'Precio por paquete',
+              label: localizations.precioPorPaquete,
               icon: Icons.euro,
               keyboardType: TextInputType.number,
               readOnly: !isEditable,

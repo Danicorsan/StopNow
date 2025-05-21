@@ -5,6 +5,7 @@ import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -31,8 +32,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: baseAppBar("Ajustes"),
+      appBar: baseAppBar(localizations.ajustes),
       drawer: baseDrawer(context),
       body: Container(
         width: double.infinity,
@@ -49,8 +52,8 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             _buildSettingsCard(
               icon: Icons.account_circle,
-              title: 'Cuenta',
-              subtitle: 'Gestiona tu información personal',
+              title: localizations.cuenta,
+              subtitle: localizations.gestionaInformacion,
               color: Colors.blueAccent,
               onTap: () {
                 Navigator.pushReplacementNamed(
@@ -59,8 +62,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             _buildSettingsCard(
               icon: Icons.replay,
-              title: 'Recaída',
-              subtitle: '¿Tuviste una recaída? Reinicia tu progreso',
+              title: localizations.recaida,
+              subtitle: localizations.mensajeRecaida,
               color: Colors.orangeAccent,
               onTap: () {
                 Navigator.pushReplacementNamed(
@@ -69,8 +72,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             _buildSettingsCard(
               icon: Icons.logout,
-              title: 'Cerrar sesión',
-              subtitle: 'Salir de tu cuenta',
+              title: localizations.cerrarSesion,
+              subtitle: localizations.salirCuenta,
               color: Colors.redAccent,
               onTap: () {
                 Provider.of<UserProvider>(context, listen: false).clearUser();

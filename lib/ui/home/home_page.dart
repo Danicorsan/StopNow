@@ -7,6 +7,7 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,11 +36,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return ChangeNotifierProvider<HomeProvider>.value(
       value: homeProvider,
       child: Scaffold(
         drawer: baseDrawer(context),
-        appBar: baseAppBar("Inicio"),
+        appBar: baseAppBar(AppLocalizations.of(context)!.inicio),
         body: Consumer<HomeProvider>(
           builder: (context, homeProvider, _) {
             final user = homeProvider.user;
@@ -58,7 +60,8 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Bienvenido, ${user?.nombreUsuario ?? "Usuario"}",
+                          localizations.bienvenidoUsuario(
+                              user?.nombreUsuario ?? localizations.usuario),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20.sp,
@@ -98,20 +101,20 @@ class _HomePageState extends State<HomePage> {
                         child: PageView(
                           controller: _pageController,
                           children: [
-                            _buildTimerContainer(homeProvider),
+                            _buildTimerContainer(homeProvider, localizations),
                             _buildStatisticCard(
-                              "Dinero ahorrado",
+                              localizations.dineroAhorrado,
                               "${homeProvider.getDineroAhorrado()} €",
                               Icons.attach_money,
                             ),
                             _buildStatisticCard(
-                              "Cigarros evitados",
+                              localizations.cigarrosEvitados,
                               "${homeProvider.getCigarrosEvitados()}",
                               Icons.smoke_free,
                             ),
                             _buildStatisticCard(
-                              "Tiempo de vida ganado",
-                              "${homeProvider.getTiempoDeVidaGanado()} minutos",
+                              localizations.tiempoDeVidaGanado,
+                              "${homeProvider.getTiempoDeVidaGanado()} ${localizations.min}",
                               Icons.favorite,
                             ),
                           ],
@@ -141,14 +144,14 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       Text(
-                        "¿Te encuentras con ganas de fumar?",
+                        localizations.teEncuentrasConGanasDeFumar,
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.black.withOpacity(0.7),
                         ),
                       ),
                       Text(
-                        "Prueba con nuestro método de relajación",
+                        localizations.pruebaConNuestroMetodoDeRelajacion,
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.black.withOpacity(0.7),
@@ -171,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pushNamed(context, AppRoutes.calma);
                           },
                           child: Text(
-                            "Método de relajación",
+                            localizations.metodoDeRelajacion,
                             style: TextStyle(fontSize: 16.sp),
                           ),
                         ),
@@ -187,7 +190,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTimerContainer(HomeProvider homeProvider) {
+  Widget _buildTimerContainer(
+      HomeProvider homeProvider, AppLocalizations localizations) {
     TextStyle labelStyle = TextStyle(
       fontSize: 12.sp,
       color: Colors.white.withOpacity(0.8),
@@ -223,7 +227,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              "Tiempo sin fumar",
+              localizations.tiempoSinFumar,
               style: TextStyle(
                 fontSize: 18.sp,
                 color: Colors.white,
@@ -235,12 +239,12 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildTimeBlock("${homeProvider.getAnios()}", "Años",
+                _buildTimeBlock("${homeProvider.getAnios()}",
+                    localizations.anios, valueStyle, labelStyle),
+                _buildTimeBlock("${homeProvider.getMeses()}",
+                    localizations.meses, valueStyle, labelStyle),
+                _buildTimeBlock("${homeProvider.getDias()}", localizations.dias,
                     valueStyle, labelStyle),
-                _buildTimeBlock("${homeProvider.getMeses()}", "Meses",
-                    valueStyle, labelStyle),
-                _buildTimeBlock("${homeProvider.getDias()}", "Días", valueStyle,
-                    labelStyle),
               ],
             ),
             const Divider(color: Colors.white, thickness: 1),
@@ -250,19 +254,19 @@ class _HomePageState extends State<HomePage> {
               children: [
                 _buildTimeBlock(
                   homeProvider.getHoras().toString().padLeft(2, '0'),
-                  "Horas",
+                  localizations.horas,
                   valueStyle,
                   labelStyle,
                 ),
                 _buildTimeBlock(
                   homeProvider.getMinutos().toString().padLeft(2, '0'),
-                  "Min",
+                  localizations.min,
                   valueStyle,
                   labelStyle,
                 ),
                 _buildTimeBlock(
                   homeProvider.getSegundos().toString().padLeft(2, '0'),
-                  "Seg",
+                  localizations.seg,
                   valueStyle,
                   labelStyle,
                 ),

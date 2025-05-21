@@ -6,7 +6,9 @@ class Achievement {
   Achievement(this.title, this.description, this.duration);
 }
 
-final List<Achievement> achievements = [
+//TODO Gestionar las listas en español y en ingles.
+
+final List<Achievement> achievementsES = [
   Achievement(
       "Primer Respiro",
       "Disminuyen la presión arterial y el ritmo cardíaco. La circulación periférica mejora.",
@@ -80,5 +82,80 @@ final List<Achievement> achievements = [
   Achievement(
       "Victoria Total",
       "El riesgo de enfermedad cardiovascular es igual al de una persona que nunca ha fumado.",
+      const Duration(days: 5475)),
+];
+
+final List<Achievement> achievementsEN = [
+  Achievement(
+      "First Breath",
+      "Blood pressure and heart rate decrease. Peripheral circulation improves.",
+      const Duration(minutes: 20)),
+  Achievement(
+      "Renewed Lungs",
+      "Oxygen levels in the blood increase. Carbon monoxide in the blood decreases by half.",
+      const Duration(hours: 8)),
+  Achievement(
+      "Clean Air",
+      "Carbon monoxide is completely eliminated from the blood.",
+      const Duration(hours: 12)),
+  Achievement("Strong Heartbeat", "The risk of heart attack decreases.",
+      const Duration(days: 1)),
+  Achievement(
+      "Awakened Senses",
+      "Nerve endings begin to regenerate. Sense of smell and taste improve.",
+      const Duration(days: 2)),
+  Achievement(
+      "Breathe Free",
+      "Bronchi begin to relax, breathing improves, and lung capacity increases.",
+      const Duration(days: 3)),
+  Achievement(
+      "Clean Body",
+      "Nicotine has been almost completely eliminated from the body.",
+      const Duration(days: 5)),
+  Achievement(
+      "New Energy",
+      "Physical withdrawal anxiety decreases. You start feeling more energetic.",
+      const Duration(days: 7)),
+  Achievement(
+      "Fresh Breath",
+      "Breathing continues to improve and lungs are being cleaned.",
+      const Duration(days: 10)),
+  Achievement(
+      "Life Flows",
+      "Significant improvement in blood circulation and lung function.",
+      const Duration(days: 14)),
+  Achievement(
+      "Inner Strength",
+      "Psychological dependence decreases. Better ability to handle stress without smoking.",
+      const Duration(days: 21)),
+  Achievement(
+      "Rebirth",
+      "Skin appearance improves. Cough and fatigue decrease. Immune system is strengthened.",
+      const Duration(days: 30)),
+  Achievement(
+      "More Vitality",
+      "Notable improvement in the respiratory system and circulation. Greater physical endurance.",
+      const Duration(days: 60)),
+  Achievement("Lungs Recovered", "Up to 30% of lung function is restored.",
+      const Duration(days: 90)),
+  Achievement(
+      "Goodbye Cough",
+      "Coughing, congestion, and shortness of breath decrease significantly.",
+      const Duration(days: 180)),
+  Achievement(
+      "Strong Heart",
+      "Risk of coronary heart disease is reduced by half.",
+      const Duration(days: 365)),
+  Achievement(
+      "Clear Mind",
+      "The risk of stroke is equal to that of a non-smoker.",
+      const Duration(days: 1825)),
+  Achievement(
+      "Halfway There",
+      "The risk of lung cancer is approximately half that of a smoker.",
+      const Duration(days: 3650)),
+  Achievement(
+      "Total Victory",
+      "The risk of cardiovascular disease is the same as someone who has never smoked.",
       const Duration(days: 5475)),
 ];

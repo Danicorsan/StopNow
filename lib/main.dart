@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/l10n/l10n.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/achievement/achievement_page.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
@@ -13,6 +14,7 @@ import 'package:stopnow/ui/messages/message_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/utils/constants/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
@@ -55,6 +57,10 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: AppRoutes.generateRoute,
         debugShowCheckedModeBanner: false,
         title: 'StopNow',
+        supportedLocales: L10n.all,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        //TODO AÑADIR PROVIDER PARA VER EL IDIOMA DEL USUARIO Y SI NO HAY NINGUNO PONER EL IDIOMA POR DEFECTO como en la empresa cotizador
+        locale: const Locale('en'),
         //home: AchievementsPage(),
       ),
     );

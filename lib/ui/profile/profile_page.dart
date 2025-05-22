@@ -18,6 +18,8 @@ class ProfilePage extends StatelessWidget {
     final homeProvider = HomeProvider(user);
     final localizations = AppLocalizations.of(context)!;
 
+    var achievements = Achievement.getLocalizedAchievements(localizations);
+
     // Cálculo de logros desbloqueados
     final now = DateTime.now();
     final fechaDejarFumar = user?.fechaDejarFumar ?? now;

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/l10n/l10n.dart';
 import 'package:stopnow/routes/app_routes.dart';
-import 'package:stopnow/ui/achievement/achievement_page.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
@@ -59,8 +58,15 @@ class MyApp extends StatelessWidget {
         title: 'StopNow',
         supportedLocales: L10n.all,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
-        //TODO AÑADIR PROVIDER PARA VER EL IDIOMA DEL USUARIO Y SI NO HAY NINGUNO PONER EL IDIOMA POR DEFECTO como en la empresa cotizador
-        locale: const Locale('en'),
+        localeResolutionCallback: (locale, supportedLocales) {
+          // Usa español si el idioma del dispositivo no es compatible
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale?.languageCode) {
+              return supportedLocale;
+            }
+          }
+          return const Locale('es', 'ES');
+        },
         //home: AchievementsPage(),
       ),
     );

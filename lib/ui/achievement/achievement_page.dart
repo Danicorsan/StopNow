@@ -16,11 +16,12 @@ class AchievementsPage extends StatelessWidget {
     final fechaDejarFumar = user?.fechaDejarFumar ?? now;
     final tiempoSinFumar = now.difference(fechaDejarFumar);
     final localizations = AppLocalizations.of(context)!;
-    
+
     //TODO: CAMBIAR LA LISTA DE LOGROS PARA CUANDO ESTA EN INGLES O EN ESPAÑOL
 
-    int unlocked =
-        achievementsES.where((a) => tiempoSinFumar >= a.duration).length;
+    int unlocked = Achievement.getLocalizedAchievements(localizations)
+        .where((a) => tiempoSinFumar >= a.duration)
+        .length;
 
     return Scaffold(
       drawer: baseDrawer(context),
@@ -33,7 +34,9 @@ class AchievementsPage extends StatelessWidget {
               children: [
                 Text(
                   localizations.hasDesbloqueadoLogros(
-                      unlocked, achievementsES.length),
+                      unlocked,
+                      Achievement.getLocalizedAchievements(localizations)
+                          .length),
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -42,7 +45,9 @@ class AchievementsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
-                  value: unlocked / achievementsES.length,
+                  value: unlocked /
+                      Achievement.getLocalizedAchievements(localizations)
+                          .length,
                   minHeight: 10,
                   backgroundColor: Colors.grey[300],
                   color: const Color(0xFF608AAE),
@@ -54,10 +59,12 @@ class AchievementsPage extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: achievementsES.length,
+              itemCount:
+                  Achievement.getLocalizedAchievements(localizations).length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
-                final achievement = achievementsES[index];
+                final achievement =
+                    Achievement.getLocalizedAchievements(localizations)[index];
                 final unlocked = tiempoSinFumar >= achievement.duration;
                 return Card(
                   elevation: unlocked ? 6 : 2,

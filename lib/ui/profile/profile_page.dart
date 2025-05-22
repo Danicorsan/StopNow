@@ -17,6 +17,8 @@ class ProfilePage extends StatelessWidget {
     final user = Provider.of<UserProvider>(context).currentUser;
     final homeProvider = HomeProvider(user);
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     var achievements = Achievement.getLocalizedAchievements(localizations);
 
@@ -30,6 +32,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: baseAppBar(localizations.perfil),
       drawer: baseDrawer(context),
+      backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -47,16 +50,15 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: colorScheme.onBackground,
                         ),
                       ),
                       SizedBox(height: 5.h),
                       Text(
-                        localizations
-                            .miembroDesde(user?.fechaRegistro.year ?? ""),
+                        localizations.miembroDesde(user?.fechaRegistro.year ?? ""),
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: Colors.black.withOpacity(0.8),
+                          color: colorScheme.onBackground.withOpacity(0.8),
                         ),
                       ),
                     ],
@@ -65,7 +67,7 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             Divider(
-              color: Colors.black.withOpacity(0.5),
+              color: colorScheme.outline.withOpacity(0.5),
               thickness: 2,
               height: 20.h,
             ),
@@ -79,6 +81,7 @@ class ProfilePage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.r),
                 ),
+                color: colorScheme.surface,
                 child: Padding(
                   padding: EdgeInsets.all(20.w),
                   child: Column(
@@ -89,25 +92,29 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF153866),
+                          color: colorScheme.primary,
                         ),
                       ),
                       SizedBox(height: 10.h),
                       _buildStatisticRow(
                         localizations.diasSinFumar,
                         "${homeProvider.getDiasSinFumar()} ${localizations.dias}",
+                        colorScheme,
                       ),
                       _buildStatisticRow(
                         localizations.cigarrosEvitadosEstadistica,
                         "${homeProvider.getCigarrosEvitados()}",
+                        colorScheme,
                       ),
                       _buildStatisticRow(
                         localizations.dineroAhorradoEstadistica,
                         "${homeProvider.getDineroAhorrado()} €",
+                        colorScheme,
                       ),
                       _buildStatisticRow(
                         localizations.tiempoVidaGanadoEstadistica,
                         "${(homeProvider.getTiempoDeVidaGanado() / 60).floor()} ${localizations.horas}",
+                        colorScheme,
                       ),
                     ],
                   ),
@@ -124,6 +131,7 @@ class ProfilePage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.r),
                 ),
+                color: colorScheme.surface,
                 child: Padding(
                   padding: EdgeInsets.all(20.w),
                   child: Column(
@@ -134,7 +142,7 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF153866),
+                          color: colorScheme.primary,
                         ),
                       ),
                       SizedBox(height: 16.h),
@@ -146,7 +154,7 @@ class ProfilePage extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16.sp,
-                                  color: Colors.grey[600],
+                                  color: colorScheme.onSurface.withOpacity(0.6),
                                 ),
                               ),
                             )
@@ -164,11 +172,11 @@ class ProfilePage extends StatelessWidget {
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 8.w, vertical: 8.h),
                                     decoration: BoxDecoration(
-                                      color: Colors.green[50],
+                                      color: colorScheme.secondary.withOpacity(0.08),
                                       borderRadius: BorderRadius.circular(18.r),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(0.07),
+                                          color: colorScheme.shadow.withOpacity(0.07),
                                           blurRadius: 8,
                                           offset: const Offset(0, 4),
                                         ),
@@ -182,11 +190,11 @@ class ProfilePage extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          const CircleAvatar(
-                                            backgroundColor: Colors.green,
+                                          CircleAvatar(
+                                            backgroundColor: colorScheme.secondary,
                                             radius: 28,
                                             child: Icon(Icons.emoji_events,
-                                                color: Colors.white, size: 32),
+                                                color: colorScheme.onSecondary, size: 32),
                                           ),
                                           SizedBox(height: 12.h),
                                           Text(
@@ -194,7 +202,7 @@ class ProfilePage extends StatelessWidget {
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.sp,
-                                              color: Colors.green[900],
+                                              color: colorScheme.secondary,
                                             ),
                                           ),
                                           SizedBox(height: 8.h),
@@ -203,7 +211,7 @@ class ProfilePage extends StatelessWidget {
                                             achievement.description,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              color: Colors.green[800],
+                                              color: colorScheme.secondary.withOpacity(0.8),
                                               fontSize: 14.sp,
                                             ),
                                           ),
@@ -226,7 +234,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatisticRow(String title, String value) {
+  Widget _buildStatisticRow(String title, String value, ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
@@ -237,7 +245,7 @@ class ProfilePage extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
-              color: Colors.black87,
+              color: colorScheme.onSurface,
             ),
           ),
           Text(
@@ -245,7 +253,7 @@ class ProfilePage extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF153866),
+              color: colorScheme.primary,
             ),
           ),
         ],

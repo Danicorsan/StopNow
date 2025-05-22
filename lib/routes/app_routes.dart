@@ -34,7 +34,10 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
-        return MaterialPageRoute(builder: (_) => const HomePage());
+        return MaterialPageRoute(
+          builder: (_) => const HomePage(),
+          settings: settings,
+        );
 
       case login:
         // Cogemos los argumentos de la ruta
@@ -45,47 +48,80 @@ class AppRoutes {
             email: args?['email'],
             password: args?['password'],
           ),
+          settings: settings,
         );
 
       case register:
-        return MaterialPageRoute(builder: (_) => const RegisterPage());
+        return MaterialPageRoute(
+          builder: (_) => const RegisterPage(),
+          settings: settings,
+        );
 
       case welcome:
-        return MaterialPageRoute(builder: (_) => const WelcomePage());
+        return MaterialPageRoute(
+          builder: (_) => const WelcomePage(),
+          settings: settings,
+        );
 
       case profile:
-        return MaterialPageRoute(builder: (_) => const ProfilePage());
+        return MaterialPageRoute(
+          builder: (_) => const ProfilePage(),
+          settings: settings,
+        );
 
       case calma:
-        return MaterialPageRoute(builder: (_) => const CalmPage());
+        return MaterialPageRoute(
+          builder: (_) => const CalmPage(),
+          settings: settings,
+        );
 
       case goals:
-        return MaterialPageRoute(builder: (_) => const GoalsPage());
+        return MaterialPageRoute(
+          builder: (_) => const GoalsPage(),
+          settings: settings,
+        );
 
       case addGoal:
-        return MaterialPageRoute(builder: (_) => const AddGoalsPage());
+        return MaterialPageRoute(
+          builder: (_) => const AddGoalsPage(),
+          settings: settings,
+        );
 
       case settingsPage:
-        return MaterialPageRoute(builder: (_) => const SettingsPage());
+        return MaterialPageRoute(
+          builder: (_) => const SettingsPage(),
+          settings: settings,
+        );
 
       case settingsAcount:
-        return MaterialPageRoute(builder: (_) => const SettingsAccountPage());
+        return MaterialPageRoute(
+          builder: (_) => const AccountPage(),
+          settings: settings,
+        );
 
       case init:
-        return MaterialPageRoute(builder: (_) => const InitPage());
+        return MaterialPageRoute(
+          builder: (_) => const InitPage(),
+          settings: settings,
+        );
 
       case detailGoal:
         final goal = settings.arguments as GoalModel;
         return MaterialPageRoute(
           builder: (_) => DetailGoalsPage(goal: goal),
+          settings: settings,
         );
 
       case chat:
-        return MaterialPageRoute(builder: (_) => const ChatPage());
+        return MaterialPageRoute(
+          builder: (_) => const ChatPage(),
+          settings: settings,
+        );
 
       case achievement:
         return MaterialPageRoute(
           builder: (_) => const AchievementsPage(),
+          settings: settings,
         );
 
       default:
@@ -93,6 +129,7 @@ class AppRoutes {
           builder: (_) => const Scaffold(
             body: Center(child: Text('Página no encontrada')),
           ),
+          settings: settings,
         );
     }
   }

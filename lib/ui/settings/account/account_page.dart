@@ -6,14 +6,14 @@ import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SettingsAccountPage extends StatefulWidget {
-  const SettingsAccountPage({super.key});
+class AccountPage extends StatefulWidget {
+  const AccountPage({super.key});
 
   @override
-  State<SettingsAccountPage> createState() => _SettingsAccountPageState();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
-class _SettingsAccountPageState extends State<SettingsAccountPage> {
+class _AccountPageState extends State<AccountPage> {
   bool isEditable = false;
 
   final TextEditingController _userNameController = TextEditingController();
@@ -31,7 +31,6 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
   void initState() {
     super.initState();
     final user = Provider.of<UserProvider>(context, listen: false).currentUser;
-    print(user);
     if (user != null) {
       _userNameController.text = user.nombreUsuario;
       _emailController.text =
@@ -62,21 +61,34 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
     TextInputType keyboardType = TextInputType.text,
     bool readOnly = false,
     Function()? onTap,
+    ColorScheme? colorScheme,
   }) {
+    colorScheme ??= Theme.of(context).colorScheme;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: TextFormField(
         onTap: onTap,
         controller: controller,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: const Color(0xFF153866)),
+          prefixIcon: Icon(icon, color: colorScheme.primary),
           labelText: label,
-          border: const OutlineInputBorder(
+          labelStyle: TextStyle(color: colorScheme.primary),
+          border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary, width: 2),
           ),
         ),
         keyboardType: keyboardType,
         readOnly: readOnly,
+        style: TextStyle(color: colorScheme.onBackground),
       ),
     );
   }
@@ -84,13 +96,17 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
+      backgroundColor: colorScheme.background,
       appBar: baseAppBar(
         localizations.perfil,
         actions: [
           IconButton(
-            icon: Icon(isEditable ? Icons.check : Icons.edit),
+            icon: Icon(isEditable ? Icons.check : Icons.edit,
+                color: colorScheme.primary),
             onPressed: () {
               setState(() {
                 isEditable = !isEditable;
@@ -109,9 +125,10 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
             SizedBox(height: 20.h),
             CircleAvatar(
               radius: 50,
+              backgroundColor: colorScheme.surfaceVariant,
               child: isEditable
                   ? IconButton(
-                      icon: const Icon(Icons.edit, color: Colors.white),
+                      icon: Icon(Icons.edit, color: colorScheme.onSurface),
                       onPressed: () {
                         // Lógica para cambiar la foto de perfil
                       },
@@ -124,6 +141,7 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
               label: localizations.nombreUsuario,
               icon: Icons.person,
               readOnly: !isEditable,
+              colorScheme: colorScheme,
             ),
             _buildTextField(
               controller: _emailController,
@@ -131,6 +149,7 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
               icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
               readOnly: !isEditable,
+              colorScheme: colorScheme,
             ),
             _buildTextField(
               controller: _cigarrosAlDiaController,
@@ -138,6 +157,7 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
               icon: Icons.smoking_rooms,
               keyboardType: TextInputType.number,
               readOnly: !isEditable,
+              colorScheme: colorScheme,
             ),
             _buildTextField(
               controller: _fechaDejarDeFumarController,
@@ -158,6 +178,7 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
                       }
                     }
                   : null,
+              colorScheme: colorScheme,
             ),
             _buildTextField(
               controller: _cigarrosPaqueteController,
@@ -165,6 +186,7 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
               icon: Icons.local_fire_department,
               keyboardType: TextInputType.number,
               readOnly: !isEditable,
+              colorScheme: colorScheme,
             ),
             _buildTextField(
               controller: _precioPaqueteController,
@@ -172,6 +194,7 @@ class _SettingsAccountPageState extends State<SettingsAccountPage> {
               icon: Icons.euro,
               keyboardType: TextInputType.number,
               readOnly: !isEditable,
+              colorScheme: colorScheme,
             ),
             SizedBox(height: 20.h),
           ],

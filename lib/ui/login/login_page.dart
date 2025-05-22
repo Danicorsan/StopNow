@@ -40,9 +40,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -57,10 +59,10 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(
                   fontSize: 35.sp,
                   fontWeight: FontWeight.w100,
-                  color: const Color.fromARGB(255, 21, 56, 102),
+                  color: colorScheme.primary,
                   shadows: [
                     Shadow(
-                      color: const Color.fromARGB(69, 0, 0, 0),
+                      color: colorScheme.shadow.withOpacity(0.27),
                       offset: Offset(0, 6.h),
                       blurRadius: 7.r,
                     ),
@@ -72,14 +74,27 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(horizontal: 40.w),
                 child: TextField(
                   controller: _emailController,
+                  style: TextStyle(color: colorScheme.onBackground),
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.person,
-                      color: Color.fromARGB(255, 21, 56, 102),
+                      color: colorScheme.primary,
                     ),
                     labelText: localizations.correo,
+                    labelStyle: TextStyle(color: colorScheme.primary),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: colorScheme.primary),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                          color: colorScheme.primary.withOpacity(0.5)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: colorScheme.primary, width: 2),
                     ),
                   ),
                 ),
@@ -89,13 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(horizontal: 40.w),
                 child: TextField(
                   controller: _passwordController,
+                  style: TextStyle(color: colorScheme.onBackground),
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       icon: Icon(
                         isPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
-                        color: const Color.fromARGB(255, 21, 56, 102),
+                        color: colorScheme.primary,
                       ),
                       onPressed: () {
                         setState(() {
@@ -105,11 +121,23 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     prefixIcon: Icon(
                       Icons.lock,
-                      color: Color.fromARGB(255, 21, 56, 102),
+                      color: colorScheme.primary,
                     ),
                     labelText: localizations.contrasenia,
-                    border: const OutlineInputBorder(
+                    labelStyle: TextStyle(color: colorScheme.primary),
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: colorScheme.primary),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                          color: colorScheme.primary.withOpacity(0.5)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: colorScheme.primary, width: 2),
                     ),
                   ),
                   obscureText: isPasswordVisible,
@@ -118,9 +146,9 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 30.h),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 21, 56, 102),
+                  backgroundColor: colorScheme.primary,
                   fixedSize: Size(250.w, 50.h),
-                  shadowColor: Colors.black,
+                  shadowColor: colorScheme.shadow,
                   elevation: 5,
                 ),
                 onPressed: () async {
@@ -153,9 +181,9 @@ class _LoginPageState extends State<LoginPage> {
                     ? SizedBox(
                         width: 20.w,
                         height: 20.w,
-                        child: const CircularProgressIndicator(
+                        child: CircularProgressIndicator(
                           strokeWidth: 1,
-                          color: Colors.white,
+                          color: colorScheme.onPrimary,
                         ),
                       )
                     : Text(
@@ -163,19 +191,20 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w300,
-                          color: Colors.white,
+                          color: colorScheme.onPrimary,
                         ),
                       ),
               ),
               Divider(
                 height: 100.h,
                 thickness: 1,
+                color: colorScheme.outline.withOpacity(0.2),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 197, 197, 197),
+                  backgroundColor: colorScheme.surfaceVariant,
                   fixedSize: Size(250.w, 50.h),
-                  shadowColor: const Color.fromARGB(255, 21, 56, 102),
+                  shadowColor: colorScheme.shadow,
                   elevation: 5,
                 ),
                 onPressed: () {
@@ -192,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                   ],
@@ -206,6 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                     localizations.noTienesCuenta,
                     style: TextStyle(
                       fontSize: 15.sp,
+                      color: colorScheme.onBackground,
                     ),
                   ),
                   SizedBox(width: 10.w),
@@ -217,6 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                       localizations.pinchaAqui,
                       style: TextStyle(
                         fontSize: 15.sp,
+                        color: colorScheme.primary,
                       ),
                     ),
                   ),

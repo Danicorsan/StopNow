@@ -13,6 +13,8 @@ class DetailGoalsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false).currentUser;
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     final double precioPaquete = user?.precioPaquete ?? 0;
     final int cigarrosPorPaquete = user?.cigarrosPorPaquete ?? 1;
@@ -57,7 +59,7 @@ class DetailGoalsPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: colorScheme.secondary.withOpacity(0.10),
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Column(
@@ -67,15 +69,15 @@ class DetailGoalsPage extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
-                        color: Colors.blue[900],
+                        color: colorScheme.secondary,
                       ),
                     ),
                     Text(
                       goal.nombre,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
-                        color: Color(0xFF153866),
+                        color: colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -84,7 +86,7 @@ class DetailGoalsPage extends StatelessWidget {
                           .precioObjetivo(goal.precio.toStringAsFixed(2)),
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blueGrey[700],
+                        color: colorScheme.onSurface.withOpacity(0.7),
                       ),
                     ),
                     if (goal.usuarioId != null && goal.usuarioId!.isNotEmpty)
@@ -94,7 +96,7 @@ class DetailGoalsPage extends StatelessWidget {
                           goal.usuarioId!,
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.blueGrey[600],
+                            color: colorScheme.onSurface.withOpacity(0.6),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -104,14 +106,15 @@ class DetailGoalsPage extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               // Progreso actual
-              _buildContainerBarra(porcentaje),
+              _buildContainerBarra(porcentaje, colorScheme),
               const SizedBox(height: 16),
               Text(
                 localizations.ahorroCigarros(
                     cigarrosEvitados, dineroAhorrado.toStringAsFixed(2)),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
-                  color: Colors.green,
+                  color: Colors
+                      .green[theme.brightness == Brightness.dark ? 200 : 700],
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.center,
@@ -121,21 +124,25 @@ class DetailGoalsPage extends StatelessWidget {
               _buildContainerSecundario(
                 label: localizations.dineroFaltante,
                 value: "${dineroFaltante.toStringAsFixed(2)} €",
+                colorScheme: colorScheme,
               ),
               const SizedBox(height: 10),
               _buildContainerSecundario(
                 label: localizations.cigarrosFaltantes,
                 value: "$cigarrosFaltantes",
+                colorScheme: colorScheme,
               ),
               const SizedBox(height: 10),
               _buildContainerSecundario(
                 label: localizations.horasFaltantes,
                 value: "${horasFaltantes.toStringAsFixed(1)} h",
+                colorScheme: colorScheme,
               ),
               const SizedBox(height: 24),
               // Info extra
               Card(
-                color: Colors.yellow[50],
+                color: Colors
+                    .yellow[theme.brightness == Brightness.dark ? 950 : 50],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
@@ -147,14 +154,16 @@ class DetailGoalsPage extends StatelessWidget {
                         localizations.comoSeCalcula,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange[900],
+                          color: Colors.orange[
+                              theme.brightness == Brightness.dark ? 200 : 900],
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         "${localizations.explicacionCalculo1}\n${localizations.explicacionCalculo2}",
                         style: TextStyle(
-                          color: Colors.orange[800],
+                          color: Colors.orange[
+                              theme.brightness == Brightness.dark ? 100 : 800],
                           fontSize: 14,
                         ),
                         textAlign: TextAlign.center,
@@ -163,7 +172,8 @@ class DetailGoalsPage extends StatelessWidget {
                       Text(
                         localizations.sigueAsi,
                         style: TextStyle(
-                          color: Colors.green[800],
+                          color: Colors.green[
+                              theme.brightness == Brightness.dark ? 200 : 800],
                           fontWeight: FontWeight.w600,
                         ),
                         textAlign: TextAlign.center,
@@ -179,16 +189,19 @@ class DetailGoalsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildContainerSecundario(
-      {required String label, required String value}) {
+  Widget _buildContainerSecundario({
+    required String label,
+    required String value,
+    required ColorScheme colorScheme,
+  }) {
     return Container(
       height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
+        color: colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: colorScheme.shadow.withOpacity(0.08),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -199,21 +212,25 @@ class DetailGoalsPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(label,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+          Text(value,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
         ],
       ),
     );
   }
 
-  Widget _buildContainerBarra(double porcentaje) {
+  Widget _buildContainerBarra(double porcentaje, ColorScheme colorScheme) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
+        color: colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: colorScheme.shadow.withOpacity(0.08),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -229,7 +246,7 @@ class DetailGoalsPage extends StatelessWidget {
           Container(
             height: 18,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: colorScheme.secondary.withOpacity(0.2),
               borderRadius: BorderRadius.circular(12),
             ),
           ),
@@ -238,8 +255,8 @@ class DetailGoalsPage extends StatelessWidget {
             child: Container(
               height: 18,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF608AAE), Color(0xFF153866)],
+                gradient: LinearGradient(
+                  colors: [colorScheme.secondary, colorScheme.primary],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                 ),
@@ -250,8 +267,8 @@ class DetailGoalsPage extends StatelessWidget {
           Center(
             child: Text(
               "${(porcentaje * 100).toStringAsFixed(0)}%",
-              style: const TextStyle(
-                color: Colors.black87,
+              style: TextStyle(
+                color: colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

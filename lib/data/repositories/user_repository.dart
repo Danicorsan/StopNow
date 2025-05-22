@@ -145,4 +145,19 @@ class UserRepository {
       print('Error al borrar objetivo: $e');
     }
   }
+
+  static Future<BaseResult> reiniciarFechaFumar() async {
+    try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) {
+        return BaseResultError('Usuario no autenticado');
+      }
+
+      final response = await UserDao.actualizarFechaDejarFumar();
+
+      return BaseResultSuccess(response);
+    } catch (e) {
+      return BaseResultError(e.toString());
+    }
+  }
 }

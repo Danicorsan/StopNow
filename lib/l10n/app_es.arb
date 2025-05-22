@@ -49,7 +49,7 @@
   "cuantoCuesta": "¿Cuánto cuesta?",
   "introduceNumeroValido": "Introduce un número válido",
   "revisaCampos": "Por favor, revisa todos los campos",
-  "estasAhorrandoPara": "¡Estás ahorrando para:",
+  "estasAhorrandoPara": "Estás ahorrando para:",
   "precioObjetivo": "Precio objetivo: {precio} €",
   "@precioObjetivo": {
     "description": "Precio del objetivo de ahorro",

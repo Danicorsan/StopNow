@@ -37,22 +37,34 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
     TextInputType keyboardType = TextInputType.text,
     String? Function(String?)? validator,
     List<TextInputFormatter>? inputFormatters,
+    required ColorScheme colorScheme,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 9.h),
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: const Color(0xFF153866)),
+          prefixIcon: Icon(icon, color: colorScheme.primary),
           labelText: label,
-          border: const OutlineInputBorder(
+          labelStyle: TextStyle(color: colorScheme.primary),
+          border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary, width: 2),
           ),
         ),
         keyboardType: keyboardType,
         validator: validator,
         inputFormatters: inputFormatters,
         autocorrect: false,
+        style: TextStyle(color: colorScheme.onBackground),
       ),
     );
   }
@@ -60,14 +72,15 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: baseAppBar(localizations.anadirObjetivo, volver: true, onTap: () {
         Navigator.pop(context);
       }),
-      drawer: baseDrawer(
-        context,
-      ),
-      backgroundColor: Colors.white,
+      drawer: baseDrawer(context),
+      backgroundColor: colorScheme.background,
       body: Form(
         key: _formKey,
         child: ListView(
@@ -85,12 +98,14 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 }
                 return null;
               },
+              colorScheme: colorScheme,
             ),
             _buildTextField(
               controller: _descripcionController,
               label: localizations.descripcion,
               icon: Icons.description,
               validator: (value) => null,
+              colorScheme: colorScheme,
             ),
             _buildTextField(
               controller: _precioController,
@@ -109,20 +124,21 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 LengthLimitingTextInputFormatter(8),
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
               ],
+              colorScheme: colorScheme,
             ),
             SizedBox(height: 30.h),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF153866),
+        backgroundColor: colorScheme.primary,
         onPressed: () async {
           if (!_formKey.currentState!.validate()) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(localizations.revisaCampos),
-                backgroundColor: Color(0xFF8A0000),
-                duration: Duration(seconds: 2),
+                backgroundColor: const Color(0xFF8A0000),
+                duration: const Duration(seconds: 2),
               ),
             );
             return;

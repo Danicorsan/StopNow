@@ -18,19 +18,21 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
 
-  //TODO HACER LO MISMO QUE EL GOALS_PAGE PARA QUE CADA VEZ QUE SE ENTRA SE CARGUEN LOS MENSAJES
   @override
   Widget build(BuildContext context) {
     final chatProvider = context.watch<ChatProvider>();
     final mensajes = chatProvider.mensajes;
     final myUserId = Supabase.instance.client.auth.currentUser?.id;
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
       appBar: baseAppBar(
         localizations.chat,
       ),
       drawer: baseDrawer(context),
+      backgroundColor: colorScheme.background,
       body: chatProvider.isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -42,7 +44,8 @@ class _ChatPageState extends State<ChatPage> {
                       ? Center(
                           child: Text(
                             localizations.noHayMensajes,
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(
+                                color: colorScheme.onSurface.withOpacity(0.6)),
                           ),
                         )
                       : ListView.builder(
@@ -67,8 +70,8 @@ class _ChatPageState extends State<ChatPage> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: esMio
-                                      ? const Color(0xFF608AAE)
-                                      : Colors.grey[200],
+                                      ? colorScheme.secondary
+                                      : colorScheme.surfaceVariant,
                                   borderRadius: BorderRadius.only(
                                     topLeft: const Radius.circular(16),
                                     topRight: const Radius.circular(16),
@@ -78,7 +81,8 @@ class _ChatPageState extends State<ChatPage> {
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.04),
+                                      color:
+                                          colorScheme.shadow.withOpacity(0.04),
                                       blurRadius: 2,
                                       offset: const Offset(0, 2),
                                     ),
@@ -96,14 +100,16 @@ class _ChatPageState extends State<ChatPage> {
                                             const EdgeInsets.only(bottom: 2),
                                         child: Container(
                                           width: double.infinity,
-                                          color: Colors.amber,
+                                          color: colorScheme.tertiary
+                                              .withOpacity(0.2),
                                           child: Text(
                                             mensaje.nombreUsuario,
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                               color: esMio
-                                                  ? Colors.white70
-                                                  : Colors.blueGrey,
+                                                  ? colorScheme.onSecondary
+                                                      .withOpacity(0.7)
+                                                  : colorScheme.primary,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 13,
                                             ),
@@ -114,8 +120,8 @@ class _ChatPageState extends State<ChatPage> {
                                       mensaje.mensaje,
                                       style: TextStyle(
                                         color: esMio
-                                            ? Colors.white
-                                            : Colors.black87,
+                                            ? colorScheme.onSecondary
+                                            : colorScheme.onSurface,
                                         fontSize: 16,
                                       ),
                                     ),
@@ -124,8 +130,10 @@ class _ChatPageState extends State<ChatPage> {
                                       _formatHora(mensaje.fechaEnvio),
                                       style: TextStyle(
                                         color: esMio
-                                            ? Colors.white70
-                                            : Colors.grey[600],
+                                            ? colorScheme.onSecondary
+                                                .withOpacity(0.7)
+                                            : colorScheme.onSurface
+                                                .withOpacity(0.6),
                                         fontSize: 11,
                                       ),
                                     ),
@@ -138,7 +146,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 const Divider(height: 1),
                 Container(
-                  color: Colors.white,
+                  color: colorScheme.surface,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Row(
@@ -146,10 +154,13 @@ class _ChatPageState extends State<ChatPage> {
                       Expanded(
                         child: TextField(
                           controller: _controller,
+                          style: TextStyle(color: colorScheme.onSurface),
                           decoration: InputDecoration(
                             hintText: localizations.escribeUnMensaje,
+                            hintStyle: TextStyle(
+                                color: colorScheme.onSurface.withOpacity(0.5)),
                             filled: true,
-                            fillColor: Colors.grey[100],
+                            fillColor: colorScheme.surfaceVariant,
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 16),
                             border: OutlineInputBorder(
@@ -162,9 +173,9 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                       const SizedBox(width: 8),
                       CircleAvatar(
-                        backgroundColor: const Color(0xFF153866),
+                        backgroundColor: colorScheme.primary,
                         child: IconButton(
-                          icon: const Icon(Icons.send, color: Colors.white),
+                          icon: Icon(Icons.send, color: colorScheme.onPrimary),
                           onPressed: _enviarMensaje,
                         ),
                       ),
@@ -173,7 +184,6 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ],
             ),
-      backgroundColor: const Color(0xFFF5F6FA),
     );
   }
 

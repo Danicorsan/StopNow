@@ -12,6 +12,8 @@ class CalmPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final calmProvider = Provider.of<CalmProvider>(context);
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
       appBar: baseAppBar(
@@ -38,7 +40,9 @@ class CalmPage extends StatelessWidget {
                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
                   child: Text(localizations.tecnica478,
                       style: TextStyle(
-                          fontSize: 30.sp, fontWeight: FontWeight.bold)),
+                          fontSize: 30.sp,
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.primary)),
                 ),
                 Padding(
                     padding: EdgeInsets.symmetric(
@@ -47,7 +51,10 @@ class CalmPage extends StatelessWidget {
                     child: Text(
                       localizations.descripcionTecnica478,
                       textAlign: TextAlign.justify,
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: colorScheme.onBackground,
+                      ),
                     )),
                 SizedBox(
                   height: 20.h,
@@ -56,9 +63,8 @@ class CalmPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 15.h),
                   child: TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
                         padding: EdgeInsets.symmetric(
                             horizontal: 50.w, vertical: 20.h),
                         textStyle: TextStyle(fontSize: 20.sp),
@@ -68,19 +74,20 @@ class CalmPage extends StatelessWidget {
                 )
               ],
             )
-          : _buildCalmContainer(calmProvider),
+          : _buildCalmContainer(calmProvider, colorScheme),
     );
   }
 
-  Widget _buildCalmContainer(CalmProvider calmProvider) {
+  Widget _buildCalmContainer(
+      CalmProvider calmProvider, ColorScheme colorScheme) {
     return Center(
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          color: const Color.fromARGB(255, 255, 255, 255),
+          color: colorScheme.background,
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+              color: colorScheme.shadow.withOpacity(0.5),
               spreadRadius: 5.r,
               blurRadius: 7.r,
               offset: Offset(0.r, 3.r), // changes position of shadow
@@ -101,11 +108,17 @@ class CalmPage extends StatelessWidget {
               ),
               Text(
                 calmProvider.currentPhase,
-                style: const TextStyle(fontSize: 30),
+                style: TextStyle(
+                  fontSize: 30,
+                  color: colorScheme.primary,
+                ),
               ),
               Text(
                 calmProvider.timeRemaining.toString(),
-                style: const TextStyle(fontSize: 50),
+                style: TextStyle(
+                  fontSize: 50,
+                  color: colorScheme.secondary,
+                ),
               ),
             ],
           ),

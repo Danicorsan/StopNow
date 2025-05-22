@@ -33,9 +33,13 @@ class _GoalsPageState extends State<GoalsPage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: baseAppBar(localizations.objetivos),
       drawer: baseDrawer(context),
+      backgroundColor: colorScheme.background,
       body: Consumer<GoalsProvider>(
         builder: (context, provider, _) {
           return provider.isLoading
@@ -47,8 +51,9 @@ class _GoalsPageState extends State<GoalsPage> {
                       child: Text(
                         localizations.noTienesObjetivos,
                         style: TextStyle(
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 18.sp),
+                          color: colorScheme.onBackground,
+                          fontSize: 18.sp,
+                        ),
                       ),
                     )
                   : ListView.builder(
@@ -75,17 +80,17 @@ class _GoalsPageState extends State<GoalsPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              color: Colors.white.withOpacity(0.93),
+                              color: colorScheme.surface.withOpacity(0.93),
                               child: ListTile(
-                                leading: const CircleAvatar(
-                                  backgroundColor: Color(0xFF608AAE),
+                                leading: CircleAvatar(
+                                  backgroundColor: colorScheme.secondary,
                                   child: Icon(Icons.emoji_events,
-                                      color: Colors.white),
+                                      color: colorScheme.onSecondary),
                                 ),
                                 title: Text(
                                   goal.nombre,
                                   style: TextStyle(
-                                    color: const Color(0xFF153866),
+                                    color: colorScheme.primary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18.sp,
                                   ),
@@ -110,7 +115,7 @@ class _GoalsPageState extends State<GoalsPage> {
 
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
-          backgroundColor: const Color(0xFF153866),
+          backgroundColor: colorScheme.primary,
           onPressed: () async {
             bool exito =
                 await Navigator.pushNamed(context, AppRoutes.addGoal) as bool;
@@ -119,7 +124,7 @@ class _GoalsPageState extends State<GoalsPage> {
                 SnackBar(
                   content: Text(localizations.objetivoExito),
                   duration: const Duration(seconds: 2),
-                  backgroundColor: const Color(0xFF608AAE),
+                  backgroundColor: colorScheme.secondary,
                 ),
               );
               Provider.of<GoalsProvider>(context, listen: false)
@@ -138,7 +143,7 @@ class _GoalsPageState extends State<GoalsPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          child: const Icon(Icons.add, color: Colors.white),
+          child: Icon(Icons.add, color: colorScheme.onPrimary),
         ),
       ),
     );

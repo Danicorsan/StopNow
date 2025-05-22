@@ -62,7 +62,6 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         _selectedImage = File(pickedFile.path);
       });
-      // Solo guardamos el archivo en el provider, no lo subimos aún
       Provider.of<RegisterProvider>(context, listen: false)
           .setProfileImage(_selectedImage!);
     }
@@ -80,17 +79,29 @@ class _RegisterPageState extends State<RegisterPage> {
     void Function()? onTap,
     bool readOnly = false,
     List<TextInputFormatter>? inputFormatters,
+    ColorScheme? colorScheme,
   }) {
+    colorScheme ??= Theme.of(context).colorScheme;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 9.h),
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
           errorMaxLines: 2,
-          prefixIcon: Icon(icon, color: const Color(0xFF153866)),
+          prefixIcon: Icon(icon, color: colorScheme.primary),
           labelText: label,
-          border: const OutlineInputBorder(
+          labelStyle: TextStyle(color: colorScheme.primary),
+          border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: colorScheme.primary, width: 2),
           ),
           suffixIcon: suffixIcon,
         ),
@@ -102,6 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
         readOnly: readOnly,
         inputFormatters: inputFormatters,
         autocorrect: false,
+        style: TextStyle(color: colorScheme.onBackground),
       ),
     );
   }
@@ -110,9 +122,11 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final registerProvider = Provider.of<RegisterProvider>(context);
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Center(
           child: Form(
@@ -125,10 +139,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: TextStyle(
                     fontSize: 35.sp,
                     fontWeight: FontWeight.w100,
-                    color: const Color(0xFF153866),
-                    shadows: const [
+                    color: colorScheme.primary,
+                    shadows: [
                       Shadow(
-                        color: Color.fromARGB(69, 0, 0, 0),
+                        color: colorScheme.shadow.withOpacity(0.27),
                         offset: Offset(0.0, 6.0),
                         blurRadius: 7.0,
                       ),
@@ -142,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(localizations.fotoDePerfil,
-                          style: TextStyle(fontSize: 16.sp)),
+                          style: TextStyle(fontSize: 16.sp, color: colorScheme.onBackground)),
                       SizedBox(height: 10.h),
                       GestureDetector(
                         onTap: () {
@@ -153,8 +167,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           backgroundImage: _selectedImage != null
                               ? FileImage(_selectedImage!)
                               : null,
+                          backgroundColor: colorScheme.surfaceVariant,
                           child: _selectedImage == null
-                              ? const Icon(Icons.add_a_photo, size: 30)
+                              ? Icon(Icons.add_a_photo, size: 30, color: colorScheme.primary)
                               : null,
                         ),
                       ),
@@ -176,6 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     return null;
                   },
+                  colorScheme: colorScheme,
                 ),
                 _buildTextField(
                   controller: _emailController,
@@ -189,6 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     return null;
                   },
+                  colorScheme: colorScheme,
                 ),
                 _buildTextField(
                   controller: _passwordController,
@@ -200,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       isPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility,
-                      color: const Color(0xFF153866),
+                      color: colorScheme.primary,
                     ),
                     onPressed: () =>
                         setState(() => isPasswordVisible = !isPasswordVisible),
@@ -215,6 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     return null;
                   },
+                  colorScheme: colorScheme,
                 ),
                 _buildTextField(
                   controller: _confirmPasswordController,
@@ -226,7 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       isConfirmPasswordVisible
                           ? Icons.visibility_off
                           : Icons.visibility,
-                      color: const Color(0xFF153866),
+                      color: colorScheme.primary,
                     ),
                     onPressed: () => setState(() =>
                         isConfirmPasswordVisible = !isConfirmPasswordVisible),
@@ -235,6 +253,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) => value == _passwordController.text
                       ? null
                       : localizations.contraseniasNoCoinciden,
+                  colorScheme: colorScheme,
                 ),
                 _buildTextField(
                   controller: _cigarrosAlDiaController,
@@ -256,6 +275,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     LengthLimitingTextInputFormatter(2),
                     FilteringTextInputFormatter.digitsOnly,
                   ],
+                  colorScheme: colorScheme,
                 ),
                 _buildTextField(
                   controller: _fechaDejarDeFumarController,
@@ -279,6 +299,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) => (value == null || value.isEmpty)
                       ? localizations.introduceFecha
                       : null,
+                  colorScheme: colorScheme,
                 ),
                 _buildTextField(
                   controller: _cigarrosPaqueteController,
@@ -295,6 +316,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     LengthLimitingTextInputFormatter(3),
                     FilteringTextInputFormatter.digitsOnly,
                   ],
+                  colorScheme: colorScheme,
                 ),
                 _buildTextField(
                   controller: _precioPaqueteController,
@@ -312,11 +334,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     FilteringTextInputFormatter.allow(
                         RegExp(r'^\d+\.?\d{0,2}')),
                   ],
+                  colorScheme: colorScheme,
                 ),
                 SizedBox(height: 30.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF153866),
+                    backgroundColor: colorScheme.primary,
                     fixedSize: Size(250.w, 50.h),
                     elevation: 5,
                   ),
@@ -325,8 +348,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(localizations.revisaCampos),
-                          backgroundColor: Color(0xFF8A0000),
-                          duration: Duration(seconds: 2),
+                          backgroundColor: const Color(0xFF8A0000),
+                          duration: const Duration(seconds: 2),
                         ),
                       );
                       return;
@@ -357,9 +380,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ? SizedBox(
                           width: 20.w,
                           height: 20.w,
-                          child: const CircularProgressIndicator(
+                          child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white,
+                            color: colorScheme.onPrimary,
                           ),
                         )
                       : Text(
@@ -367,22 +390,25 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w300,
-                            color: Colors.white,
+                            color: colorScheme.onPrimary,
                           ),
                         ),
                 ),
-                Divider(height: 100.h),
+                Divider(
+                  height: 100.h,
+                  color: colorScheme.outline.withOpacity(0.2),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(localizations.yaTienesCuenta,
-                        style: TextStyle(fontSize: 15.sp)),
+                        style: TextStyle(fontSize: 15.sp, color: colorScheme.onBackground)),
                     SizedBox(width: 10.w),
                     TextButton(
                       onPressed: () =>
                           Navigator.pushReplacementNamed(context, '/login'),
                       child: Text(localizations.pinchaAqui,
-                          style: TextStyle(fontSize: 15.sp)),
+                          style: TextStyle(fontSize: 15.sp, color: colorScheme.primary)),
                     ),
                   ],
                 ),

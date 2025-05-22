@@ -37,11 +37,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return ChangeNotifierProvider<HomeProvider>.value(
       value: homeProvider,
       child: Scaffold(
         drawer: baseDrawer(context),
-        appBar: baseAppBar(AppLocalizations.of(context)!.inicio),
+        appBar: baseAppBar(localizations.inicio),
         body: Consumer<HomeProvider>(
           builder: (context, homeProvider, _) {
             final user = homeProvider.user;
@@ -66,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: colorScheme.onBackground,
                           ),
                         ),
                         SizedBox(height: 10.h),
@@ -79,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 16.sp,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black.withOpacity(0.8),
+                              color: colorScheme.onBackground.withOpacity(0.8),
                               height: 1.4,
                             ),
                           ),
@@ -101,21 +104,25 @@ class _HomePageState extends State<HomePage> {
                         child: PageView(
                           controller: _pageController,
                           children: [
-                            _buildTimerContainer(homeProvider, localizations),
+                            _buildTimerContainer(
+                                homeProvider, localizations, colorScheme),
                             _buildStatisticCard(
                               localizations.dineroAhorrado,
                               "${homeProvider.getDineroAhorrado()} €",
                               Icons.attach_money,
+                              colorScheme,
                             ),
                             _buildStatisticCard(
                               localizations.cigarrosEvitados,
                               "${homeProvider.getCigarrosEvitados()}",
                               Icons.smoke_free,
+                              colorScheme,
                             ),
                             _buildStatisticCard(
                               localizations.tiempoDeVidaGanado,
                               "${homeProvider.getTiempoDeVidaGanado()} ${localizations.min}",
                               Icons.favorite,
+                              colorScheme,
                             ),
                           ],
                         ),
@@ -128,8 +135,8 @@ class _HomePageState extends State<HomePage> {
                           dotHeight: 10.h,
                           dotWidth: 10.w,
                           spacing: 10.w,
-                          activeDotColor: Colors.blueAccent,
-                          dotColor: Colors.grey.shade400,
+                          activeDotColor: colorScheme.primary,
+                          dotColor: colorScheme.secondary.withOpacity(0.3),
                         ),
                       ),
                     ],
@@ -147,14 +154,14 @@ class _HomePageState extends State<HomePage> {
                         localizations.teEncuentrasConGanasDeFumar,
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: Colors.black.withOpacity(0.7),
+                          color: colorScheme.onBackground.withOpacity(0.7),
                         ),
                       ),
                       Text(
                         localizations.pruebaConNuestroMetodoDeRelajacion,
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: Colors.black.withOpacity(0.7),
+                          color: colorScheme.onBackground.withOpacity(0.7),
                         ),
                       ),
                       Padding(
@@ -162,8 +169,8 @@ class _HomePageState extends State<HomePage> {
                             horizontal: 20.w, vertical: 10.h),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF153866),
-                            foregroundColor: Colors.white,
+                            backgroundColor: colorScheme.primary,
+                            foregroundColor: colorScheme.onPrimary,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 50.w, vertical: 20.h),
                             shape: RoundedRectangleBorder(
@@ -190,18 +197,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTimerContainer(
-      HomeProvider homeProvider, AppLocalizations localizations) {
+  Widget _buildTimerContainer(HomeProvider homeProvider,
+      AppLocalizations localizations, ColorScheme colorScheme) {
     TextStyle labelStyle = TextStyle(
       fontSize: 12.sp,
-      color: Colors.white.withOpacity(0.8),
+      color: colorScheme.onPrimary.withOpacity(0.8),
       fontWeight: FontWeight.w500,
     );
 
     TextStyle valueStyle = TextStyle(
       fontSize: 28.sp,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: colorScheme.onPrimary,
     );
 
     return Padding(
@@ -209,8 +216,8 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF608AAE), Color(0xFF153866)],
+          gradient: LinearGradient(
+            colors: [colorScheme.secondary, colorScheme.primary],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -230,7 +237,7 @@ class _HomePageState extends State<HomePage> {
               localizations.tiempoSinFumar,
               style: TextStyle(
                 fontSize: 18.sp,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -289,14 +296,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildStatisticCard(String title, String value, IconData icon) {
+  Widget _buildStatisticCard(
+      String title, String value, IconData icon, ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF608AAE), Color(0xFF153866)],
+          gradient: LinearGradient(
+            colors: [colorScheme.secondary, colorScheme.primary],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -312,14 +320,14 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 40.sp, color: Colors.white),
+            Icon(icon, size: 40.sp, color: colorScheme.onPrimary),
             SizedBox(height: 10.h),
             Text(
               title,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: 10.h),
@@ -328,7 +336,7 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
               ),
             ),
           ],

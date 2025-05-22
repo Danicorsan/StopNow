@@ -6,10 +6,11 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-//TODO: Si esta en la pantalla que pulsa el icono de la barra de navegacion, no se cierra el drawer.
 Drawer baseDrawer(BuildContext context) {
   final user = Provider.of<UserProvider>(context, listen: false).currentUser;
   final localizations = AppLocalizations.of(context)!;
+  final theme = Theme.of(context);
+  final colorScheme = theme.colorScheme;
 
   return Drawer(
     child: Column(
@@ -17,9 +18,12 @@ Drawer baseDrawer(BuildContext context) {
         // Encabezado del Drawer
         Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF608AAE), Color(0xFF153866)],
+              colors: [
+                colorScheme.secondary,
+                colorScheme.primary,
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -36,7 +40,7 @@ Drawer baseDrawer(BuildContext context) {
                 Text(
                   user?.nombreUsuario ?? localizations.usuario,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
                   ),
@@ -54,68 +58,81 @@ Drawer baseDrawer(BuildContext context) {
                 icon: Icons.home,
                 title: localizations.inicio,
                 route: AppRoutes.home,
+                colorScheme: colorScheme,
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.person,
                 title: localizations.perfil,
                 route: AppRoutes.profile,
+                colorScheme: colorScheme,
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.group,
                 title: localizations.comunidad,
-                route: AppRoutes.chat, // Cambia según tu ruta
+                route: AppRoutes.chat,
+                colorScheme: colorScheme,
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.interests,
                 title: localizations.objetivos,
                 route: AppRoutes.goals,
+                colorScheme: colorScheme,
               ),
               _buildDrawerItem(
                 context,
                 icon: Icons.local_attraction_sharp,
                 title: localizations.logros,
-                route: AppRoutes.achievement, // Cambia según tu ruta
+                route: AppRoutes.achievement,
+                colorScheme: colorScheme,
               ),
             ],
           ),
         ),
-
         const Divider(),
-
         // Ajustes
         _buildDrawerItem(
           context,
           icon: Icons.settings,
           title: localizations.ajustes,
           route: AppRoutes.settingsPage,
+          colorScheme: colorScheme,
         ),
       ],
     ),
   );
 }
 
-Widget _buildDrawerItem(BuildContext context,
-    {required IconData icon, required String title, required String route}) {
+Widget _buildDrawerItem(
+  BuildContext context, {
+  required IconData icon,
+  required String title,
+  required String route,
+  required ColorScheme colorScheme,
+}) {
   return ListTile(
     leading: Icon(
       icon,
-      color: const Color(0xFF153866),
+      color: colorScheme.primary,
     ),
     title: Text(
       title,
       style: TextStyle(
         fontSize: 16.sp,
         fontWeight: FontWeight.w500,
-        color: Colors.black87,
+        color: colorScheme.onBackground,
       ),
     ),
     onTap: () async {
       Navigator.pop(context);
       await Future.delayed(const Duration(milliseconds: 250));
-      Navigator.pushNamed(context, route);
+      var currentRoute = ModalRoute.of(context)?.settings.name;
+      // Evitar que se navegue a la misma pantalla
+      if (currentRoute != route) {
+        Navigator.pushNamed(context, route);
+      }
     },
   );
 }

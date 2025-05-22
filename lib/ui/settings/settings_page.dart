@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stopnow/data/dao/user_dao.dart';
+import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/theme_provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -62,8 +65,46 @@ class _SettingsPageState extends State<SettingsPage> {
               subtitle: localizations.mensajeRecaida,
               color: colorScheme.secondary,
               onTap: () {
-                Navigator.pushReplacementNamed(
-                    context, AppRoutes.settingsAcount);
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: colorScheme.surface,
+                    title: Text(
+                      localizations.recaida,
+                      style: TextStyle(color: colorScheme.primary),
+                    ),
+                    content: Text(
+                      "Esta accion borrara tu progreso. Esta accion no se puede revertir. ¿Estas seguro?", // Asegúrate de tener esta clave en tu .arb
+                      style: TextStyle(color: colorScheme.onSurface),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          "cancelar", // O "Cancelar"
+                          style: TextStyle(color: colorScheme.primary),
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.error,
+                          foregroundColor: colorScheme.onError,
+                        ),
+                        onPressed: () async {
+                          var result =
+                              await UserRepository.reiniciarFechaFumar();
+
+                          if (result is BaseResultError) {
+                            return;
+                          }
+
+                          Navigator.pushNamed(context, AppRoutes.home);
+                        },
+                        child: Text("aceptar"), // O "Aceptar"
+                      ),
+                    ],
+                  ),
+                );
               },
               colorScheme: colorScheme,
             ),
@@ -165,7 +206,9 @@ Widget _buildThemeSwitchCard(BuildContext context,
         ),
       ),
       subtitle: Text(
-        isDark ? "localizations.temaOscuroActivo" : "localizations.temaClaroActivo",
+        isDark
+            ? "localizations.temaOscuroActivo"
+            : "localizations.temaClaroActivo",
         style: TextStyle(
           color: colorScheme.onSurface.withOpacity(0.7),
           fontSize: 13,

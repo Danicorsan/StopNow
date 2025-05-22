@@ -124,4 +124,13 @@ class UserDao {
 
     return List<Map<String, dynamic>>.from(response);
   }
+
+  // Método para actualizar solo la fecha_dejar_fumar de un usuario (para recaída)
+  static Future<void> actualizarFechaDejarFumar() async {
+    DateTime nuevaFecha = DateTime.now();
+    final userId = supabase.auth.currentUser?.id;
+    await supabase.from('public.users').update({
+      'fecha_dejar_fumar': nuevaFecha.toIso8601String(),
+    }).eq('id', userId!);
+  }
 }

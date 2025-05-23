@@ -198,7 +198,7 @@ Widget _buildThemeSwitchCard(BuildContext context,
         child: Icon(Icons.brightness_6, color: colorScheme.secondary, size: 28),
       ),
       title: Text(
-        "localizations.temaOscuro",
+        localizations.temaOscuro,
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
@@ -207,8 +207,8 @@ Widget _buildThemeSwitchCard(BuildContext context,
       ),
       subtitle: Text(
         isDark
-            ? "localizations.temaOscuroActivo"
-            : "localizations.temaClaroActivo",
+            ? localizations.temaOscuroActivo
+            : localizations.temaClaroActivo,
         style: TextStyle(
           color: colorScheme.onSurface.withOpacity(0.7),
           fontSize: 13,
@@ -220,6 +220,9 @@ Widget _buildThemeSwitchCard(BuildContext context,
           themeProvider.toggleTheme(value);
         },
         activeColor: colorScheme.secondary,
+        inactiveThumbColor: colorScheme.primary, // Color del "thumb" desactivado
+        inactiveTrackColor: colorScheme.primary
+            .withOpacity(0.1), // Color de la pista desactivada
       ),
       onTap: () {
         themeProvider.toggleTheme(!isDark);

@@ -159,5 +159,8 @@
   "logro_18_title": "Halfway There",
   "logro_18_desc": "The risk of lung cancer is approximately half that of a smoker.",
   "logro_19_title": "Total Victory",
-  "logro_19_desc": "The risk of cardiovascular disease is the same as that of someone who has never smoked."
+  "logro_19_desc": "The risk of cardiovascular disease is the same as that of someone who has never smoked.",
+  "temaOscuro": "Modo oscuro",
+  "temaOscuroActivo": "Tema ocuro activo",
+  "temaClaroActivo" : "Tema claro activo"
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -16,23 +18,23 @@ Drawer baseDrawer(BuildContext context) {
     child: Column(
       children: <Widget>[
         // Encabezado del Drawer
-        Container(
+        SizedBox(
           width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                colorScheme.secondary,
-                colorScheme.primary,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
           child: DrawerHeader(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  colorScheme.secondary,
+                  colorScheme.primary,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 80,
                   width: 80,
                   child: UserAvatar(),
@@ -91,7 +93,9 @@ Drawer baseDrawer(BuildContext context) {
             ],
           ),
         ),
-        const Divider(),
+        Divider(
+          color: colorScheme.primary,
+        ),
         // Ajustes
         _buildDrawerItem(
           context,

@@ -159,5 +159,8 @@
   "logro_18_title": "Media Meta",
   "logro_18_desc": "El riesgo de cáncer de pulmón es aproximadamente la mitad que el de un fumador.",
   "logro_19_title": "Victoria Total",
-  "logro_19_desc": "El riesgo de enfermedad cardiovascular es igual al de una persona que nunca ha fumado."
+  "logro_19_desc": "El riesgo de enfermedad cardiovascular es igual al de una persona que nunca ha fumado.",
+  "dialogoRecaida": "Esta accion borrara tu progreso. Esta accion no se puede revertir. ¿Estas seguro?",
+  "cancelar": "Cancelar",
+  "aceptar": "Aceptar"
 }

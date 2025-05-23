@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,14 +76,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: TextStyle(color: colorScheme.primary),
                     ),
                     content: Text(
-                      "Esta accion borrara tu progreso. Esta accion no se puede revertir. ¿Estas seguro?", // Asegúrate de tener esta clave en tu .arb
+                      localizations
+                          .dialogoRecaida, // Asegúrate de tener esta clave en tu .arb
                       style: TextStyle(color: colorScheme.onSurface),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text(
-                          "cancelar", // O "Cancelar"
+                          localizations.cancelar, // O "Cancelar"
                           style: TextStyle(color: colorScheme.primary),
                         ),
                       ),
@@ -98,9 +101,17 @@ class _SettingsPageState extends State<SettingsPage> {
                             return;
                           }
 
-                          Navigator.pushNamed(context, AppRoutes.home);
+                          // Recarga el usuario actualizado y actualiza el provider
+                          final user = await UserRepository.usuarioActual();
+                          if (user != null) {
+                            Provider.of<UserProvider>(context, listen: false)
+                                .setUser(user);
+                          }
+
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, AppRoutes.home, (route) => false);
                         },
-                        child: Text("aceptar"), // O "Aceptar"
+                        child: Text(localizations.aceptar),
                       ),
                     ],
                   ),
@@ -173,8 +184,6 @@ class _SettingsPageState extends State<SettingsPage> {
             fontSize: 13,
           ),
         ),
-        trailing:
-            Icon(Icons.arrow_forward_ios_rounded, color: colorScheme.onPrimary),
         onTap: onTap,
       ),
     );
@@ -206,9 +215,7 @@ Widget _buildThemeSwitchCard(BuildContext context,
         ),
       ),
       subtitle: Text(
-        isDark
-            ? localizations.temaOscuroActivo
-            : localizations.temaClaroActivo,
+        isDark ? localizations.temaOscuroActivo : localizations.temaClaroActivo,
         style: TextStyle(
           color: colorScheme.onSurface.withOpacity(0.7),
           fontSize: 13,
@@ -220,7 +227,8 @@ Widget _buildThemeSwitchCard(BuildContext context,
           themeProvider.toggleTheme(value);
         },
         activeColor: colorScheme.secondary,
-        inactiveThumbColor: colorScheme.primary, // Color del "thumb" desactivado
+        inactiveThumbColor:
+            colorScheme.primary, // Color del "thumb" desactivado
         inactiveTrackColor: colorScheme.primary
             .withOpacity(0.1), // Color de la pista desactivada
       ),

@@ -48,15 +48,15 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
           labelText: label,
           labelStyle: TextStyle(color: colorScheme.primary),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary, width: 2),
           ),
         ),
@@ -113,15 +113,15 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
               icon: Icons.attach_money,
               keyboardType: TextInputType.number,
               validator: (value) {
-                if (value != null &&
-                    value.isNotEmpty &&
+                if (value == null ||
+                    value.isEmpty ||
                     double.tryParse(value) == null) {
                   return localizations.introduceNumeroValido;
                 }
                 return null;
               },
               inputFormatters: [
-                LengthLimitingTextInputFormatter(8),
+                LengthLimitingTextInputFormatter(12),
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
               ],
               colorScheme: colorScheme,

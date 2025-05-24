@@ -162,5 +162,8 @@
   "logro_19_desc": "El riesgo de enfermedad cardiovascular es igual al de una persona que nunca ha fumado.",
   "dialogoRecaida": "Esta accion borrara tu progreso. Esta accion no se puede revertir. ¿Estas seguro?",
   "cancelar": "Cancelar",
-  "aceptar": "Aceptar"
+  "aceptar": "Aceptar",
+  "inspira": "Inhale",
+  "aguanta": "Hold",
+  "expira": "Exhale"
 }

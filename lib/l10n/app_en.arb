@@ -25,8 +25,8 @@
   "cigarrosEvitados": "Cigarettes avoided",
   "tiempoDeVidaGanado": "Life time gained",
   "teEncuentrasConGanasDeFumar": "Do you feel like smoking?",
-  "pruebaConNuestroMetodoDeRelajacion": "Try our relaxation method",
-  "metodoDeRelajacion": "Relaxation method",
+  "pruebaConNuestroMetodoDeRelajacion": "Try our relaxing method",
+  "metodoDeRelajacion": "Relaxing method",
   "hasDesbloqueadoLogros": "You've unlocked {unlocked} out of {total} achievements!",
   "@hasDesbloqueadoLogros": {
     "description": "Achievements unlocked by the user",
@@ -165,5 +165,8 @@
   "temaClaroActivo" : "Clear theme activated",
   "dialogoRecaida": "This action will delete your progress. This action cant be reverted. ¿Are you sure?",
   "cancelar": "Cancel",
-  "aceptar": "Accept"
+  "aceptar": "Accept",
+  "inspira": "Inhale",
+  "aguanta": "Hold",
+  "expira": "Exhale"
 }

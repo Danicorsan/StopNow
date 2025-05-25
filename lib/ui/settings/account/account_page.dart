@@ -74,15 +74,15 @@ class _AccountPageState extends State<AccountPage> {
           labelText: label,
           labelStyle: TextStyle(color: colorScheme.primary),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary, width: 2),
           ),
         ),

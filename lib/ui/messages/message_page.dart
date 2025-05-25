@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/messages/message_provider.dart';
@@ -17,6 +18,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,124 +28,203 @@ class _ChatPageState extends State<ChatPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final myNombreUsuario = Provider.of<UserProvider>(context, listen: false)
+            .currentUser
+            ?.nombreUsuario ??
+        '';
 
     return Scaffold(
       appBar: baseAppBar(
         localizations.chat,
       ),
       drawer: baseDrawer(context),
-      backgroundColor: colorScheme.background,
+      backgroundColor: const Color.fromARGB(216, 255, 255, 255),
       body: chatProvider.isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 Expanded(
-                  child: mensajes.isEmpty
-                      ? Center(
-                          child: Text(
-                            localizations.noHayMensajes,
-                            style: TextStyle(
-                                color: colorScheme.onSurface.withOpacity(0.6)),
-                          ),
-                        )
-                      : ListView.builder(
-                          reverse: true,
-                          padding: const EdgeInsets.all(12),
-                          itemCount: mensajes.length,
-                          itemBuilder: (context, index) {
-                            final mensaje = mensajes[index];
-                            final esMio = mensaje.usuarioId == myUserId;
+                    child: mensajes.isEmpty
+                        ? Center(
+                            child: Text(
+                              localizations.noHayMensajes,
+                              style: TextStyle(
+                                  color:
+                                      colorScheme.onSurface.withOpacity(0.6)),
+                            ),
+                          )
+                        : ListView.builder(
+                            controller: _scrollController,
+                            reverse: true,
+                            padding: const EdgeInsets.all(12),
+                            itemCount: mensajes.length,
+                            itemBuilder: (context, index) {
+                              final mensaje = mensajes[index];
+                              final esMio = mensaje.usuarioId == myUserId;
+                              final contieneMencion = myNombreUsuario
+                                      .isNotEmpty &&
+                                  mensaje.mensaje.contains('@$myNombreUsuario');
 
-                            return Align(
-                              alignment: esMio
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 14),
-                                constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: esMio
-                                      ? colorScheme.secondary
-                                      : colorScheme.surfaceVariant,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(16),
-                                    topRight: const Radius.circular(16),
-                                    bottomLeft: Radius.circular(esMio ? 16 : 0),
-                                    bottomRight:
-                                        Radius.circular(esMio ? 0 : 16),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color:
-                                          colorScheme.shadow.withOpacity(0.04),
-                                      blurRadius: 2,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: esMio
-                                      ? CrossAxisAlignment.end
-                                      : CrossAxisAlignment.start,
-                                  children: [
-                                    if (mensaje.nombreUsuario != null &&
-                                        mensaje.nombreUsuario.isNotEmpty)
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 2),
+                              // Mostrar fecha si es el primer mensaje o si la fecha cambió respecto al anterior
+                              bool mostrarFecha = false;
+                              if (index == mensajes.length - 1) {
+                                mostrarFecha = true;
+                              } else {
+                                final mensajeSiguiente = mensajes[index + 1];
+                                if (!_esMismaFecha(mensaje.fechaEnvio,
+                                    mensajeSiguiente.fechaEnvio)) {
+                                  mostrarFecha = true;
+                                }
+                              }
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  if (mostrarFecha)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      child: Center(
                                         child: Container(
-                                          width: double.infinity,
-                                          color: colorScheme.tertiary
-                                              .withOpacity(0.2),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 12),
+                                          decoration: BoxDecoration(
+                                            color: colorScheme.surfaceVariant,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
                                           child: Text(
-                                            mensaje.nombreUsuario,
-                                            textAlign: TextAlign.start,
+                                            _formatearFechaLabel(
+                                                mensaje.fechaEnvio, context),
                                             style: TextStyle(
-                                              color: esMio
-                                                  ? colorScheme.onSecondary
-                                                      .withOpacity(0.7)
-                                                  : colorScheme.primary,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 13,
+                                              fontSize: 12,
+                                              color: colorScheme.onSurface
+                                                  .withOpacity(0.7),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    Text(
-                                      mensaje.mensaje,
-                                      style: TextStyle(
-                                        color: esMio
-                                            ? colorScheme.onSecondary
-                                            : colorScheme.onSurface,
-                                        fontSize: 16,
+                                    ),
+                                  // Tu mensaje como antes
+                                  Align(
+                                    alignment: esMio
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 14),
+                                      // Elimina constraints: BoxConstraints(maxWidth: ...),
+                                      decoration: BoxDecoration(
+                                        color: contieneMencion
+                                            ? const Color.fromARGB(
+                                                255, 217, 235, 255)
+                                            : esMio
+                                                ? colorScheme.secondary
+                                                : colorScheme.surfaceVariant,
+                                        border: contieneMencion
+                                            ? Border.all(
+                                                color: colorScheme.tertiary,
+                                                width: 2,
+                                              )
+                                            : null,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: const Radius.circular(16),
+                                          topRight: const Radius.circular(16),
+                                          bottomLeft:
+                                              Radius.circular(esMio ? 16 : 0),
+                                          bottomRight:
+                                              Radius.circular(esMio ? 0 : 16),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: colorScheme.shadow
+                                                .withOpacity(0.04),
+                                            blurRadius: 2,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: esMio
+                                              ? CrossAxisAlignment.end
+                                              : CrossAxisAlignment.start,
+                                          children: [
+                                            if (mensaje.nombreUsuario != null &&
+                                                mensaje
+                                                    .nombreUsuario.isNotEmpty)
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 2),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  color: colorScheme.tertiary
+                                                      .withOpacity(0.2),
+                                                  child: Text(
+                                                    mensaje.nombreUsuario,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      color: esMio
+                                                          ? colorScheme
+                                                              .onSecondary
+                                                              .withOpacity(0.7)
+                                                          : colorScheme.primary,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            contieneMencion
+                                                ? _buildMensajeConMencion(
+                                                    mensaje.mensaje,
+                                                    myNombreUsuario,
+                                                    colorScheme)
+                                                : Text(
+                                                    mensaje.mensaje,
+                                                    style: TextStyle(
+                                                      color: esMio
+                                                          ? colorScheme
+                                                              .onSecondary
+                                                          : colorScheme
+                                                              .onSurface,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                            const SizedBox(height: 4),
+                                            Container(
+                                              width: double.infinity,
+                                              child: Text(
+                                                textAlign: TextAlign.end,
+                                                _formatHora(mensaje.fechaEnvio),
+                                                style: TextStyle(
+                                                  color: esMio
+                                                      ? colorScheme.onSecondary
+                                                          .withOpacity(0.7)
+                                                      : colorScheme.onSurface
+                                                          .withOpacity(0.6),
+                                                  fontSize: 11,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      _formatHora(mensaje.fechaEnvio),
-                                      style: TextStyle(
-                                        color: esMio
-                                            ? colorScheme.onSecondary
-                                                .withOpacity(0.7)
-                                            : colorScheme.onSurface
-                                                .withOpacity(0.6),
-                                        fontSize: 11,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
+                                  ),
+                                ],
+                              );
+                            },
+                          )),
                 const Divider(height: 1),
                 Container(
                   color: colorScheme.surface,
@@ -193,6 +274,17 @@ class _ChatPageState extends State<ChatPage> {
       context.read<ChatProvider>().enviarMensaje(texto, context);
       _controller.clear();
     }
+
+    // Espera un momento a que el nuevo mensaje se agregue al árbol de widgets
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0.0, // Porque está en modo reverse
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   String _formatHora(DateTime? fecha) {
@@ -200,5 +292,66 @@ class _ChatPageState extends State<ChatPage> {
     final hora = fecha.hour.toString().padLeft(2, '0');
     final min = fecha.minute.toString().padLeft(2, '0');
     return '$hora:$min';
+  }
+
+  String _formatearFechaLabel(DateTime fecha, BuildContext context) {
+    final ahora = DateTime.now();
+    final hoy = DateTime(ahora.year, ahora.month, ahora.day);
+    final fechaNormalizada = DateTime(fecha.year, fecha.month, fecha.day);
+
+    if (fechaNormalizada == hoy) {
+      return "AppLocalizations.of(context)!.hoy";
+    } else if (fechaNormalizada == hoy.subtract(const Duration(days: 1))) {
+      return "AppLocalizations.of(context)!.ayer";
+    } else {
+      return '${fecha.day.toString().padLeft(2, '0')}/${fecha.month.toString().padLeft(2, '0')}/${fecha.year}';
+    }
+  }
+
+  bool _esMismaFecha(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  Widget _buildMensajeConMencion(
+      String mensaje, String nombreUsuario, ColorScheme colorScheme) {
+    final mention = '@$nombreUsuario';
+    final partes = mensaje.split(mention);
+
+    List<InlineSpan> spans = [];
+    for (int i = 0; i < partes.length; i++) {
+      if (partes[i].isNotEmpty) {
+        spans.add(TextSpan(
+          text: partes[i],
+          style: const TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0),
+            fontSize: 16,
+          ),
+        ));
+      }
+      if (i < partes.length - 1) {
+        spans.add(TextSpan(
+          text: mention,
+          style: TextStyle(
+            color: colorScheme.primary,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ));
+      }
+    }
+
+    return RichText(
+      text: TextSpan(
+        children: spans,
+        style: const TextStyle(fontSize: 16),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _controller.dispose(); // también el de texto
+    super.dispose();
   }
 }

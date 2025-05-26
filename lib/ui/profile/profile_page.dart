@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    var achievements = Achievement.getLocalizedAchievements(localizations);
+    var achievements = AchievementModel.getLocalizedAchievements(localizations);
 
     // Cálculo de logros desbloqueados
     final now = DateTime.now();

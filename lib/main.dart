@@ -11,8 +11,10 @@ import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/messages/message_provider.dart';
+import 'package:stopnow/ui/readings/readings_page.dart';
+import 'package:stopnow/ui/readings/readings_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
-import 'package:stopnow/ui/theme/theme.dart';
+import 'package:stopnow/utils/themes/theme.dart';
 import 'package:stopnow/utils/constants/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,6 +42,7 @@ Future<void> main() async {
         create: (context) => RegisterProvider(),
       ),
       ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => ReadingsProvider()),
     ],
     child: const MyApp(),
   ));
@@ -75,7 +78,7 @@ class MyApp extends StatelessWidget {
               }
               return const Locale('es', 'ES');
             },
-            //home: AchievementsPage(),
+            //home: LecturaPage(),-
           );
         },
       ),

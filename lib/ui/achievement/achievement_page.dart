@@ -19,7 +19,7 @@ class AchievementsPage extends StatelessWidget {
 
     //TODO: CAMBIAR LA LISTA DE LOGROS PARA CUANDO ESTA EN INGLES O EN ESPAÑOL
 
-    int unlocked = Achievement.getLocalizedAchievements(localizations)
+    int unlocked = AchievementModel.getLocalizedAchievements(localizations)
         .where((a) => tiempoSinFumar >= a.duration)
         .length;
 
@@ -35,7 +35,7 @@ class AchievementsPage extends StatelessWidget {
                 Text(
                   localizations.hasDesbloqueadoLogros(
                       unlocked,
-                      Achievement.getLocalizedAchievements(localizations)
+                      AchievementModel.getLocalizedAchievements(localizations)
                           .length),
                   style: const TextStyle(
                     fontSize: 20,
@@ -46,7 +46,7 @@ class AchievementsPage extends StatelessWidget {
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
                   value: unlocked /
-                      Achievement.getLocalizedAchievements(localizations)
+                      AchievementModel.getLocalizedAchievements(localizations)
                           .length,
                   minHeight: 10,
                   backgroundColor: Colors.grey[300],
@@ -60,11 +60,11 @@ class AchievementsPage extends StatelessWidget {
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               itemCount:
-                  Achievement.getLocalizedAchievements(localizations).length,
+                  AchievementModel.getLocalizedAchievements(localizations).length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final achievement =
-                    Achievement.getLocalizedAchievements(localizations)[index];
+                    AchievementModel.getLocalizedAchievements(localizations)[index];
                 final unlocked = tiempoSinFumar >= achievement.duration;
                 return Card(
                   elevation: unlocked ? 6 : 2,

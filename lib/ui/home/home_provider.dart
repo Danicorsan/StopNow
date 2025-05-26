@@ -47,14 +47,15 @@ class HomeProvider with ChangeNotifier {
   late final String _fraseDelDia;
 
   HomeProvider(this.user) {
-    _fraseDelDia = frasesMotivadoras[Random().nextInt(frasesMotivadoras.length)];
+    _fraseDelDia =
+        frasesMotivadoras[Random().nextInt(frasesMotivadoras.length)];
     _startTimer();
   }
 
   void _startTimer() {
-    _timer?.cancel(); // Por si se reinicializa
+    _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (_) {
-      notifyListeners(); // Hace que se reconstruya la UI
+      notifyListeners();
     });
   }
 
@@ -62,19 +63,17 @@ class HomeProvider with ChangeNotifier {
     _timer?.cancel();
   }
 
-   String getFrase() => _fraseDelDia;
+  String getFrase() => _fraseDelDia;
 
   int getAnios() {
     if (user == null) return 0;
     DateTime now = DateTime.now();
     DateTime start = user!.fechaDejarFumar;
-
     int years = now.year - start.year;
     if (now.month < start.month ||
         (now.month == start.month && now.day < start.day)) {
       years--;
     }
-
     return years;
   }
 
@@ -82,7 +81,6 @@ class HomeProvider with ChangeNotifier {
     if (user == null) return 0;
     DateTime now = DateTime.now();
     DateTime start = user!.fechaDejarFumar;
-
     int months = now.month - start.month;
     if (now.day < start.day) {
       months--;
@@ -90,7 +88,6 @@ class HomeProvider with ChangeNotifier {
     if (months < 0) {
       months += 12;
     }
-
     return months;
   }
 
@@ -98,17 +95,8 @@ class HomeProvider with ChangeNotifier {
     if (user == null) return 0;
     DateTime now = DateTime.now();
     DateTime start = user!.fechaDejarFumar;
-
-    Duration duration =
-        now.difference(DateTime(now.year, now.month, start.day));
-    int days = duration.inDays;
-    if (days < 0) {
-      final prevMonth =
-          DateTime(now.year, now.month, 0); // último día del mes anterior
-      days += prevMonth.day;
-    }
-
-    return days;
+    Duration duration = now.difference(start);
+    return duration.inDays;
   }
 
   int getHoras() {
@@ -116,7 +104,6 @@ class HomeProvider with ChangeNotifier {
     DateTime start = user!.fechaDejarFumar;
     DateTime now = DateTime.now();
     Duration diff = now.difference(start);
-
     return diff.inHours % 24;
   }
 
@@ -125,7 +112,6 @@ class HomeProvider with ChangeNotifier {
     DateTime start = user!.fechaDejarFumar;
     DateTime now = DateTime.now();
     Duration diff = now.difference(start);
-
     return diff.inMinutes % 60;
   }
 
@@ -134,27 +120,25 @@ class HomeProvider with ChangeNotifier {
     DateTime start = user!.fechaDejarFumar;
     DateTime now = DateTime.now();
     Duration diff = now.difference(start);
-
     return diff.inSeconds % 60;
+  }
+
+  /// Cambia los cálculos a minutos para mostrar progreso desde el primer minuto
+
+  int getCigarrosEvitados() {
+    if (user == null) return 0;
+    DateTime start = user!.fechaDejarFumar;
+    DateTime now = DateTime.now();
+    int minutos = now.difference(start).inMinutes;
+    // Cigarros evitados por minuto
+    double cigarrosPorMinuto = user!.cigarrosAlDia / 1440.0;
+    return (minutos * cigarrosPorMinuto).floor();
   }
 
   int getDineroAhorrado() {
     if (user == null) return 0;
-
     double precioPorCigarro = user!.precioPaquete / user!.cigarrosPorPaquete;
-
     return (getCigarrosEvitados() * precioPorCigarro).round();
-  }
-
-  int getCigarrosEvitados() {
-    if (user == null) return 0;
-
-    DateTime start = user!.fechaDejarFumar;
-    DateTime now = DateTime.now();
-
-    int diff = now.difference(start).inDays;
-
-    return diff * user!.cigarrosAlDia;
   }
 
   int getTiempoDeVidaGanado() {

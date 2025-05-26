@@ -31,8 +31,7 @@ class ChatProvider extends ChangeNotifier {
     final res = await _supabase
         .from('public.chat_mensajes')
         .select()
-        .order('fecha_envio', ascending: false)
-        .limit(50);
+        .order('fecha_envio', ascending: false);
 
     _mensajes.clear();
     _mensajes.addAll(res.map((m) => MessageModel.fromMap(m)).toList());

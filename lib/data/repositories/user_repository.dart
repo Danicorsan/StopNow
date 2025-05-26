@@ -171,7 +171,7 @@ class UserRepository {
           .map<ReadingModel>((a) => ReadingModel.fromMap(a))
           .toList();
     } catch (e) {
-      print('Error al cargar artículos: $e');
+      print('Error al cargarrrrrrrrrrrrrrrrrrrrrrrrrrrrrr artículos: $e');
       return [];
     }
   }

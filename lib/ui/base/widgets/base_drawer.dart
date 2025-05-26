@@ -90,6 +90,13 @@ Drawer baseDrawer(BuildContext context) {
                 route: AppRoutes.achievement,
                 colorScheme: colorScheme,
               ),
+              _buildDrawerItem(
+                context,
+                icon: Icons.menu_book_sharp,
+                title: "Lecturas",
+                route: AppRoutes.readings,
+                colorScheme: colorScheme,
+              ),
             ],
           ),
         ),

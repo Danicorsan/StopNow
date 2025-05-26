@@ -6,6 +6,7 @@ import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/models/goal_model.dart';
+import 'package:stopnow/data/models/reading_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
@@ -158,6 +159,20 @@ class UserRepository {
       return BaseResultSuccess(response);
     } catch (e) {
       return BaseResultError(e.toString());
+    }
+  }
+
+  // Metodo para traer articulos de lectura
+  static Future<List<ReadingModel>> traerArticulos() async {
+    try {
+      final response = await UserDao.obtenerArticulos();
+
+      return response
+          .map<ReadingModel>((a) => ReadingModel.fromMap(a))
+          .toList();
+    } catch (e) {
+      print('Error al cargar artículos: $e');
+      return [];
     }
   }
 }

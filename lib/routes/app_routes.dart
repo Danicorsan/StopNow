@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/models/goal_model.dart';
+import 'package:stopnow/data/models/reading_model.dart';
 import 'package:stopnow/ui/achievement/achievement_page.dart';
 import 'package:stopnow/ui/calm/calm_page.dart';
 import 'package:stopnow/ui/goals/add_goals.dart';
@@ -10,6 +11,8 @@ import 'package:stopnow/ui/init/init_page.dart';
 import 'package:stopnow/ui/login/login_page.dart';
 import 'package:stopnow/ui/messages/message_page.dart';
 import 'package:stopnow/ui/profile/profile_page.dart';
+import 'package:stopnow/ui/readings/readings_details_page.dart';
+import 'package:stopnow/ui/readings/readings_page.dart';
 import 'package:stopnow/ui/register/register_page.dart';
 import 'package:stopnow/ui/settings/account/account_page.dart';
 import 'package:stopnow/ui/settings/settings_page.dart';
@@ -30,6 +33,8 @@ class AppRoutes {
   static const String detailGoal = '/detailGoal';
   static const String chat = '/chat';
   static const String achievement = '/achievement';
+  static const String readings = '/readings';
+  static const String readingDetail = '/readingDetail';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -121,6 +126,19 @@ class AppRoutes {
       case achievement:
         return MaterialPageRoute(
           builder: (_) => const AchievementsPage(),
+          settings: settings,
+        );
+
+      case readings:
+        return MaterialPageRoute(
+          builder: (_) => const ReadingsPage(),
+          settings: settings,
+        );
+
+      case readingDetail:
+        final readingModel = settings.arguments as ReadingModel;
+        return MaterialPageRoute(
+          builder: (_) => ReadingsDetailsPage(articulo: readingModel),
           settings: settings,
         );
 

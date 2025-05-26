@@ -78,7 +78,7 @@ final ThemeData darkTheme = ThemeData(
     foregroundColor: Colors.white,
   ),
   cardColor: const Color(0xFF1C2A3A),
-  dividerColor: Color(0xFF334155), // Gris-azulado más equilibrado
+  dividerColor: const Color(0xFF334155), // Gris-azulado más equilibrado
   iconTheme: const IconThemeData(color: Color(0xFF60A5FA)),
   textTheme: const TextTheme(
     bodyLarge: TextStyle(color: Colors.white),

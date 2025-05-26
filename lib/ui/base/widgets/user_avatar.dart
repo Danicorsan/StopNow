@@ -1,10 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
-import 'package:stopnow/data/repositories/user_repository.dart';
 
 class UserAvatar extends StatefulWidget {
   const UserAvatar({super.key});
@@ -26,7 +25,7 @@ class _UserAvatarState extends State<UserAvatar> {
   Future<void> _loadAvatar() async {
     setState(() => _isLoading = true);
     try {
-      final url = await Provider.of<UserProvider>(context, listen: false)
+      final url = Provider.of<UserProvider>(context, listen: false)
           .currentUser
           ?.fotoPerfil;
       if (mounted && url != null) {
@@ -47,18 +46,38 @@ class _UserAvatarState extends State<UserAvatar> {
     final colorScheme = theme.colorScheme;
 
     return GestureDetector(
-      onTap: null, // Puedes activar _updateAvatar si lo deseas
+      onTap: null, // Activa _updateAvatar si deseas permitir edición
       child: CircleAvatar(
         radius: 50,
         backgroundColor: colorScheme.primary.withOpacity(0.1),
-        backgroundImage: _isLoading || _avatarUrl.isEmpty
-            ? const AssetImage('assets/default_avatar.png') as ImageProvider
-            : NetworkImage(_avatarUrl),
         child: _isLoading
-            ? CircularProgressIndicator(
-                color: colorScheme.primary,
-              )
-            : null,
+            ? CircularProgressIndicator(color: colorScheme.primary)
+            : ClipOval(
+                child: _avatarUrl.isEmpty
+                    ? Image.asset(
+                        'assets/default_avatar.png',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: _avatarUrl,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(
+                            color: colorScheme.primary,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          'assets/default_avatar.png',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+              ),
       ),
     );
   }

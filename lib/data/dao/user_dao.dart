@@ -133,4 +133,21 @@ class UserDao {
       'fecha_dejar_fumar': nuevaFecha.toIso8601String(),
     }).eq('id', userId!);
   }
+
+  // Metodo para traer los articulos de lectura del usuario
+  static Future<List<Map<String, dynamic>>> obtenerArticulos() async {
+    final response = await supabase
+        .from('public.articulos')
+        .select()
+        .eq('idioma', "es") //locale.languageCode)
+        .order('fecha_creacion', ascending: false);
+
+    if (response.isEmpty) {
+      return [];
+    }
+
+    print('Lecturas obtenidas: ${response}');
+
+    return List<Map<String, dynamic>>.from(response);
+  }
 }

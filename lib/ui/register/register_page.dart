@@ -1,10 +1,12 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
@@ -55,15 +57,32 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    final sdkInt = androidInfo.version.sdkInt;
 
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
-      Provider.of<RegisterProvider>(context, listen: false)
-          .setProfileImage(_selectedImage!);
+    PermissionStatus status;
+    if (sdkInt >= 33) {
+      status = await Permission.photos.request();
+    } else {
+      status = await Permission.storage.request();
+    }
+
+    if (status.isGranted) {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+        Provider.of<RegisterProvider>(context, listen: false)
+            .setProfileImage(_selectedImage!);
+      }
+    } else if (status.isPermanentlyDenied) {
+      await openAppSettings();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Permiso denegado')),
+      );
     }
   }
 
@@ -92,15 +111,15 @@ class _RegisterPageState extends State<RegisterPage> {
           labelText: label,
           labelStyle: TextStyle(color: colorScheme.primary),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary, width: 2),
           ),
           suffixIcon: suffixIcon,
@@ -143,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     shadows: [
                       Shadow(
                         color: colorScheme.shadow.withOpacity(0.27),
-                        offset: Offset(0.0, 6.0),
+                        offset: const Offset(0.0, 6.0),
                         blurRadius: 7.0,
                       ),
                     ],
@@ -156,7 +175,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(localizations.fotoDePerfil,
-                          style: TextStyle(fontSize: 16.sp, color: colorScheme.onBackground)),
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              color: colorScheme.onBackground)),
                       SizedBox(height: 10.h),
                       GestureDetector(
                         onTap: () {
@@ -169,7 +190,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               : null,
                           backgroundColor: colorScheme.surfaceVariant,
                           child: _selectedImage == null
-                              ? Icon(Icons.add_a_photo, size: 30, color: colorScheme.primary)
+                              ? Icon(Icons.add_a_photo,
+                                  size: 30, color: colorScheme.primary)
                               : null,
                         ),
                       ),
@@ -402,13 +424,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(localizations.yaTienesCuenta,
-                        style: TextStyle(fontSize: 15.sp, color: colorScheme.onBackground)),
+                        style: TextStyle(
+                            fontSize: 15.sp, color: colorScheme.onBackground)),
                     SizedBox(width: 10.w),
                     TextButton(
                       onPressed: () =>
                           Navigator.pushReplacementNamed(context, '/login'),
                       child: Text(localizations.pinchaAqui,
-                          style: TextStyle(fontSize: 15.sp, color: colorScheme.primary)),
+                          style: TextStyle(
+                              fontSize: 15.sp, color: colorScheme.primary)),
                     ),
                   ],
                 ),

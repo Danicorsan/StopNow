@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/ui/base/widgets/base_appbar.dart';
+import 'package:stopnow/ui/base/widgets/base_textfield.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/login/login_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,12 +46,12 @@ class _LoginPageState extends State<LoginPage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
+      appBar: baseAppBar(localizations.iniciarSesion),
       backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 50.h),
               Image.asset(
                 'assets/logo-fondo-blanco.png',
                 height: 250.h,
@@ -70,79 +72,32 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 25.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                child: TextField(
-                  controller: _emailController,
-                  style: TextStyle(color: colorScheme.onBackground),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: colorScheme.primary,
-                    ),
-                    labelText: localizations.correo,
-                    labelStyle: TextStyle(color: colorScheme.primary),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(color: colorScheme.primary),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                          color: colorScheme.primary.withOpacity(0.5)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide:
-                          BorderSide(color: colorScheme.primary, width: 2),
-                    ),
-                  ),
-                ),
+              baseTextField(
+                controller: _emailController,
+                label: localizations.correo,
+                icon: Icons.email,
+                keyboardType: TextInputType.emailAddress,
+                context: context,
+                colorScheme: colorScheme,
               ),
-              SizedBox(height: 18.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                child: TextField(
+              baseTextField(
                   controller: _passwordController,
-                  style: TextStyle(color: colorScheme.onBackground),
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: colorScheme.primary,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                    ),
-                    prefixIcon: Icon(
-                      Icons.lock,
+                  label: localizations.contrasenia,
+                  icon: Icons.lock,
+                  obscureText: isPasswordVisible,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: colorScheme.primary,
                     ),
-                    labelText: localizations.contrasenia,
-                    labelStyle: TextStyle(color: colorScheme.primary),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(color: colorScheme.primary),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                          color: colorScheme.primary.withOpacity(0.5)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide:
-                          BorderSide(color: colorScheme.primary, width: 2),
-                    ),
+                    onPressed: () =>
+                        setState(() => isPasswordVisible = !isPasswordVisible),
                   ),
-                  obscureText: isPasswordVisible,
+                  colorScheme: colorScheme,
+                  context: context
                 ),
-              ),
               SizedBox(height: 30.h),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

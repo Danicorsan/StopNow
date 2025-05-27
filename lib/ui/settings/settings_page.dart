@@ -28,6 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
     await prefs.remove('password');
 
     Provider.of<UserProvider>(context, listen: false).clearUser();
+    Provider.of<ThemeProvider>(context, listen: false).toggleTheme(false);
 
     Navigator.of(context).pushNamedAndRemoveUntil(
       AppRoutes.welcome,
@@ -77,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     content: Text(
                       localizations
-                          .dialogoRecaida, // Asegúrate de tener esta clave en tu .arb
+                          .dialogoRecaida,
                       style: TextStyle(color: colorScheme.onSurface),
                     ),
                     actions: [

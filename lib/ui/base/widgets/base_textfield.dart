@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path/path.dart';
 
-Widget buildTextField({
+Widget baseTextField({
   required TextEditingController controller,
   required String label,
   required IconData icon,
@@ -15,11 +14,10 @@ Widget buildTextField({
   void Function()? onTap,
   bool readOnly = false,
   List<TextInputFormatter>? inputFormatters,
+  ColorScheme? colorScheme,
   required BuildContext context,
 }) {
-  final theme = Theme.of(context);
-  final colorScheme = theme.colorScheme;
-
+  colorScheme ??= Theme.of(context).colorScheme;
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 9.h),
     child: TextFormField(
@@ -30,20 +28,19 @@ Widget buildTextField({
         labelText: label,
         labelStyle: TextStyle(color: colorScheme.primary),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: colorScheme.primary),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
         suffixIcon: suffixIcon,
       ),
-      style: TextStyle(color: colorScheme.onBackground),
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
@@ -52,6 +49,7 @@ Widget buildTextField({
       readOnly: readOnly,
       inputFormatters: inputFormatters,
       autocorrect: false,
+      style: TextStyle(color: colorScheme.onBackground),
     ),
   );
 }

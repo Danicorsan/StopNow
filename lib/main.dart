@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
               }
               return const Locale('es', 'ES');
             },
-            //home: LecturaPage(),-
+            //home: LecturaPage(),
           );
         },
       ),

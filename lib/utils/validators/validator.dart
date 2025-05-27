@@ -6,10 +6,9 @@ class Validator {
     return emailRegex.hasMatch(email);
   }
 
-  // La contraseña debe tener al menos 8 caracteres, al menos una letra mayúscula, al menos una letra minúscula y al menos un número.
-  static bool isValidPassword(String password) {
-    final RegExp passwordRegex =
-        RegExp(r'^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$');
-    return passwordRegex.hasMatch(password);
+  static bool isValidPassword(String value) {
+    // Al menos 8 caracteres, una mayúscula, una minúscula y un número (el símbolo es opcional)
+    final regex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$');
+    return regex.hasMatch(value);
   }
 }

@@ -95,8 +95,25 @@ class HomeProvider with ChangeNotifier {
     if (user == null) return 0;
     DateTime now = DateTime.now();
     DateTime start = user!.fechaDejarFumar;
-    Duration duration = now.difference(start);
-    return duration.inDays;
+
+    // Calcular años y meses completos
+    // ignore: unused_local_variable
+    int years = now.year - start.year;
+    int months = now.month - start.month;
+    int days = now.day - start.day;
+
+    if (days < 0) {
+      // Restar un mes y sumar los días del mes anterior
+      months--;
+      // Calcular días en el mes anterior a 'now'
+      DateTime prevMonth = DateTime(now.year, now.month, 0);
+      days += prevMonth.day;
+    }
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+    return days;
   }
 
   int getHoras() {
@@ -152,7 +169,7 @@ class HomeProvider with ChangeNotifier {
     DateTime now = DateTime.now();
     return now.difference(start).inDays;
   }
-  
+
   int getHorasSinFumar() {
     if (user == null) return 0;
     DateTime start = user!.fechaDejarFumar;

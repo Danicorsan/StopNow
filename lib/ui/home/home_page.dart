@@ -104,13 +104,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         SizedBox(height: 10.h),
                         Text(
-                          "localizations.fechaDeDejarFumar" +
-                              ": " +
-                              "${fechaDejarFumar.day.toString().padLeft(2, '0')}/"
-                                  "${fechaDejarFumar.month.toString().padLeft(2, '0')}/"
-                                  "${fechaDejarFumar.year} "
-                                  "${fechaDejarFumar.hour.toString().padLeft(2, '0')}:"
-                                  "${fechaDejarFumar.minute.toString().padLeft(2, '0')}",
+                          "localizations.fechaDeDejarFumar: ${fechaDejarFumar.day.toString().padLeft(2, '0')}/${fechaDejarFumar.month.toString().padLeft(2, '0')}/${fechaDejarFumar.year} ${fechaDejarFumar.hour.toString().padLeft(2, '0')}:${fechaDejarFumar.minute.toString().padLeft(2, '0')}",
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: colorScheme.onPrimary.withOpacity(0.8),
@@ -184,19 +178,19 @@ class _HomePageState extends State<HomePage> {
                                   homeProvider, localizations, colorScheme),
                               _buildStatisticCard(
                                 localizations.dineroAhorrado,
-                                "${homeProvider.getDineroAhorrado()} €",
+                                "${homeProvider.getDineroAhorrado().toStringAsFixed(2)} €",
                                 Icons.attach_money,
                                 colorScheme,
                               ),
                               _buildStatisticCard(
                                 localizations.cigarrosEvitados,
-                                "${homeProvider.getCigarrosEvitados()}",
+                                "${homeProvider.getCigarrosEvitados().toStringAsFixed(2)}",
                                 Icons.smoke_free,
                                 colorScheme,
                               ),
                               _buildStatisticCard(
                                 localizations.tiempoDeVidaGanado,
-                                "${homeProvider.getTiempoDeVidaGanado()} ${localizations.min}",
+                                "${homeProvider.getTiempoDeVidaGanado().toStringAsFixed(2)} ${localizations.min}",
                                 Icons.favorite,
                                 colorScheme,
                               ),

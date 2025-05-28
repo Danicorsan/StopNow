@@ -113,23 +113,23 @@ class ProfilePage extends StatelessWidget {
                         )
                       else ...[
                         _buildStatisticRow(
-                          localizations.diasSinFumar,
-                          "${homeProvider.getDiasSinFumar()} ${localizations.dias}",
+                          localizations.tiempoSinFumar,
+                          formatTiempoSinFumar(homeProvider, localizations),
                           colorScheme,
                         ),
                         _buildStatisticRow(
                           localizations.cigarrosEvitadosEstadistica,
-                          "${homeProvider.getCigarrosEvitados()}",
+                          "${homeProvider.getCigarrosEvitados().toStringAsFixed(2)}",
                           colorScheme,
                         ),
                         _buildStatisticRow(
                           localizations.dineroAhorradoEstadistica,
-                          "${homeProvider.getDineroAhorrado()} €",
+                          "${homeProvider.getDineroAhorrado().toStringAsFixed(2)} €",
                           colorScheme,
                         ),
                         _buildStatisticRow(
                           localizations.tiempoVidaGanadoEstadistica,
-                          "${(homeProvider.getTiempoDeVidaGanado() / 60).floor()} ${localizations.horas}",
+                          "${((homeProvider.getTiempoDeVidaGanado() / 60).toStringAsFixed(2))} ${localizations.horas}",
                           colorScheme,
                         ),
                       ]
@@ -253,6 +253,21 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String formatTiempoSinFumar(
+      HomeProvider homeProvider, AppLocalizations localizations) {
+    final dias = homeProvider.getDiasSinFumar();
+    final horas = homeProvider.getHoras();
+    final minutos = homeProvider.getMinutos();
+
+    if (dias > 0) {
+      return "$dias ${localizations.dias}";
+    } else if (horas > 0) {
+      return "$horas ${localizations.horas}";
+    } else {
+      return "$minutos ${localizations.min}";
+    }
   }
 
   Widget _buildStatisticRow(

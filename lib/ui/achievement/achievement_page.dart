@@ -60,11 +60,12 @@ class AchievementsPage extends StatelessWidget {
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               itemCount:
-                  AchievementModel.getLocalizedAchievements(localizations).length,
+                  AchievementModel.getLocalizedAchievements(localizations)
+                      .length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
-                final achievement =
-                    AchievementModel.getLocalizedAchievements(localizations)[index];
+                final achievement = AchievementModel.getLocalizedAchievements(
+                    localizations)[index];
                 final unlocked = tiempoSinFumar >= achievement.duration;
                 return Card(
                   elevation: unlocked ? 6 : 2,

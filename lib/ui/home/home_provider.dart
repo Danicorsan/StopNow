@@ -125,23 +125,23 @@ class HomeProvider with ChangeNotifier {
 
   /// Cambia los cálculos a minutos para mostrar progreso desde el primer minuto
 
-  int getCigarrosEvitados() {
+  double getCigarrosEvitados() {
     if (user == null) return 0;
     DateTime start = user!.fechaDejarFumar;
     DateTime now = DateTime.now();
     int minutos = now.difference(start).inMinutes;
     // Cigarros evitados por minuto
     double cigarrosPorMinuto = user!.cigarrosAlDia / 1440.0;
-    return (minutos * cigarrosPorMinuto).floor();
+    return (minutos * cigarrosPorMinuto);
   }
 
-  int getDineroAhorrado() {
+  double getDineroAhorrado() {
     if (user == null) return 0;
     double precioPorCigarro = user!.precioPaquete / user!.cigarrosPorPaquete;
-    return (getCigarrosEvitados() * precioPorCigarro).round();
+    return (getCigarrosEvitados() * precioPorCigarro);
   }
 
-  int getTiempoDeVidaGanado() {
+  double getTiempoDeVidaGanado() {
     if (user == null) return 0;
     return getCigarrosEvitados() * 11;
   }
@@ -151,6 +151,20 @@ class HomeProvider with ChangeNotifier {
     DateTime start = user!.fechaDejarFumar;
     DateTime now = DateTime.now();
     return now.difference(start).inDays;
+  }
+  
+  int getHorasSinFumar() {
+    if (user == null) return 0;
+    DateTime start = user!.fechaDejarFumar;
+    DateTime now = DateTime.now();
+    return now.difference(start).inHours;
+  }
+
+  int getMinutosSinFumar() {
+    if (user == null) return 0;
+    DateTime start = user!.fechaDejarFumar;
+    DateTime now = DateTime.now();
+    return now.difference(start).inMinutes;
   }
 
   @override

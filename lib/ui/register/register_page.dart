@@ -235,29 +235,45 @@ class _RegisterPageState extends State<RegisterPage> {
                     colorScheme: colorScheme,
                     context: context),
                 baseTextField(
-                    controller: _fechaDejarDeFumarController,
-                    label: localizations.fechaDejarFumar,
-                    icon: Icons.calendar_today,
-                    readOnly: true,
-                    onTap: () async {
-                      FocusScope.of(context).unfocus();
-                      final picked = await showDatePicker(
+                  controller: _fechaDejarDeFumarController,
+                  label: localizations.fechaDejarFumar,
+                  icon: Icons.calendar_today,
+                  readOnly: true,
+                  onTap: () async {
+                    FocusScope.of(context).unfocus();
+                    final pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
+                    if (pickedDate != null) {
+                      final pickedTime = await showTimePicker(
                         context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
+                        initialTime: TimeOfDay.now(),
                       );
-                      if (picked != null) {
-                        _fechaDejarDeFumarController.text =
-                            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-                        registerProvider.setFechaDejarFumar(picked);
+                      DateTime finalDateTime = pickedDate;
+                      if (pickedTime != null) {
+                        finalDateTime = DateTime(
+                          pickedDate.year,
+                          pickedDate.month,
+                          pickedDate.day,
+                          pickedTime.hour,
+                          pickedTime.minute,
+                        );
                       }
-                    },
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? localizations.introduceFecha
-                        : null,
-                    colorScheme: colorScheme,
-                    context: context),
+                      _fechaDejarDeFumarController.text =
+                          "${finalDateTime.year}-${finalDateTime.month.toString().padLeft(2, '0')}-${finalDateTime.day.toString().padLeft(2, '0')} "
+                          "${finalDateTime.hour.toString().padLeft(2, '0')}:${finalDateTime.minute.toString().padLeft(2, '0')}";
+                      registerProvider.setFechaDejarFumar(finalDateTime);
+                    }
+                  },
+                  validator: (value) => (value == null || value.isEmpty)
+                      ? localizations.introduceFecha
+                      : null,
+                  colorScheme: colorScheme,
+                  context: context,
+                ),
                 baseTextField(
                     controller: _cigarrosPaqueteController,
                     label: localizations.cigarrosPorPaquete,
@@ -312,8 +328,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       return;
                     }
 
-                    Provider.of<RegisterProvider>(context, listen: false)
-                        .setProfileImage(_selectedImage!);
+                    if (_selectedImage != null) {
+                      Provider.of<RegisterProvider>(context, listen: false)
+                          .setProfileImage(_selectedImage!);
+                    }
 
                     await registerProvider.register();
 

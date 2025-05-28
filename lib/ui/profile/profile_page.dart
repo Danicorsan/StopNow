@@ -22,7 +22,6 @@ class ProfilePage extends StatelessWidget {
 
     var achievements = AchievementModel.getLocalizedAchievements(localizations);
 
-    // Cálculo de logros desbloqueados
     final now = DateTime.now();
     final fechaDejarFumar = user?.fechaDejarFumar ?? now;
     final tiempoSinFumar = now.difference(fechaDejarFumar);
@@ -55,7 +54,8 @@ class ProfilePage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.h),
                       Text(
-                        localizations.miembroDesde(user?.fechaRegistro.year ?? ""),
+                        localizations
+                            .miembroDesde(user?.fechaRegistro.year ?? ""),
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: colorScheme.onBackground.withOpacity(0.8),
@@ -96,26 +96,43 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      _buildStatisticRow(
-                        localizations.diasSinFumar,
-                        "${homeProvider.getDiasSinFumar()} ${localizations.dias}",
-                        colorScheme,
-                      ),
-                      _buildStatisticRow(
-                        localizations.cigarrosEvitadosEstadistica,
-                        "${homeProvider.getCigarrosEvitados()}",
-                        colorScheme,
-                      ),
-                      _buildStatisticRow(
-                        localizations.dineroAhorradoEstadistica,
-                        "${homeProvider.getDineroAhorrado()} €",
-                        colorScheme,
-                      ),
-                      _buildStatisticRow(
-                        localizations.tiempoVidaGanadoEstadistica,
-                        "${(homeProvider.getTiempoDeVidaGanado() / 60).floor()} ${localizations.horas}",
-                        colorScheme,
-                      ),
+                      if (fechaDejarFumar.isAfter(now))
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child: Text(
+                              "Cuando hayas dejado de fumar aparecerá aquí la información.",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: colorScheme.onSurface.withOpacity(0.7),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      else ...[
+                        _buildStatisticRow(
+                          localizations.diasSinFumar,
+                          "${homeProvider.getDiasSinFumar()} ${localizations.dias}",
+                          colorScheme,
+                        ),
+                        _buildStatisticRow(
+                          localizations.cigarrosEvitadosEstadistica,
+                          "${homeProvider.getCigarrosEvitados()}",
+                          colorScheme,
+                        ),
+                        _buildStatisticRow(
+                          localizations.dineroAhorradoEstadistica,
+                          "${homeProvider.getDineroAhorrado()} €",
+                          colorScheme,
+                        ),
+                        _buildStatisticRow(
+                          localizations.tiempoVidaGanadoEstadistica,
+                          "${(homeProvider.getTiempoDeVidaGanado() / 60).floor()} ${localizations.horas}",
+                          colorScheme,
+                        ),
+                      ]
                     ],
                   ),
                 ),
@@ -172,11 +189,13 @@ class ProfilePage extends StatelessWidget {
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 8.w, vertical: 8.h),
                                     decoration: BoxDecoration(
-                                      color: colorScheme.secondary.withOpacity(0.08),
+                                      color: colorScheme.secondary
+                                          .withOpacity(0.08),
                                       borderRadius: BorderRadius.circular(18.r),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: colorScheme.shadow.withOpacity(0.07),
+                                          color: colorScheme.shadow
+                                              .withOpacity(0.07),
                                           blurRadius: 8,
                                           offset: const Offset(0, 4),
                                         ),
@@ -191,10 +210,12 @@ class ProfilePage extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: [
                                           CircleAvatar(
-                                            backgroundColor: colorScheme.secondary,
+                                            backgroundColor:
+                                                colorScheme.secondary,
                                             radius: 28,
                                             child: Icon(Icons.emoji_events,
-                                                color: colorScheme.onSecondary, size: 32),
+                                                color: colorScheme.onSecondary,
+                                                size: 32),
                                           ),
                                           SizedBox(height: 12.h),
                                           Text(
@@ -234,7 +255,8 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatisticRow(String title, String value, ColorScheme colorScheme) {
+  Widget _buildStatisticRow(
+      String title, String value, ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(

@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                             size: 60.sp, color: colorScheme.onPrimary),
                         SizedBox(height: 20.h),
                         Text(
-                          "localizations.dejarasDeFumarEn",
+                          localizations.dejarasDeFumarEn,
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         SizedBox(height: 10.h),
                         Text(
-                          "localizations.fechaDeDejarFumar: ${fechaDejarFumar.day.toString().padLeft(2, '0')}/${fechaDejarFumar.month.toString().padLeft(2, '0')}/${fechaDejarFumar.year} ${fechaDejarFumar.hour.toString().padLeft(2, '0')}:${fechaDejarFumar.minute.toString().padLeft(2, '0')}",
+                          "${localizations.fechaDeDejarFumar}: ${fechaDejarFumar.day.toString().padLeft(2, '0')}/${fechaDejarFumar.month.toString().padLeft(2, '0')}/${fechaDejarFumar.year} ${fechaDejarFumar.hour.toString().padLeft(2, '0')}:${fechaDejarFumar.minute.toString().padLeft(2, '0')}",
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: colorScheme.onPrimary.withOpacity(0.8),

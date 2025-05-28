@@ -165,5 +165,12 @@
   "aceptar": "Aceptar",
   "inspira": "Inhale",
   "aguanta": "Hold",
-  "expira": "Exhale"
+  "expira": "Exhale",
+  "cerrar": "Cerrar",
+  "teQuedaParaDesbloquearlo": "Te queda para desbloquearlo",
+  "yaDesbloqueado": "¡Logro desbloqueado!",
+  "anios": "años",
+  "years": "years",
+  "dejarasDeFumarEn": "Dejarás de fumar en:",
+  "fechaDeDejarFumar": "Fecha para dejar de fumar:"
 }

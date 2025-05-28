@@ -5,8 +5,30 @@ import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CalmPage extends StatelessWidget {
+class CalmPage extends StatefulWidget {
   const CalmPage({super.key});
+
+  @override
+  State<CalmPage> createState() => _CalmPageState();
+}
+
+class _CalmPageState extends State<CalmPage> {
+  CalmProvider? _calmProvider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _calmProvider ??= Provider.of<CalmProvider>(context, listen: false);
+  }
+
+  Future<bool> _onWillPop() async {
+    if (_calmProvider?.init == true) {
+      _calmProvider?.reset();
+      setState(() {}); // Para actualizar la UI
+      return false; // No salir todavía
+    }
+    return true; // Salir
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,66 +37,66 @@ class CalmPage extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
-      appBar: baseAppBar(
-        localizations.calma,
-        volver: true,
-        context: context,
-        onTap: () => {
-          if (calmProvider.init)
-            {
-              Provider.of<CalmProvider>(context, listen: false).reset(),
-              calmProvider.reset()
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: baseAppBar(
+          localizations.calma,
+          volver: true,
+          context: context,
+          onTap: () {
+            if (calmProvider.init) {
+              calmProvider.reset();
+              setState(() {});
+            } else {
+              Navigator.pop(context);
             }
-          else
-            {
-              Navigator.pop(context),
-            }
-        },
+          },
+        ),
+        body: !calmProvider.init
+            ? Column(
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                    child: Text(localizations.tecnica478,
+                        style: TextStyle(
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.primary)),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 15.w,
+                      ),
+                      child: Text(
+                        localizations.descripcionTecnica478,
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: colorScheme.onBackground,
+                        ),
+                      )),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.h),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: colorScheme.primary,
+                          foregroundColor: colorScheme.onPrimary,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50.w, vertical: 20.h),
+                          textStyle: TextStyle(fontSize: 20.sp),
+                        ),
+                        onPressed: calmProvider.iniciar,
+                        child: Text(localizations.iniciar)),
+                  )
+                ],
+              )
+            : _buildCalmContainer(calmProvider, colorScheme),
       ),
-      body: !calmProvider.init
-          ? Column(
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-                  child: Text(localizations.tecnica478,
-                      style: TextStyle(
-                          fontSize: 30.sp,
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.primary)),
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 15.w,
-                    ),
-                    child: Text(
-                      localizations.descripcionTecnica478,
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: colorScheme.onBackground,
-                      ),
-                    )),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15.h),
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: colorScheme.primary,
-                        foregroundColor: colorScheme.onPrimary,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 50.w, vertical: 20.h),
-                        textStyle: TextStyle(fontSize: 20.sp),
-                      ),
-                      onPressed: calmProvider.iniciar,
-                      child: Text(localizations.iniciar)),
-                )
-              ],
-            )
-          : _buildCalmContainer(calmProvider, colorScheme),
     );
   }
 

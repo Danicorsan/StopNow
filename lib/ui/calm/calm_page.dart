@@ -71,7 +71,6 @@ class _CalmPageState extends State<CalmPage> {
                       ),
                       child: Text(
                         localizations.descripcionTecnica478,
-                        textAlign: TextAlign.justify,
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: colorScheme.onBackground,

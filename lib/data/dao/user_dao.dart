@@ -143,7 +143,7 @@ class UserDao {
         .order('fecha_creacion', ascending: false);
 
     if (response.isEmpty) {
-      return [];
+      throw Exception('Error al obtener articulos: ${response}');
     }
 
     print('Lecturas obtenidas: ${response}');

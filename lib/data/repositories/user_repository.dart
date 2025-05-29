@@ -167,6 +167,10 @@ class UserRepository {
     try {
       final response = await UserDao.obtenerArticulos();
 
+      if (response.isEmpty) {
+        return [];
+      }
+
       return response
           .map<ReadingModel>((a) => ReadingModel.fromMap(a))
           .toList();

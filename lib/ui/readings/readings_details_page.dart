@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/models/reading_model.dart';
+import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 
 class ReadingsDetailsPage extends StatelessWidget {
   final ReadingModel articulo;
@@ -9,7 +10,7 @@ class ReadingsDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(articulo.titulo)),
+      appBar: baseAppBar(articulo.titulo),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

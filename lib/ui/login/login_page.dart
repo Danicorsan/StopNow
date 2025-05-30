@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/base/widgets/base_textfield.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/login/login_state.dart';
@@ -96,8 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() => isPasswordVisible = !isPasswordVisible),
                   ),
                   colorScheme: colorScheme,
-                  context: context
-                ),
+                  context: context),
               SizedBox(height: 30.h),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -115,21 +115,9 @@ class _LoginPageState extends State<LoginPage> {
                   if (loginProvider.loginState == LoginState.success) {
                     Navigator.pushReplacementNamed(context, '/home');
                   } else if (loginProvider.loginState == LoginState.error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          loginProvider.errorMessage == ""
-                              ? localizations.errorDesconocido
-                              : loginProvider.errorMessage,
-                        ),
-                        duration: const Duration(seconds: 2),
-                        backgroundColor: const Color.fromARGB(255, 138, 0, 0),
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                    );
+                    buildErrorMessage(
+                        loginProvider.errorMessage,
+                        context);
                   }
                 },
                 child: loginProvider.loginState == LoginState.loading
@@ -154,7 +142,8 @@ class _LoginPageState extends State<LoginPage> {
                 height: 100.h,
                 thickness: 1,
                 color: colorScheme.outline.withOpacity(0.2),
-              ),/*
+              ),
+              /*
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colorScheme.surfaceVariant,

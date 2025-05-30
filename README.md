@@ -28,6 +28,6 @@
 - Permission Handler (gestión de permisos)
 - Cached Network Image (carga eficiente de imágenes)
 
-##Autor
+##  Autor
 **Nombre**: Daniel Cortés.
 **Proyecto Integrado DAM 2025**

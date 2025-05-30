@@ -7,6 +7,7 @@ import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -110,33 +111,18 @@ class _GoalsPageState extends State<GoalsPage> {
                     );
         },
       ),
-
-      //TODO: poner como funciona
-
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           backgroundColor: colorScheme.primary,
           onPressed: () async {
-            bool exito =
-                await Navigator.pushNamed(context, AppRoutes.addGoal) as bool;
-            if (exito) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(localizations.objetivoExito),
-                  duration: const Duration(seconds: 2),
-                  backgroundColor: colorScheme.secondary,
-                ),
-              );
+            bool? exito =
+                await Navigator.pushNamed(context, AppRoutes.addGoal) as bool?;
+            if (exito == true) {
               Provider.of<GoalsProvider>(context, listen: false)
                   .traerObjetivos();
+              buildSuccesMessage(localizations.objetivoExito, context);
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(localizations.errorObjetivo),
-                  duration: const Duration(seconds: 2),
-                  backgroundColor: const Color(0xFF8A0000),
-                ),
-              );
+              buildErrorMessage(localizations.errorObjetivo, context);
             }
           },
           elevation: 6,

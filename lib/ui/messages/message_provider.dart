@@ -1,11 +1,14 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, use_build_context_synchronously
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/message_model.dart';
+import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ChatProvider extends ChangeNotifier {
@@ -27,7 +30,6 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future<void> _cargarMensajes() async {
-    await Future.delayed(Duration(seconds: 1));
     final res = await _supabase
         .from('public.chat_mensajes')
         .select()
@@ -57,14 +59,15 @@ class ChatProvider extends ChangeNotifier {
     final user = _supabase.auth.currentUser;
     if (user == null || texto.trim().isEmpty) return;
 
-    await _supabase.from('public.chat_mensajes').insert({
-      'usuario_id': user.id,
-      'nombre_usuario': Provider.of<UserProvider>(context, listen: false)
-          .currentUser!
-          .nombreUsuario,
-      'mensaje': texto.trim(),
-      'fecha_envio': DateTime.now().toIso8601String(),
-    });
-    // No añadas el mensaje localmente aquí, deja que llegue por el canal
+    var exito = await UserRepository.enviarMensaje(
+        texto,
+        Provider.of<UserProvider>(context, listen: false)
+            .currentUser!
+            .nombreUsuario);
+
+    if (exito is BaseResultError) {
+      buildErrorMessage("No se ha podido enviar el mensaje", context);
+      return;
+    }
   }
 }

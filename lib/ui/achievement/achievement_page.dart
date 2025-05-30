@@ -21,7 +21,7 @@ class AchievementsPage extends StatelessWidget {
     if (days > 0) parts.add("$days ${localizations.dias}");
     if (hours > 0) parts.add("$hours ${localizations.horas}");
     if (minutes > 0) parts.add("$minutes ${localizations.min}");
-    if (seconds > 0 && parts.isEmpty) parts.add("$seconds ${"localizations.segundos"}");
+    if (seconds > 0 && parts.isEmpty) parts.add("$seconds ${localizations.segundos}");
     return parts.join(" ");
   }
 

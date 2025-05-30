@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 100.h,
                 thickness: 1,
                 color: colorScheme.outline.withOpacity(0.2),
-              ),
+              ),/*
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colorScheme.surfaceVariant,
@@ -181,8 +181,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 25.h),
+              ),*/
+              //SizedBox(height: 25.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

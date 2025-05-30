@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserDao {
@@ -45,7 +47,7 @@ class UserDao {
     });
   }
 
-  // Método para insertar un nuevo objetivo en la base de datos cuando se registra
+  // Método para borrar objetivo en la base de datos
   static Future<void> borrarObjetivo({
     required GoalModel goal,
   }) async {
@@ -72,42 +74,7 @@ class UserDao {
     );
   }
 
-  Future<void> uploadProfilePicture() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile == null) return;
-
-    final file = File(pickedFile.path);
-    final fileExt = extension(file.path);
-    final userId = supabase.auth.currentUser!.id;
-    final fileName = '$userId$fileExt';
-    final filePath = 'avatars/$fileName';
-
-    final storageResponse = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file, fileOptions: const FileOptions(upsert: true));
-
-    if (storageResponse != null) {
-      print('Error al subir imagen: ${storageResponse}');
-      return;
-    }
-
-    // Obtener la URL pública
-    final publicUrl = supabase.storage.from('avatars').getPublicUrl(filePath);
-
-    // Guardar en la base de datos
-    final updateResponse = await supabase.from('public.users').update({
-      'avatar_url': publicUrl,
-    }).eq('id', userId);
-
-    if (updateResponse.error != null) {
-      print('Error al actualizar perfil: ${updateResponse.error!.message}');
-    } else {
-      print('Avatar actualizado correctamente.');
-    }
-  }
-
+  // Metodo para traer todos los objetivos de un usuario ordenados por la fecha de creacion
   static Future<List<Map<String, dynamic>>> obtenerObjetivos(
       String userId) async {
     final response = await supabase
@@ -149,5 +116,26 @@ class UserDao {
     print('Lecturas obtenidas: ${response}');
 
     return List<Map<String, dynamic>>.from(response);
+  }
+
+  /*
+await _supabase.from('public.chat_mensajes').insert({
+      'usuario_id': user.id,
+      'nombre_usuario': Provider.of<UserProvider>(context, listen: false)
+          .currentUser!
+          .nombreUsuario,
+      'mensaje': texto.trim(),
+      'fecha_envio': DateTime.now().toIso8601String(),
+    });
+  */
+
+  static Future<void> insertarMensaje(
+      String texto, String nombreUsuario) async {
+    await supabase.from('public.chat_mensajes').insert({
+      'usuario_id': supabase.auth.currentUser?.id,
+      'nombre_usuario': nombreUsuario,
+      'mensaje': texto.trim(),
+      'fecha_envio': DateTime.now().toIso8601String(),
+    });
   }
 }

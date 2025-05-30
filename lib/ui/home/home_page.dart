@@ -184,13 +184,13 @@ class _HomePageState extends State<HomePage> {
                               ),
                               _buildStatisticCard(
                                 localizations.cigarrosEvitados,
-                                "${homeProvider.getCigarrosEvitados().toStringAsFixed(2)}",
+                                "${homeProvider.getCigarrosEvitados().floor()}",
                                 Icons.smoke_free,
                                 colorScheme,
                               ),
                               _buildStatisticCard(
                                 localizations.tiempoDeVidaGanado,
-                                "${homeProvider.getTiempoDeVidaGanado().toStringAsFixed(2)} ${localizations.min}",
+                                "${homeProvider.getTiempoDeVidaGanado().floor()} ${localizations.min}",
                                 Icons.favorite,
                                 colorScheme,
                               ),

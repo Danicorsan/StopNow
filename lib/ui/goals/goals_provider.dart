@@ -13,7 +13,6 @@ class GoalsProvider extends ChangeNotifier {
 
   Future<void> traerObjetivos() async {
     _isLoading = true;
-    await Future.delayed(const Duration(seconds: 2));
     final result = await UserRepository.obtenerObjetivos();
 
     if (result is BaseResultSuccess) {

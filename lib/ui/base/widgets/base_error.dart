@@ -12,9 +12,9 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> buildErrorMessage(
       ),
       duration: const Duration(seconds: 2),
       backgroundColor: const Color.fromARGB(255, 138, 0, 0),
-      behavior: SnackBarBehavior.floating,
+      behavior: SnackBarBehavior.fixed,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r))
       ),
     ),
   );
@@ -30,9 +30,9 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> buildSuccesMessage(
       ),
       duration: const Duration(seconds: 2),
       backgroundColor: const Color.fromARGB(255, 5, 138, 0),
-      behavior: SnackBarBehavior.floating,
+      behavior: SnackBarBehavior.fixed,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r))
       ),
     ),
   );

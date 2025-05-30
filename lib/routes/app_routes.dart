@@ -14,7 +14,7 @@ import 'package:stopnow/ui/profile/profile_page.dart';
 import 'package:stopnow/ui/readings/readings_details_page.dart';
 import 'package:stopnow/ui/readings/readings_page.dart';
 import 'package:stopnow/ui/register/register_page.dart';
-import 'package:stopnow/ui/settings/account/account_page.dart';
+import 'package:stopnow/ui/settings/account_page.dart';
 import 'package:stopnow/ui/settings/settings_page.dart';
 import 'package:stopnow/ui/welcome/welcome_page.dart';
 

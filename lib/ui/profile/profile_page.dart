@@ -119,7 +119,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                         _buildStatisticRow(
                           localizations.cigarrosEvitadosEstadistica,
-                          "${homeProvider.getCigarrosEvitados().toStringAsFixed(2)}",
+                          "${homeProvider.getCigarrosEvitados().floor()} ${localizations.cigarros}",
                           colorScheme,
                         ),
                         _buildStatisticRow(
@@ -129,7 +129,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                         _buildStatisticRow(
                           localizations.tiempoVidaGanadoEstadistica,
-                          "${((homeProvider.getTiempoDeVidaGanado() / 60).toStringAsFixed(2))} ${localizations.horas}",
+                          "${((homeProvider.getTiempoDeVidaGanado() / 60).floor())} ${localizations.horas}",
                           colorScheme,
                         ),
                       ]

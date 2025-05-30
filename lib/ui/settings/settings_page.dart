@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
-import 'package:stopnow/data/repositories/theme_provider.dart';
+import 'package:stopnow/data/providers/theme_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';

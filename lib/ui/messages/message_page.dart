@@ -292,9 +292,9 @@ class _ChatPageState extends State<ChatPage> {
     final fechaNormalizada = DateTime(fecha.year, fecha.month, fecha.day);
 
     if (fechaNormalizada == hoy) {
-      return "AppLocalizations.of(context)!.hoy";
+      return AppLocalizations.of(context)!.hoy;
     } else if (fechaNormalizada == hoy.subtract(const Duration(days: 1))) {
-      return "AppLocalizations.of(context)!.ayer";
+      return AppLocalizations.of(context)!.ayer;
     } else {
       return '${fecha.day.toString().padLeft(2, '0')}/${fecha.month.toString().padLeft(2, '0')}/${fecha.year}';
     }

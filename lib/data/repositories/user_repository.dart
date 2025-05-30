@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/models/goal_model.dart';
@@ -179,4 +178,20 @@ class UserRepository {
       return [];
     }
   }
+
+  static Future<BaseResult> enviarMensaje(String texto, String nombreUsuario) async {
+    try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) {
+        return BaseResultError('Usuario no autenticado');
+      }
+
+      final response = await UserDao.insertarMensaje(texto, nombreUsuario);
+
+      return BaseResultSuccess(response);
+    } catch (e) {
+      return BaseResultError(e.toString());
+    }
+  }
+
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
-import 'package:stopnow/data/repositories/theme_provider.dart';
+import 'package:stopnow/data/providers/theme_provider.dart';
 import 'package:stopnow/l10n/l10n.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';

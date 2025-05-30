@@ -29,5 +29,5 @@
 - Cached Network Image (carga eficiente de imágenes)
 
 ##  Autor
-**Nombre**: Daniel Cortés.
-**Proyecto Integrado DAM 2025**
+- **Nombre**: Daniel Cortés
+- **Proyecto Integrado DAM 2025**

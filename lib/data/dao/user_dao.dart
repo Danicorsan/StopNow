@@ -130,12 +130,13 @@ await _supabase.from('public.chat_mensajes').insert({
   */
 
   static Future<void> insertarMensaje(
-      String texto, String nombreUsuario) async {
+      String texto, String nombreUsuario, String fotoPerfil) async {
     await supabase.from('public.chat_mensajes').insert({
       'usuario_id': supabase.auth.currentUser?.id,
       'nombre_usuario': nombreUsuario,
       'mensaje': texto.trim(),
       'fecha_envio': DateTime.now().toIso8601String(),
+      'foto_perfil': fotoPerfil, // NUEVO
     });
   }
 }

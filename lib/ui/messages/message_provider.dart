@@ -59,11 +59,12 @@ class ChatProvider extends ChangeNotifier {
     final user = _supabase.auth.currentUser;
     if (user == null || texto.trim().isEmpty) return;
 
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final nombreUsuario = userProvider.currentUser!.nombreUsuario;
+    final fotoPerfil = userProvider.currentUser!.fotoPerfil; // O el campo correcto
+
     var exito = await UserRepository.enviarMensaje(
-        texto,
-        Provider.of<UserProvider>(context, listen: false)
-            .currentUser!
-            .nombreUsuario);
+        texto, nombreUsuario, fotoPerfil);
 
     if (exito is BaseResultError) {
       buildErrorMessage("No se ha podido enviar el mensaje", context);

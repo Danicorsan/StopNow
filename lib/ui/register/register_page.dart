@@ -71,10 +71,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (status.isGranted) {
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
       if (pickedFile != null) {
         setState(() {
           _selectedImage = File(pickedFile.path);
+          Provider.of<RegisterProvider>(context, listen: false)
+              .setProfileImage(_selectedImage!);
+              print('Selected image: ${_selectedImage!.path}');
         });
       }
     } else if (status.isPermanentlyDenied) {
@@ -326,11 +329,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       );
                       return;
-                    }
-
-                    if (_selectedImage != null) {
-                      Provider.of<RegisterProvider>(context, listen: false)
-                          .setProfileImage(_selectedImage!);
                     }
 
                     await registerProvider.register();

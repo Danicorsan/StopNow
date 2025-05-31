@@ -39,7 +39,7 @@ class ProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
               child: Row(
                 children: [
-                  const UserAvatar(),
+                  UserAvatar(avatarUrl: user?.fotoPerfil),
                   SizedBox(width: 20.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -179,14 +179,14 @@ class UserRepository {
     }
   }
 
-  static Future<BaseResult> enviarMensaje(String texto, String nombreUsuario) async {
+  static Future<BaseResult> enviarMensaje(String texto, String nombreUsuario, String fotoPerfil) async {
     try {
       final userId = supabase.auth.currentUser?.id;
       if (userId == null) {
         return BaseResultError('Usuario no autenticado');
       }
 
-      final response = await UserDao.insertarMensaje(texto, nombreUsuario);
+      final response = await UserDao.insertarMensaje(texto, nombreUsuario, fotoPerfil);
 
       return BaseResultSuccess(response);
     } catch (e) {

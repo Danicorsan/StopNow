@@ -34,10 +34,10 @@ Drawer baseDrawer(BuildContext context) {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 80,
                   width: 80,
-                  child: UserAvatar(),
+                  child: UserAvatar(avatarUrl: user?.fotoPerfil,),
                 ),
                 Text(
                   user?.nombreUsuario ?? localizations.usuario,

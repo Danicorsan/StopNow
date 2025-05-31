@@ -4,6 +4,7 @@ class MessageModel {
   final String nombreUsuario;
   final String mensaje;
   final DateTime fechaEnvio;
+  final String? fotoPerfil;
 
   MessageModel({
     required this.id,
@@ -11,6 +12,7 @@ class MessageModel {
     required this.nombreUsuario,
     required this.mensaje,
     required this.fechaEnvio,
+    this.fotoPerfil,
   });
 
   factory MessageModel.fromMap(Map<String, dynamic> map) {
@@ -20,6 +22,7 @@ class MessageModel {
       nombreUsuario: map['nombre_usuario'],
       mensaje: map['mensaje'],
       fechaEnvio: DateTime.parse(map['fecha_envio']),
+      fotoPerfil: map['foto_perfil'], // NUEVO
     );
   }
 }

@@ -19,17 +19,18 @@ class RegisterProvider extends ChangeNotifier {
   int cigarrosAlDia = 0;
   int cigarrosPorPaquete = 0;
   double precioPaquete = 0.0;
-  File? _profileImageFile;
+  bool cargandoImagen = false;
 
   var errorMessage = "";
 
   Future<void> setProfileImage(File imageFile) async {
     try {
-      // Supón que tienes un método para subir y obtener la URL
+      cargandoImagen = true;
       final uploadedImageUrl =
           await UserRepository.uploadProfileImage(imageFile);
       fotoEmail = uploadedImageUrl;
       print(fotoEmail);
+      cargandoImagen = false;
       notifyListeners();
     } catch (e) {
       print('Error al subir imagen: $e');
@@ -41,18 +42,11 @@ class RegisterProvider extends ChangeNotifier {
     registerState = RegisterState.loading;
     notifyListeners();
 
+    while (cargandoImagen) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+
     try {
-      String imageUrl = '';
-
-      // Subir imagen primero si existe
-      if (_profileImageFile != null) {
-        imageUrl = await UserRepository.uploadProfileImage(_profileImageFile!);
-      }
-
-      print(
-          "\n\n\n\n\n\n\n\n\n\n\n\nimageUrl: $imageUrl\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-      print(
-          "\n\n\n\n\n\n\n\n\n\n\n\nimageUrl: $fotoEmail\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
       final result = await UserRepository.register(
           email,

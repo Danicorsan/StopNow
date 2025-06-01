@@ -2,35 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/achievement_model.dart';
-import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'profile_provider.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  final String? userId; // Si es null, muestra el usuario actual
+
+  const ProfilePage({super.key, this.userId});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      Provider.of<ProfileProvider>(context, listen: false)
+          .loadUser(context, userId: widget.userId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).currentUser;
-    final homeProvider = HomeProvider(user);
+    final profileProvider = Provider.of<ProfileProvider>(context);
+    final userToShow = profileProvider.userToShow;
+    final isLoading = profileProvider.isLoading;
+
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
+    if (isLoading || userToShow == null) {
+      return Scaffold(
+        appBar: baseAppBar(localizations.perfil),
+        backgroundColor: colorScheme.background,
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final homeProvider = HomeProvider(userToShow);
     var achievements = AchievementModel.getLocalizedAchievements(localizations);
 
     final now = DateTime.now();
-    final fechaDejarFumar = user?.fechaDejarFumar ?? now;
+    final fechaDejarFumar = userToShow.fechaDejarFumar ?? now;
     final tiempoSinFumar = now.difference(fechaDejarFumar);
     final unlockedAchievements =
         achievements.where((a) => tiempoSinFumar >= a.duration).toList();
 
     return Scaffold(
       appBar: baseAppBar(localizations.perfil),
-      drawer: baseDrawer(context),
+      drawer: widget.userId == null ? baseDrawer(context) : null,
       backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
@@ -39,13 +66,13 @@ class ProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
               child: Row(
                 children: [
-                  UserAvatar(avatarUrl: user?.fotoPerfil),
+                  UserAvatar(avatarUrl: userToShow.fotoPerfil),
                   SizedBox(width: 20.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user?.nombreUsuario ?? localizations.usuario,
+                        userToShow.nombreUsuario ?? localizations.usuario,
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.bold,
@@ -54,8 +81,8 @@ class ProfilePage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.h),
                       Text(
-                        localizations
-                            .miembroDesde(user?.fechaRegistro.year ?? ""),
+                        localizations.miembroDesde(
+                            userToShow.fechaRegistro.year ?? ""),
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: colorScheme.onBackground.withOpacity(0.8),
@@ -100,8 +127,9 @@ class ProfilePage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
                           child: Center(
-                            child: Text(
-                              "Cuando hayas dejado de fumar aparecerá aquí la información.",
+                            child: Text(profileProvider.isCurrentUser
+                              ? "Cuando hayas dejado de fumar aparecerá aquí la información."
+                              : "Este usuario aún no ha dejado de fumar.",
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 color: colorScheme.onSurface.withOpacity(0.7),
@@ -166,8 +194,8 @@ class ProfilePage extends StatelessWidget {
                       unlockedAchievements.isEmpty
                           ? Padding(
                               padding: const EdgeInsets.symmetric(vertical: 24),
-                              child: Text(
-                                localizations.sinLogros,
+                              child: Text( profileProvider.isCurrentUser ?
+                                localizations.sinLogros : "Este usuario aún no ha conseguido logros.",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16.sp,

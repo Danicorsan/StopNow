@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
@@ -113,11 +114,20 @@ class _ChatPageState extends State<ChatPage> {
                                     if (!esMio)
                                       Padding(
                                         padding: EdgeInsets.only(right: 4.h),
-                                        child: SizedBox(
-                                          height: 30,
-                                          width: 30,
-                                          child: UserAvatar(
-                                            avatarUrl: mensaje.fotoPerfil,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              AppRoutes.profile,
+                                              arguments: mensaje.usuarioId,
+                                            );
+                                          },
+                                          child: SizedBox(
+                                            height: 30,
+                                            width: 30,
+                                            child: UserAvatar(
+                                              avatarUrl: mensaje.fotoPerfil,
+                                            ),
                                           ),
                                         ),
                                       ),

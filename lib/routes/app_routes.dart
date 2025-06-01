@@ -69,8 +69,9 @@ class AppRoutes {
         );
 
       case profile:
+      final args = settings.arguments as String?;
         return MaterialPageRoute(
-          builder: (_) => const ProfilePage(),
+          builder: (_) => ProfilePage(userId: args),
           settings: settings,
         );
 

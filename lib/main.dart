@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/helper/local_database_helper.dart';
+import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/providers/theme_provider.dart';
 import 'package:stopnow/l10n/l10n.dart';
@@ -19,6 +21,7 @@ import 'package:stopnow/utils/themes/theme.dart';
 import 'package:stopnow/utils/constants/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
@@ -26,9 +29,17 @@ Future<void> main() async {
     anonKey: SupabaseCredential.anonKey,
   );
 
+  // Carga offline antes de runApp
+  final connectivity = await Connectivity().checkConnectivity();
+  UserModel? offlineUser;
+  if (connectivity.first == ConnectivityResult.none) {
+    print("SIN INTERNET: Cargando usuario offline de SQLite");
+    offlineUser = await LocalDbHelper.getUserProgress();
+  }
+
   runApp(MultiProvider(
     providers: [
-    ChangeNotifierProvider(create: (_) => ProfileProvider()),
+      ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ChangeNotifierProvider(create: (_) => ChatProvider()),
       ChangeNotifierProvider(
@@ -43,7 +54,8 @@ Future<void> main() async {
       ChangeNotifierProvider(
         create: (context) => RegisterProvider(),
       ),
-      ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(
+          create: (context) => UserProvider(usuarioInicial: offlineUser)),
       ChangeNotifierProvider(create: (_) => ReadingsProvider()),
     ],
     child: const MyApp(),

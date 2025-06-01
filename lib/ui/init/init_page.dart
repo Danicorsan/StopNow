@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
+import 'package:stopnow/data/helper/local_database_helper.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/login/login_state.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class InitPage extends StatefulWidget {
   const InitPage({super.key});
@@ -25,47 +27,46 @@ class _InitPageState extends State<InitPage> {
   }
 
   Future<void> _checkUserStatus() async {
-    final prefs = await SharedPreferences.getInstance();
+    final connectivity = await Connectivity().checkConnectivity();
 
-    // Verifica si el usuario ya tiene una cuenta
+    if (connectivity.first == ConnectivityResult.none) {
+      // Sin internet: carga usuario offline de SQLite
+      final offlineUser = await LocalDbHelper.getUserProgress();
+      if (offlineUser != null) {
+        Provider.of<UserProvider>(context, listen: false).setUser(offlineUser);
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        return;
+      } else {
+        Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+        return;
+      }
+    }
+
+    final prefs = await SharedPreferences.getInstance();
     final hasAccount = prefs.getBool('hasAccount') ?? false;
 
     if (hasAccount) {
-      final prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('email');
+      final password = prefs.getString('password');
 
-      // Verifica si el usuario ya tiene una cuenta
-      final hasAccount = prefs.getBool('hasAccount') ?? false;
+      if (email != null && password != null) {
+        Provider.of<LoginProvider>(context, listen: false).correo = email;
+        Provider.of<LoginProvider>(context, listen: false).contrasenia =
+            password;
 
-      if (hasAccount) {
-        // Recupera las credenciales almacenadas
-        final email = prefs.getString('email');
-        final password = prefs.getString('password');
+        await Provider.of<LoginProvider>(context, listen: false).login(context);
 
-        if (email != null && password != null) {
-          // Inicia sesión automáticamente
-          Provider.of<LoginProvider>(context, listen: false).correo = email;
-          Provider.of<LoginProvider>(context, listen: false).contrasenia =
-              password;
-
-          await Provider.of<LoginProvider>(context, listen: false)
-              .login(context);
-
-          if (Provider.of<LoginProvider>(context, listen: false).loginState ==
-              LoginState.success) {
-            Navigator.pushReplacementNamed(context, AppRoutes.home);
-            return;
-          }else {
-            // Si el inicio de sesión falla, redirige a la página de bienvenida
-            Navigator.pushReplacementNamed(context, AppRoutes.welcome);
-            return;
-          }
+        if (Provider.of<LoginProvider>(context, listen: false).loginState ==
+            LoginState.success) {
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
+          return;
+        } else {
+          Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+          return;
         }
       }
-
-      // Si no tiene cuenta o las credenciales no son válidas, redirige a la página de bienvenida
       Navigator.pushReplacementNamed(context, AppRoutes.welcome);
     } else {
-      // Si no tiene cuenta, redirige a la página de bienvenida
       Navigator.pushReplacementNamed(context, AppRoutes.welcome);
     }
   }

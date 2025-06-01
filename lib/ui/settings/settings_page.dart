@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
+import 'package:stopnow/data/helper/local_database_helper.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/providers/theme_provider.dart';
@@ -26,6 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
     await prefs.setBool('hasAccount', false);
     await prefs.remove('email');
     await prefs.remove('password');
+    await LocalDbHelper.deleteUserProgress();
 
     Provider.of<UserProvider>(context, listen: false).clearUser();
     Provider.of<ThemeProvider>(context, listen: false).toggleTheme(false);
@@ -77,8 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: TextStyle(color: colorScheme.primary),
                     ),
                     content: Text(
-                      localizations
-                          .dialogoRecaida,
+                      localizations.dialogoRecaida,
                       style: TextStyle(color: colorScheme.onSurface),
                     ),
                     actions: [

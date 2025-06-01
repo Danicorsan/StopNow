@@ -29,6 +29,8 @@ class ChatProvider extends ChangeNotifier {
     isLoading = false;
   }
 
+  //TODO CAMBIAR LLAMADAS A REPOSITORIO Y A USAR BASE_RESULT
+
   Future<void> _cargarMensajes() async {
     final res = await _supabase
         .from('public.chat_mensajes')

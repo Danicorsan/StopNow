@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:stopnow/data/helper/local_database_helper.dart';
 import 'package:stopnow/data/models/user_model.dart';
 
 class UserProvider extends ChangeNotifier {
   UserModel? _currentUser;
 
+  UserProvider({UserModel? usuarioInicial}) {
+    _currentUser = usuarioInicial;
+  }
+
   UserModel? get currentUser => _currentUser;
 
   void setUser(UserModel user) {
     _currentUser = user;
+    // Guarda también en SQLite para offline
+    LocalDbHelper.saveUserProgress(user);
     notifyListeners();
   }
 

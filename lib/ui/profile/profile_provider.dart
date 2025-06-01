@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:stopnow/data/models/user_model.dart';
+import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/data/dao/user_dao.dart';
+import 'package:provider/provider.dart';
+
+class ProfileProvider extends ChangeNotifier {
+  UserModel? userToShow;
+  bool isLoading = false;
+  bool isCurrentUser = false;
+
+  Future<void> loadUser(BuildContext context, {String? userId}) async {
+    isLoading = true;
+    notifyListeners();
+    if (userId == null) {
+      userToShow =
+          Provider.of<UserProvider>(context, listen: false).currentUser;
+      isCurrentUser = true;
+    } else {
+      userToShow = await UserDao.traerUsuario(userId);
+      isCurrentUser = false;
+    }
+    isLoading = false;
+    notifyListeners();
+  }
+}

@@ -11,6 +11,7 @@ import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/messages/message_provider.dart';
+import 'package:stopnow/ui/profile/profile_provider.dart';
 import 'package:stopnow/ui/readings/readings_page.dart';
 import 'package:stopnow/ui/readings/readings_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
+    ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ChangeNotifierProvider(create: (_) => ChatProvider()),
       ChangeNotifierProvider(

@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
-import 'package:stopnow/ui/readings/readings_details_page.dart';
 import 'package:stopnow/ui/readings/readings_provider.dart';
 
 class ReadingsPage extends StatefulWidget {

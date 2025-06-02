@@ -1,9 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/helper/local_database_helper.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
@@ -48,7 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: baseAppBar(localizations.ajustes),
       drawer: baseDrawer(context),
       backgroundColor: colorScheme.background,
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
@@ -136,7 +135,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 40),
             Center(
               child: Text(
-                "StopNow v0.1.0",
+                "StopNow v0.3.0",
                 style: TextStyle(
                   color: colorScheme.onBackground.withOpacity(0.7),
                   fontWeight: FontWeight.w500,
@@ -230,9 +229,9 @@ Widget _buildThemeSwitchCard(BuildContext context,
         },
         activeColor: colorScheme.secondary,
         inactiveThumbColor:
-            colorScheme.primary, // Color del "thumb" desactivado
+            colorScheme.primary,
         inactiveTrackColor: colorScheme.primary
-            .withOpacity(0.1), // Color de la pista desactivada
+            .withOpacity(0.1),
       ),
       onTap: () {
         themeProvider.toggleTheme(!isDark);

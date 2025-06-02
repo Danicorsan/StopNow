@@ -50,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var achievements = AchievementModel.getLocalizedAchievements(localizations);
 
     final now = DateTime.now();
-    final fechaDejarFumar = userToShow.fechaDejarFumar ?? now;
+    final fechaDejarFumar = userToShow.fechaDejarFumar;
     final tiempoSinFumar = now.difference(fechaDejarFumar);
     final unlockedAchievements =
         achievements.where((a) => tiempoSinFumar >= a.duration).toList();
@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        userToShow.nombreUsuario ?? localizations.usuario,
+                        userToShow.nombreUsuario,
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.bold,
@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(height: 5.h),
                       Text(
                         localizations.miembroDesde(
-                            userToShow.fechaRegistro.year ?? ""),
+                            userToShow.fechaRegistro.year),
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: colorScheme.onBackground.withOpacity(0.8),

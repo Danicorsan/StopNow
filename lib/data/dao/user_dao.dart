@@ -1,11 +1,5 @@
-import 'dart:io';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
-import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserDao {

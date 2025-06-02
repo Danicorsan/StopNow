@@ -79,7 +79,7 @@ class UserRepository {
     return user;
   }
 
-  static Future<String> uploadProfileImage(File imageFile) async {
+  static Future<BaseResult> uploadProfileImage(File imageFile) async {
     try {
       final userId =
           supabase.auth.currentUser?.id ?? Exception('Usuario no autenticado');
@@ -96,14 +96,14 @@ class UserRepository {
           .from('avatars')
           .createSignedUrl(fileName, 60 * 60 * 24 * 365); // 1 año en segundos
 
-      return signedUrl;
+      return BaseResultSuccess(signedUrl);
     } catch (e) {
       print('Error al subir imagen: $e');
-      throw Exception('Error al subir la imagen de perfil');
+      throw BaseResultError('Error al subir la imagen de perfil');
     }
   }
 
-  static Future<bool> subirObjetivo(GoalModel goal) async {
+  static Future<BaseResult> subirObjetivo(GoalModel goal) async {
     try {
       await UserDao.insertarObjetivo(
         idUsuario: goal.usuarioId,
@@ -111,10 +111,10 @@ class UserRepository {
         descripcion: goal.descripcion,
         precio: goal.precio,
       );
-      return true;
+      return BaseResultSuccess(true);
     } catch (e) {
       print('Error al subir objetivo: $e');
-      return false;
+      return BaseResultError('Error al subir objetivo: $e');
     }
   }
 
@@ -164,20 +164,19 @@ class UserRepository {
   }
 
   // Metodo para traer articulos de lectura
-  static Future<List<ReadingModel>> traerArticulos() async {
+  static Future<BaseResult> traerArticulos() async {
     try {
       final response = await UserDao.obtenerArticulos();
 
       if (response.isEmpty) {
-        return [];
+        return BaseResultError('No se encontraron artículos de lectura');
       }
 
-      return response
-          .map<ReadingModel>((a) => ReadingModel.fromMap(a))
-          .toList();
+      return BaseResultSuccess(
+          response.map<ReadingModel>((a) => ReadingModel.fromMap(a)).toList());
     } catch (e) {
       print('Error al cargarrrrrrrrrrrrrrrrrrrrrrrrrrrrrr artículos: $e');
-      return [];
+      return BaseResultError('Error al cargar artículos: $e');
     }
   }
 

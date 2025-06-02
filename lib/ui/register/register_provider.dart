@@ -27,7 +27,8 @@ class RegisterProvider extends ChangeNotifier {
     try {
       cargandoImagen = true;
       final uploadedImageUrl =
-          await UserRepository.uploadProfileImage(imageFile);
+          await UserRepository.uploadProfileImage(imageFile)
+              .then((value) => value.toString());
       fotoEmail = uploadedImageUrl;
       print(fotoEmail);
       cargandoImagen = false;
@@ -47,7 +48,6 @@ class RegisterProvider extends ChangeNotifier {
     }
 
     try {
-
       final result = await UserRepository.register(
           email,
           password,

@@ -122,17 +122,13 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                       foregroundColor: colorScheme.onError,
                     ),
                     onPressed: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
                       bool exito = await Provider.of<GoalsProvider>(context,
                               listen: false)
                           .removeGoal(goal.id, context);
-                      setState(() {
-                        isLoading = false;
-                      });
                       if (exito) {
                         Navigator.pop(context);
+                        Navigator.pop(context);
+                      }else{
                         Navigator.pop(context);
                       }
                     },

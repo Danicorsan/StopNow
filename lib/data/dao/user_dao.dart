@@ -43,15 +43,9 @@ class UserDao {
 
   // Método para borrar objetivo en la base de datos
   static Future<void> borrarObjetivo({
-    required GoalModel goal,
+    required String id,
   }) async {
-    await supabase
-        .from('public.objetivos')
-        .delete()
-        .eq('usuario_id', goal.usuarioId)
-        .eq('nombre', goal.nombre)
-        .eq('precio', goal.precio)
-        .single();
+    await supabase.from('public.objetivos').delete().eq('id', id);
   }
 
   // Método para actualizar un usuario existente en la base de datos
@@ -132,5 +126,18 @@ await _supabase.from('public.chat_mensajes').insert({
       'fecha_envio': DateTime.now().toIso8601String(),
       'foto_perfil': fotoPerfil, // NUEVO
     });
+  }
+
+  static Future<void> actualizarObjetivo({
+    required String id,
+    required String nombreNuevo,
+    required String descripcionNueva,
+    required double precioNuevo,
+  }) async {
+    await supabase.from('public.objetivos').update({
+      'nombre': nombreNuevo,
+      'descripcion': descripcionNueva,
+      'precio': precioNuevo,
+    }).eq('id', id);
   }
 }

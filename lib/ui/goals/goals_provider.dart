@@ -21,7 +21,6 @@ class GoalsProvider extends ChangeNotifier {
       _goals.addAll(
           dataList.map((e) => GoalModel.fromJson(e as Map<String, dynamic>)));
     }
-    // Si quieres manejar errores, puedes hacerlo aquí con un else
     _isLoading = false;
     notifyListeners();
   }
@@ -37,14 +36,48 @@ class GoalsProvider extends ChangeNotifier {
     return true;
   }
 
-  void removeGoal(int index, BuildContext context) async {
-    await UserRepository.borrarObjetivo(_goals[index]);
+  Future<bool> removeGoal(String id, BuildContext context) async {
+    var exito = await UserRepository.borrarObjetivo(id);
 
-    _goals.removeAt(index);
+    if (exito is BaseResultError) {
+      buildErrorMessage("No se pudo borrar el objetivo", context);
+      return false;
+    } else if (exito is BaseResultSuccess) {
+      _goals.removeAt(
+        _goals.indexWhere((element) => element.id == id),
+      );
 
-    await traerObjetivos();
+      await traerObjetivos();
+      notifyListeners();
+      buildSuccesMessage("Objetivo borrado con exito", context);
+      return true;
+    } else {
+      buildErrorMessage("No se pudo borrar el objetivo", context);
+      return false;
+    }
+  }
 
-    notifyListeners();
-    buildSuccesMessage("Objetivo borrado con exito", context);
+  Future<bool> editGoal({
+    required GoalModel originalGoal,
+    required String nombreNuevo,
+    required String descripcionNueva,
+    required double precioNuevo,
+    required BuildContext context,
+  }) async {
+    final exito = await UserRepository.actualizarObjetivo(
+      id: originalGoal.id,
+      nombreNuevo: nombreNuevo,
+      descripcionNueva: descripcionNueva,
+      precioNuevo: precioNuevo,
+    );
+
+    if (exito is BaseResultSuccess) {
+      await traerObjetivos();
+      notifyListeners();
+      return true;
+    } else {
+      buildErrorMessage("No se pudo editar el objetivo", context);
+      return false;
+    }
   }
 }

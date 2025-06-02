@@ -63,46 +63,33 @@ class _GoalsPageState extends State<GoalsPage> {
                         return Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 16.w, vertical: 10.h),
-                          child: Dismissible(
-                            key: UniqueKey(),
-                            direction: DismissDirection.endToStart,
-                            background: Container(
-                              alignment: Alignment.centerRight,
-                              padding: EdgeInsets.only(right: 30.w),
-                              color: Colors.redAccent,
-                              child: const Icon(Icons.delete,
-                                  color: Colors.white, size: 32),
+                          child: Card(
+                            elevation: 6,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            onDismissed: (_) =>
-                                provider.removeGoal(index, context),
-                            child: Card(
-                              elevation: 6,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                            color: colorScheme.surface.withOpacity(0.93),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: colorScheme.secondary,
+                                child: Icon(Icons.emoji_events,
+                                    color: colorScheme.onSecondary),
                               ),
-                              color: colorScheme.surface.withOpacity(0.93),
-                              child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundColor: colorScheme.secondary,
-                                  child: Icon(Icons.emoji_events,
-                                      color: colorScheme.onSecondary),
+                              title: Text(
+                                goal.nombre,
+                                style: TextStyle(
+                                  color: colorScheme.primary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.sp,
                                 ),
-                                title: Text(
-                                  goal.nombre,
-                                  style: TextStyle(
-                                    color: colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.sp,
-                                  ),
-                                ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.detailGoal,
-                                    arguments: goal,
-                                  );
-                                },
                               ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.detailGoal,
+                                  arguments: goal,
+                                );
+                              },
                             ),
                           ),
                         );

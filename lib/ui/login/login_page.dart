@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
@@ -74,13 +75,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 25.h),
               baseTextField(
-                controller: _emailController,
-                label: localizations.correo,
-                icon: Icons.email,
-                keyboardType: TextInputType.emailAddress,
-                context: context,
-                colorScheme: colorScheme,
-              ),
+                  controller: _emailController,
+                  label: localizations.correo,
+                  icon: Icons.email,
+                  keyboardType: TextInputType.emailAddress,
+                  context: context,
+                  colorScheme: colorScheme,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                  ]),
               baseTextField(
                   controller: _passwordController,
                   label: localizations.contrasenia,
@@ -107,6 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 5,
                 ),
                 onPressed: () async {
+                  if (loginProvider.loginState == LoginState.loading) {
+                    return; // Evita múltiples pulsaciones mientras se carga
+                  }
+
                   loginProvider.setCorreo(_emailController.text);
                   loginProvider.setPassword(_passwordController.text);
 
@@ -115,9 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (loginProvider.loginState == LoginState.success) {
                     Navigator.pushReplacementNamed(context, '/home');
                   } else if (loginProvider.loginState == LoginState.error) {
-                    buildErrorMessage(
-                        loginProvider.errorMessage,
-                        context);
+                    buildErrorMessage(loginProvider.errorMessage, context);
                   }
                 },
                 child: loginProvider.loginState == LoginState.loading

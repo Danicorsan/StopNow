@@ -62,7 +62,8 @@ class UserDao {
     );
   }
 
-  // Metodo para traer todos los objetivos de un usuario ordenados por la fecha de creacion
+  // Metodo para traer todos los objetivos de un usuario ordenados por la fecha 
+  //de creacion
   static Future<List<Map<String, dynamic>>> obtenerObjetivos(
       String userId) async {
     final response = await supabase
@@ -72,10 +73,10 @@ class UserDao {
         .order('fecha_creado', ascending: false);
 
     if (response.isEmpty) {
-      throw Exception('Error al obtener objetivos: ${response}');
+      throw Exception('Error al obtener objetivos: $response');
     }
 
-    print('Objetivos obtenidos: ${response}');
+    print('Objetivos obtenidos: $response');
 
     return List<Map<String, dynamic>>.from(response);
   }
@@ -98,10 +99,10 @@ class UserDao {
         .order('fecha_creacion', ascending: false);
 
     if (response.isEmpty) {
-      throw Exception('Error al obtener articulos: ${response}');
+      throw Exception('Error al obtener articulos: $response');
     }
 
-    print('Lecturas obtenidas: ${response}');
+    print('Lecturas obtenidas: $response');
 
     return List<Map<String, dynamic>>.from(response);
   }

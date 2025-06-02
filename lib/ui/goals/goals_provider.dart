@@ -26,9 +26,9 @@ class GoalsProvider extends ChangeNotifier {
   }
 
   Future<bool> addGoal(GoalModel goal, BuildContext context) async {
-    bool exito = await UserRepository.subirObjetivo(goal);
+    BaseResult exito = await UserRepository.subirObjetivo(goal);
 
-    if (!exito) {
+    if (exito is BaseResultError) {
       return false;
     }
     _goals.add(goal);

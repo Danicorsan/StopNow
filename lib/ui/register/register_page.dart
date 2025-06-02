@@ -153,6 +153,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                       return null;
                     },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                          RegExp(r'\s')), // No permite espacios
+                    ],
                     colorScheme: colorScheme,
                     context: context),
                 baseTextField(
@@ -160,7 +164,18 @@ class _RegisterPageState extends State<RegisterPage> {
                     label: localizations.correo,
                     icon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: registerProvider.setCorreo,
+                    onChanged: (value) {
+                      final lower = value.toLowerCase();
+                      if (_emailController.text != lower) {
+                        _emailController.value =
+                            _emailController.value.copyWith(
+                          text: lower,
+                          selection:
+                              TextSelection.collapsed(offset: lower.length),
+                        );
+                      }
+                      registerProvider.setCorreo(lower);
+                    },
                     validator: (value) {
                       if (!Validator.isValidEmail(value ?? '')) {
                         return localizations.correoInvalido;
@@ -322,6 +337,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     elevation: 5,
                   ),
                   onPressed: () async {
+
+                    if (registerProvider.registerState == RegisterState.loading){
+                    return; // Evita múltiples pulsaciones mientras se carga
+                  }
+
                     if (!_formKey.currentState!.validate()) {
                       buildErrorMessage(localizations.revisaCampos, context);
                       return;

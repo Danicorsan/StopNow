@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -135,13 +136,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         backgroundColor: colorScheme.primary,
         onPressed: () async {
           if (!_formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(localizations.revisaCampos),
-                backgroundColor: const Color(0xFF8A0000),
-                duration: const Duration(seconds: 2),
-              ),
-            );
+            buildErrorMessage(localizations.revisaCampos, context);
             return;
           }
 

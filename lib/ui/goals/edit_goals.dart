@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -27,8 +28,10 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
   void initState() {
     super.initState();
     _nombreController = TextEditingController(text: widget.goal.nombre);
-    _descripcionController = TextEditingController(text: widget.goal.descripcion);
-    _precioController = TextEditingController(text: widget.goal.precio.toString());
+    _descripcionController =
+        TextEditingController(text: widget.goal.descripcion);
+    _precioController =
+        TextEditingController(text: widget.goal.precio.toString());
 
     _nombreController.addListener(_onFieldsChanged);
     _descripcionController.addListener(_onFieldsChanged);
@@ -37,8 +40,10 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
 
   void _onFieldsChanged() {
     final nombreChanged = _nombreController.text != widget.goal.nombre;
-    final descripcionChanged = _descripcionController.text != widget.goal.descripcion;
-    final precioChanged = _precioController.text != widget.goal.precio.toString();
+    final descripcionChanged =
+        _descripcionController.text != widget.goal.descripcion;
+    final precioChanged =
+        _precioController.text != widget.goal.precio.toString();
     final changed = nombreChanged || descripcionChanged || precioChanged;
     if (_hasChanged != changed) {
       setState(() {
@@ -79,7 +84,8 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
               child: TextFormField(
                 controller: _nombreController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.workspaces_outlined, color: colorScheme.primary),
+                  prefixIcon: Icon(Icons.workspaces_outlined,
+                      color: colorScheme.primary),
                   labelText: localizations.nombre,
                   labelStyle: TextStyle(color: colorScheme.primary),
                   border: OutlineInputBorder(
@@ -103,7 +109,8 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
               child: TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.description, color: colorScheme.primary),
+                  prefixIcon:
+                      Icon(Icons.description, color: colorScheme.primary),
                   labelText: localizations.descripcion,
                   labelStyle: TextStyle(color: colorScheme.primary),
                   border: OutlineInputBorder(
@@ -118,7 +125,8 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
               child: TextFormField(
                 controller: _precioController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.attach_money, color: colorScheme.primary),
+                  prefixIcon:
+                      Icon(Icons.attach_money, color: colorScheme.primary),
                   labelText: localizations.cuantoCuesta,
                   labelStyle: TextStyle(color: colorScheme.primary),
                   border: OutlineInputBorder(
@@ -151,35 +159,24 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
             ? null
             : () async {
                 if (!_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(localizations.revisaCampos),
-                      backgroundColor: const Color(0xFF8A0000),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                  return;
+                  buildErrorMessage(localizations.revisaCampos, context);
                 }
 
-                final exito = await Provider.of<GoalsProvider>(context, listen: false)
-                    .editGoal(
-                        originalGoal: widget.goal,
-                        nombreNuevo: _nombreController.text,
-                        descripcionNueva: _descripcionController.text,
-                        precioNuevo: double.parse(_precioController.text),
-                        context: context);
+                final exito =
+                    await Provider.of<GoalsProvider>(context, listen: false)
+                        .editGoal(
+                            originalGoal: widget.goal,
+                            nombreNuevo: _nombreController.text,
+                            descripcionNueva: _descripcionController.text,
+                            precioNuevo: double.parse(_precioController.text),
+                            context: context);
 
                 if (exito) {
-                  Provider.of<GoalsProvider>(context, listen: false).traerObjetivos();
+                  Provider.of<GoalsProvider>(context, listen: false)
+                      .traerObjetivos();
                   Navigator.pop(context, true);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(localizations.errorObjetivo),
-                      backgroundColor: const Color(0xFF8A0000),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
+                  buildErrorMessage(localizations.errorObjetivo, context);
                 }
               },
         child: const Icon(Icons.check),

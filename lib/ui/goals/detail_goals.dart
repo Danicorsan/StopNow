@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
@@ -128,7 +130,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                       if (exito) {
                         Navigator.pop(context);
                         Navigator.pop(context);
-                      }else{
+                      } else {
                         Navigator.pop(context);
                       }
                     },

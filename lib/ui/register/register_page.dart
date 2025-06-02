@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/base/widgets/base_textfield.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
 import 'package:stopnow/ui/register/register_state.dart';
@@ -71,13 +72,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (status.isGranted) {
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+      final pickedFile =
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
       if (pickedFile != null) {
         setState(() {
           _selectedImage = File(pickedFile.path);
           Provider.of<RegisterProvider>(context, listen: false)
               .setProfileImage(_selectedImage!);
-              print('Selected image: ${_selectedImage!.path}');
+          print('Selected image: ${_selectedImage!.path}');
         });
       }
     } else if (status.isPermanentlyDenied) {
@@ -321,13 +323,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   onPressed: () async {
                     if (!_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(localizations.revisaCampos),
-                          backgroundColor: const Color(0xFF8A0000),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
+                      buildErrorMessage(localizations.revisaCampos, context);
                       return;
                     }
 
@@ -341,15 +337,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             'password': _passwordController.text,
                           });
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(registerProvider.errorMessage.isEmpty
+                      buildErrorMessage(
+                          registerProvider.errorMessage.isEmpty
                               ? localizations.errorDesconocido
-                              : registerProvider.errorMessage),
-                          backgroundColor: const Color(0xFF8A0000),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
+                              : registerProvider.errorMessage,
+                          context);
                     }
                   },
                   child: registerProvider.registerState == RegisterState.loading

@@ -58,7 +58,7 @@ class _SettingsPageState extends State<SettingsPage> {
               subtitle: localizations.gestionaInformacion,
               color: colorScheme.secondary,
               onTap: () {
-                Navigator.pushReplacementNamed(
+                Navigator.pushNamed(
                     context, AppRoutes.settingsAcount);
               },
               colorScheme: colorScheme,

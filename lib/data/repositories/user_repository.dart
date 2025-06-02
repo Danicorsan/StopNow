@@ -136,13 +136,15 @@ class UserRepository {
     }
   }
 
-  static Future<void> borrarObjetivo(GoalModel goal) async {
+  static Future<BaseResult> borrarObjetivo(String id) async {
     try {
       await UserDao.borrarObjetivo(
-        goal: goal,
+        id: id,
       );
+      return BaseResultSuccess(true);
     } catch (e) {
       print('Error al borrar objetivo: $e');
+      return BaseResultError('Error al borrar objetivo: $e');
     }
   }
 
@@ -179,14 +181,16 @@ class UserRepository {
     }
   }
 
-  static Future<BaseResult> enviarMensaje(String texto, String nombreUsuario, String fotoPerfil) async {
+  static Future<BaseResult> enviarMensaje(
+      String texto, String nombreUsuario, String fotoPerfil) async {
     try {
       final userId = supabase.auth.currentUser?.id;
       if (userId == null) {
         return BaseResultError('Usuario no autenticado');
       }
 
-      final response = await UserDao.insertarMensaje(texto, nombreUsuario, fotoPerfil);
+      final response =
+          await UserDao.insertarMensaje(texto, nombreUsuario, fotoPerfil);
 
       return BaseResultSuccess(response);
     } catch (e) {
@@ -194,4 +198,23 @@ class UserRepository {
     }
   }
 
+  static Future<BaseResult> actualizarObjetivo({
+    required String id,
+    required String nombreNuevo,
+    required String descripcionNueva,
+    required double precioNuevo,
+  }) async {
+    try {
+      await UserDao.actualizarObjetivo(
+        id: id,
+        nombreNuevo: nombreNuevo,
+        descripcionNueva: descripcionNueva,
+        precioNuevo: precioNuevo,
+      );
+      return BaseResultSuccess(true);
+    } catch (e) {
+      print('Error al actualizar objetivo: $e');
+      return BaseResultError('Error al actualizar objetivo: $e');
+    }
+  }
 }

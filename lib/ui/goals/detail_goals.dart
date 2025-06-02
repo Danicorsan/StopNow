@@ -2,12 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
+import 'package:stopnow/ui/goals/goals_provider.dart';
 
-class DetailGoalsPage extends StatelessWidget {
+class DetailGoalsPage extends StatefulWidget {
   const DetailGoalsPage({super.key, required this.goal});
   final GoalModel goal;
+
+  @override
+  State<DetailGoalsPage> createState() => _DetailGoalsPageState();
+}
+
+class _DetailGoalsPageState extends State<DetailGoalsPage> {
+  late GoalModel goal;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    goal = widget.goal;
+  }
+
+  Future<void> _refreshGoal(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
+    await Provider.of<GoalsProvider>(context, listen: false).traerObjetivos();
+    final provider = Provider.of<GoalsProvider>(context, listen: false);
+    final updated = provider.goals.firstWhere(
+      (g) => g.id == goal.id,
+      orElse: () => goal,
+    );
+    setState(() {
+      goal = updated;
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,137 +76,208 @@ class DetailGoalsPage extends StatelessWidget {
     final double porcentaje = (dineroAhorrado / goal.precio).clamp(0, 1);
 
     return Scaffold(
-      appBar: baseAppBar(
-        goal.nombre,
-        volver: true,
-        onTap: () {
-          Navigator.pop(context);
-        },
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Resumen motivacional
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: colorScheme.secondary.withOpacity(0.10),
-                  borderRadius: BorderRadius.circular(18),
+      appBar: baseAppBar(goal.nombre, volver: true, onTap: () {
+        Navigator.pop(context);
+      }, actions: [
+        IconButton(
+          icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
+          onPressed: () async {
+            final exito = await Navigator.pushNamed(
+              context,
+              AppRoutes.editGoal,
+              arguments: goal,
+            );
+            if (exito == true) {
+              await _refreshGoal(context);
+              buildSuccesMessage("objetivoEditadoExito", context);
+            }
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.delete, color: colorScheme.primary),
+          onPressed: () async {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: colorScheme.surface,
+                title: Text(
+                  localizations.recaida,
+                  style: TextStyle(color: colorScheme.primary),
                 ),
+                content: Text(
+                  localizations.dialogoRecaida,
+                  style: TextStyle(color: colorScheme.onSurface),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(
+                      localizations.cancelar,
+                      style: TextStyle(color: colorScheme.primary),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.error,
+                      foregroundColor: colorScheme.onError,
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      bool exito = await Provider.of<GoalsProvider>(context,
+                              listen: false)
+                          .removeGoal(goal.id, context);
+                      setState(() {
+                        isLoading = false;
+                      });
+                      if (exito) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text(localizations.aceptar),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ]),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
-                      localizations.estasAhorrandoPara,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: colorScheme.secondary,
+                    // Resumen motivacional
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: colorScheme.secondary.withOpacity(0.10),
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            localizations.estasAhorrandoPara,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: colorScheme.secondary,
+                            ),
+                          ),
+                          Text(
+                            goal.nombre,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            localizations
+                                .precioObjetivo(goal.precio.toStringAsFixed(2)),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    const SizedBox(height: 24),
+                    // Progreso actual
+                    _buildContainerBarra(porcentaje, colorScheme),
+                    const SizedBox(height: 16),
                     Text(
-                      goal.nombre,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      localizations
-                          .precioObjetivo(goal.precio.toStringAsFixed(2)),
+                      localizations.ahorroCigarros(
+                          cigarrosEvitados, dineroAhorrado.toStringAsFixed(2)),
                       style: TextStyle(
                         fontSize: 16,
-                        color: colorScheme.onSurface.withOpacity(0.7),
+                        color: Colors.green[
+                            theme.brightness == Brightness.dark ? 200 : 700],
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    // Detalles de lo que falta
+                    _buildContainerSecundario(
+                      label: localizations.dineroFaltante,
+                      value: "${dineroFaltante.toStringAsFixed(2)} €",
+                      colorScheme: colorScheme,
+                    ),
+                    const SizedBox(height: 10),
+                    _buildContainerSecundario(
+                      label: localizations.cigarrosFaltantes,
+                      value: "$cigarrosFaltantes",
+                      colorScheme: colorScheme,
+                    ),
+                    const SizedBox(height: 10),
+                    _buildContainerSecundario(
+                      label: localizations.horasFaltantes,
+                      value: "${horasFaltantes.toStringAsFixed(1)} h",
+                      colorScheme: colorScheme,
+                    ),
+                    const SizedBox(height: 24),
+                    // Info extra
+                    Card(
+                      color: Colors.yellow[
+                          theme.brightness == Brightness.dark ? 950 : 50],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              localizations.comoSeCalcula,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange[
+                                    theme.brightness == Brightness.dark
+                                        ? 200
+                                        : 900],
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "${localizations.explicacionCalculo1}\n${localizations.explicacionCalculo2}",
+                              style: TextStyle(
+                                color: Colors.orange[
+                                    theme.brightness == Brightness.dark
+                                        ? 100
+                                        : 800],
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              localizations.sigueAsi,
+                              style: TextStyle(
+                                color: Colors.green[
+                                    theme.brightness == Brightness.dark
+                                        ? 200
+                                        : 800],
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
-              // Progreso actual
-              _buildContainerBarra(porcentaje, colorScheme),
-              const SizedBox(height: 16),
-              Text(
-                localizations.ahorroCigarros(
-                    cigarrosEvitados, dineroAhorrado.toStringAsFixed(2)),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors
-                      .green[theme.brightness == Brightness.dark ? 200 : 700],
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              // Detalles de lo que falta
-              _buildContainerSecundario(
-                label: localizations.dineroFaltante,
-                value: "${dineroFaltante.toStringAsFixed(2)} €",
-                colorScheme: colorScheme,
-              ),
-              const SizedBox(height: 10),
-              _buildContainerSecundario(
-                label: localizations.cigarrosFaltantes,
-                value: "$cigarrosFaltantes",
-                colorScheme: colorScheme,
-              ),
-              const SizedBox(height: 10),
-              _buildContainerSecundario(
-                label: localizations.horasFaltantes,
-                value: "${horasFaltantes.toStringAsFixed(1)} h",
-                colorScheme: colorScheme,
-              ),
-              const SizedBox(height: 24),
-              // Info extra
-              Card(
-                color: Colors
-                    .yellow[theme.brightness == Brightness.dark ? 950 : 50],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        localizations.comoSeCalcula,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange[
-                              theme.brightness == Brightness.dark ? 200 : 900],
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        "${localizations.explicacionCalculo1}\n${localizations.explicacionCalculo2}",
-                        style: TextStyle(
-                          color: Colors.orange[
-                              theme.brightness == Brightness.dark ? 100 : 800],
-                          fontSize: 14,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        localizations.sigueAsi,
-                        style: TextStyle(
-                          color: Colors.green[
-                              theme.brightness == Brightness.dark ? 200 : 800],
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 

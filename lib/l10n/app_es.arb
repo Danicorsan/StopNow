@@ -70,8 +70,8 @@
   "horasFaltantes": "Horas que faltan",
   "comoSeCalcula": "¿Cómo se calcula?",
   "explicacionCalculo1": "Cada cigarro que no fumas te ahorra dinero y tiempo de vida.",
-  "explicacionCalculo2": "El cálculo se basa en el precio de tu paquete, los cigarros que fumabas al día y el tiempo desde que dejaste de fumar.",
-  "sigueAsi": "¡Sigue así! Estás cada vez más cerca de tu objetivo 🚀",
+  "explicacionCalculo2": "El cálculo se basa en el precio de tu paquete, los cigarros que fumabas al día y el tiempo que falta para cumplirlo desde que añadiste el objetivo.",
+  "sigueAsi": "¡Sigue así! Estás cada vez más cerca de tu objetivo",
   "noTienesObjetivos": "No tienes objetivos aún",
   "objetivoExito": "Objetivo añadido con éxito",
   "errorObjetivo": "Error al añadir el objetivo",
@@ -176,5 +176,6 @@
   "segundos": "segundos",
   "hoy":"Hoy",
   "ayer":"Ayer",
-  "cigarros":"Cigarros"
+  "cigarros":"Cigarros",
+  "editarObjetivo" : "Editar Objetivo"
 }

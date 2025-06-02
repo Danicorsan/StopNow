@@ -5,6 +5,7 @@ import 'package:stopnow/ui/achievement/achievement_page.dart';
 import 'package:stopnow/ui/calm/calm_page.dart';
 import 'package:stopnow/ui/goals/add_goals.dart';
 import 'package:stopnow/ui/goals/detail_goals.dart';
+import 'package:stopnow/ui/goals/edit_goals.dart';
 import 'package:stopnow/ui/goals/goals_page.dart';
 import 'package:stopnow/ui/home/home_page.dart';
 import 'package:stopnow/ui/init/init_page.dart';
@@ -27,6 +28,7 @@ class AppRoutes {
   static const String calma = '/calma';
   static const String goals = '/goals';
   static const String addGoal = '/addGoal';
+  static const String editGoal = '/editGoal';
   static const String settingsPage = '/settings';
   static const String settingsAcount = '/settings/account';
   static const String init = '/init';
@@ -115,6 +117,13 @@ class AppRoutes {
         final goal = settings.arguments as GoalModel;
         return MaterialPageRoute(
           builder: (_) => DetailGoalsPage(goal: goal),
+          settings: settings,
+        );
+
+      case editGoal:
+        final goal = settings.arguments as GoalModel;
+        return MaterialPageRoute(
+          builder: (_) => EditGoalsPage(goal: goal),
           settings: settings,
         );
 

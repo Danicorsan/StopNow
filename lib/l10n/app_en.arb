@@ -70,8 +70,8 @@
   "horasFaltantes": "Hours remaining",
   "comoSeCalcula": "How is it calculated?",
   "explicacionCalculo1": "Each cigarette you don't smoke saves you money and life time.",
-  "explicacionCalculo2": "The calculation is based on your pack price, the cigarettes you smoked per day, and the time since you quit.",
-  "sigueAsi": "Keep it up! You're getting closer to your goal 🚀",
+  "explicacionCalculo2": "The calculation is based on the price of your pack, the cigarettes you smoked per day, and the time remaining to meet it since you added the target.",
+  "sigueAsi": "Keep it up! You're getting closer to your goal",
   "noTienesObjetivos": "You don't have any goals yet",
   "objetivoExito": "Goal added successfully",
   "errorObjetivo": "Error adding the goal",
@@ -179,5 +179,6 @@
   "segundos": "seconds",
   "hoy":"Today",
   "ayer":"Yesterday",
-  "cigarros":"Cigarettes"
+  "cigarros":"Cigarettes",
+  "editarObjetivo" : "Edit goal"
 }

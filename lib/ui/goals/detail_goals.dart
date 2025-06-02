@@ -89,18 +89,6 @@ class DetailGoalsPage extends StatelessWidget {
                         color: colorScheme.onSurface.withOpacity(0.7),
                       ),
                     ),
-                    if (goal.usuarioId != null && goal.usuarioId!.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          goal.usuarioId!,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: colorScheme.onSurface.withOpacity(0.6),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
                   ],
                 ),
               ),

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/message_model.dart';
@@ -32,6 +33,13 @@ class ChatProvider extends ChangeNotifier {
   //TODO CAMBIAR LLAMADAS A REPOSITORIO Y A USAR BASE_RESULT
 
   Future<void> _cargarMensajes() async {
+    final connectivity = await Connectivity().checkConnectivity();
+    if (connectivity.first == ConnectivityResult.none) {
+      // Mostrar mensaje o dejar la lista vacía
+      _mensajes.clear();
+      notifyListeners();
+      return;
+    }
     final res = await _supabase
         .from('public.chat_mensajes')
         .select()
@@ -58,6 +66,11 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future<void> enviarMensaje(String texto, BuildContext context) async {
+    final connectivity = await Connectivity().checkConnectivity();
+    if (connectivity.first == ConnectivityResult.none) {
+      buildErrorMessage("Sin conexión a internet. No se puede enviar el mensaje.", context);
+      return;
+    }
     final user = _supabase.auth.currentUser;
     if (user == null || texto.trim().isEmpty) return;
 

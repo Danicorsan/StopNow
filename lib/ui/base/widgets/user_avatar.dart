@@ -1,14 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:stopnow/data/providers/user_provider.dart';
 
 class UserAvatar extends StatefulWidget {
   final String? avatarUrl;
 
-  UserAvatar({super.key, this.avatarUrl});
+  const UserAvatar({super.key, this.avatarUrl});
 
   @override
   State<UserAvatar> createState() => _UserAvatarState();
@@ -27,12 +25,8 @@ class _UserAvatarState extends State<UserAvatar> {
   Future<void> _loadAvatar() async {
     setState(() => _isLoading = true);
     try {
-      // Si se pasa avatarUrl por parámetro, úsalo. Si no, usa el del usuario actual.
       final url = widget
-          .avatarUrl; /*??
-          Provider.of<UserProvider>(context, listen: false)
-              .currentUser
-              ?.fotoPerfil;*/
+          .avatarUrl;
       if (mounted && url != null) {
         setState(() => _avatarUrl = url);
       }

@@ -1,4 +1,3 @@
-import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

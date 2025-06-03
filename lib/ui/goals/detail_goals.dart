@@ -61,8 +61,8 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     final double precioPorCigarro =
         precioPaquete / (cigarrosPorPaquete == 0 ? 1 : cigarrosPorPaquete);
     final double dineroAhorrado = cigarrosEvitados * precioPorCigarro;
-    final int minutosGanados = cigarrosEvitados * 11;
-    final double horasGanadas = minutosGanados / 60;
+    //final int minutosGanados = cigarrosEvitados * 11;
+    //final double horasGanadas = minutosGanados / 60;
 
     final double dineroFaltante =
         (goal.precio - dineroAhorrado).clamp(0, goal.precio);

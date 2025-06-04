@@ -139,18 +139,30 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             return;
           }
 
-          bool exito =
-              await Provider.of<GoalsProvider>(context, listen: false).addGoal(
-                  GoalModel(
-                    usuarioId: UserRepository.getId(),
-                    nombre: _nombreController.text.trim(),
-                    descripcion: _descripcionController.text.trim(),
-                    precio: _precioController.text.trim().isEmpty
-                        ? 0.0
-                        : double.tryParse(_precioController.text.trim())!,
-                  ),
-                  context);
-          Navigator.pop(context, exito);
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(child: CircularProgressIndicator()),
+          );
+
+          final exito = await Provider.of<GoalsProvider>(context, listen: false).addGoal(
+            GoalModel(
+              usuarioId: UserRepository.getId(),
+              nombre: _nombreController.text.trim(),
+              descripcion: _descripcionController.text.trim(),
+              precio: double.tryParse(_precioController.text.trim()) ?? 0.0,
+            ),
+            context,
+          );
+
+          Navigator.of(context, rootNavigator: true).pop(); // Quita el loader
+
+          if (exito) {
+            //buildSuccesMessage("localizations.objetivoCreado", context);
+            Navigator.pop(context, true);
+          } else {
+            buildErrorMessage(localizations.errorObjetivo, context);
+          }
         },
         child: const Icon(Icons.check),
       ),

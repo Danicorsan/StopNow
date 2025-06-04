@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/models/reading_model.dart';
 import 'package:stopnow/ui/achievement/achievement_page.dart';
@@ -12,6 +13,7 @@ import 'package:stopnow/ui/init/init_page.dart';
 import 'package:stopnow/ui/login/login_page.dart';
 import 'package:stopnow/ui/messages/message_page.dart';
 import 'package:stopnow/ui/profile/profile_page.dart';
+import 'package:stopnow/ui/profile/profile_provider.dart';
 import 'package:stopnow/ui/readings/readings_details_page.dart';
 import 'package:stopnow/ui/readings/readings_page.dart';
 import 'package:stopnow/ui/register/register_page.dart';
@@ -71,9 +73,12 @@ class AppRoutes {
         );
 
       case profile:
-      final args = settings.arguments as String?;
+        final args = settings.arguments as String?;
         return MaterialPageRoute(
-          builder: (_) => ProfilePage(userId: args),
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => ProfileProvider(),
+            child: ProfilePage(userId: args),
+          ),
           settings: settings,
         );
 

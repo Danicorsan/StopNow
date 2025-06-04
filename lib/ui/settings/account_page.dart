@@ -1,10 +1,20 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/dao/user_dao.dart';
+import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
+import 'package:stopnow/ui/base/widgets/base_textfield.dart';
+import 'package:stopnow/ui/base/widgets/user_avatar.dart';
+import 'package:stopnow/ui/settings/settings_provider.dart';
+import 'package:stopnow/utils/validators/validator.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -14,8 +24,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  bool isEditable = false;
-
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _cigarrosAlDiaController =
@@ -37,7 +46,9 @@ class _AccountPageState extends State<AccountPage> {
           user.fotoPerfil; // Assuming email is stored in fotoPerfil
       _cigarrosAlDiaController.text = user.cigarrosAlDia.toString();
       _fechaDejarDeFumarController.text =
-          user.fechaDejarFumar.toIso8601String();
+          "${user.fechaDejarFumar.year}-${user.fechaDejarFumar.month.toString().padLeft(2, '0')}-${user.fechaDejarFumar.day.toString().padLeft(2, '0')} "
+          "${user.fechaDejarFumar.hour.toString().padLeft(2, '0')}:${user.fechaDejarFumar.minute.toString().padLeft(2, '0')}";
+
       _cigarrosPaqueteController.text = user.cigarrosPorPaquete.toString();
       _precioPaqueteController.text = user.precioPaquete.toString();
     }
@@ -54,151 +65,201 @@ class _AccountPageState extends State<AccountPage> {
     super.dispose();
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-    bool readOnly = false,
-    Function()? onTap,
-    ColorScheme? colorScheme,
-  }) {
-    colorScheme ??= Theme.of(context).colorScheme;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      child: TextFormField(
-        onTap: onTap,
-        controller: controller,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: colorScheme.primary),
-          labelText: label,
-          labelStyle: TextStyle(color: colorScheme.primary),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(color: colorScheme.primary),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(color: colorScheme.primary, width: 2),
-          ),
-        ),
-        keyboardType: keyboardType,
-        readOnly: readOnly,
-        style: TextStyle(color: colorScheme.onBackground),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final settingsProvider = Provider.of<SettingsProvider>(context);
 
     return Scaffold(
       backgroundColor: colorScheme.background,
       appBar: baseAppBar(
         localizations.perfil,
-        actions: [
-          IconButton(
-            icon: Icon(isEditable ? Icons.check : Icons.edit,
-                color: colorScheme.primary),
-            onPressed: () {
-              setState(() {
-                isEditable = !isEditable;
-              });
-            },
-          ),
-        ],
         volver: true,
         onTap: () {
           Navigator.pop(context);
         },
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 20.h),
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: colorScheme.surfaceVariant,
-              child: isEditable
-                  ? IconButton(
-                      icon: Icon(Icons.edit, color: colorScheme.onSurface),
-                      onPressed: () {
-                        // Lógica para cambiar la foto de perfil
-                      },
-                    )
-                  : null,
-            ),
-            SizedBox(height: 20.h),
-            _buildTextField(
-              controller: _userNameController,
-              label: localizations.nombreUsuario,
-              icon: Icons.person,
-              readOnly: !isEditable,
-              colorScheme: colorScheme,
-            ),
-            _buildTextField(
-              controller: _emailController,
-              label: localizations.correo,
-              icon: Icons.email,
-              keyboardType: TextInputType.emailAddress,
-              readOnly: !isEditable,
-              colorScheme: colorScheme,
-            ),
-            _buildTextField(
-              controller: _cigarrosAlDiaController,
-              label: localizations.cigarrosPorDia,
-              icon: Icons.smoking_rooms,
-              keyboardType: TextInputType.number,
-              readOnly: !isEditable,
-              colorScheme: colorScheme,
-            ),
-            _buildTextField(
-              controller: _fechaDejarDeFumarController,
-              label: localizations.fechaDejarFumar,
-              icon: Icons.calendar_today,
-              readOnly: true,
-              onTap: isEditable
-                  ? () async {
-                      final picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            children: [
+              SizedBox(height: 20.h),
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: colorScheme.surfaceVariant,
+                child: UserAvatar(
+                  avatarUrl: Provider.of<UserProvider>(context, listen: false)
+                      .currentUser
+                      ?.fotoPerfil,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              baseTextField(
+                controller: _userNameController,
+                label: localizations.nombreUsuario,
+                icon: Icons.person,
+                colorScheme: colorScheme,
+                context: context,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return localizations.introduceNombreUsuario;
+                  }
+                  if (value.length < 3) {
+                    return localizations.nombreMinimoCaracteres;
+                  }
+                  return null;
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                ],
+              ),
+              baseTextField(
+                controller: _cigarrosAlDiaController,
+                label: localizations.cigarrosPorDia,
+                icon: Icons.smoking_rooms,
+                keyboardType: TextInputType.number,
+                colorScheme: colorScheme,
+                context: context,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return localizations.introduceCantidad;
+                  }
+                  if (int.tryParse(value) == null) {
+                    return localizations.introduceNumeroValido;
+                  }
+                  return null;
+                },
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(2),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+              baseTextField(
+                controller: _fechaDejarDeFumarController,
+                label: localizations.fechaDejarFumar,
+                icon: Icons.calendar_today,
+                readOnly: true,
+                onTap: () async {
+                  FocusScope.of(context).unfocus();
+                  final pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (pickedDate != null) {
+                    final pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    DateTime finalDateTime = pickedDate;
+                    if (pickedTime != null) {
+                      finalDateTime = DateTime(
+                        pickedDate.year,
+                        pickedDate.month,
+                        pickedDate.day,
+                        pickedTime.hour,
+                        pickedTime.minute,
                       );
-                      if (picked != null) {
-                        _fechaDejarDeFumarController.text =
-                            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-                      }
                     }
-                  : null,
-              colorScheme: colorScheme,
-            ),
-            _buildTextField(
-              controller: _cigarrosPaqueteController,
-              label: localizations.cigarrosPorPaquete,
-              icon: Icons.local_fire_department,
-              keyboardType: TextInputType.number,
-              readOnly: !isEditable,
-              colorScheme: colorScheme,
-            ),
-            _buildTextField(
-              controller: _precioPaqueteController,
-              label: localizations.precioPorPaquete,
-              icon: Icons.euro,
-              keyboardType: TextInputType.number,
-              readOnly: !isEditable,
-              colorScheme: colorScheme,
-            ),
-            SizedBox(height: 20.h),
-          ],
+                    _fechaDejarDeFumarController.text =
+                        "${finalDateTime.year}-${finalDateTime.month.toString().padLeft(2, '0')}-${finalDateTime.day.toString().padLeft(2, '0')} "
+                        "${finalDateTime.hour.toString().padLeft(2, '0')}:${finalDateTime.minute.toString().padLeft(2, '0')}";
+                  }
+                },
+                colorScheme: colorScheme,
+                context: context,
+                validator: (value) => (value == null || value.isEmpty)
+                    ? localizations.introduceFecha
+                    : null,
+              ),
+              baseTextField(
+                controller: _cigarrosPaqueteController,
+                label: localizations.cigarrosPorPaquete,
+                icon: Icons.local_fire_department,
+                keyboardType: TextInputType.number,
+                colorScheme: colorScheme,
+                context: context,
+                validator: (value) =>
+                    (value == null || int.tryParse(value) == null)
+                        ? localizations.introduceNumeroValido
+                        : null,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(3),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+              baseTextField(
+                controller: _precioPaqueteController,
+                label: localizations.precioPorPaquete,
+                icon: Icons.euro,
+                keyboardType: TextInputType.number,
+                colorScheme: colorScheme,
+                context: context,
+                validator: (value) =>
+                    (value == null || double.tryParse(value) == null)
+                        ? localizations.introduceNumeroValido
+                        : null,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(6),
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                ],
+              ),
+              SizedBox(height: 20.h),
+            ],
+          ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          if (!_formKey.currentState!.validate()) {
+            buildErrorMessage(localizations.revisaCampos, context);
+            return;
+          }
+
+          final user =
+              Provider.of<UserProvider>(context, listen: false).currentUser;
+          if (user == null) return;
+
+          // Mostrar loader modal
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(child: CircularProgressIndicator()),
+          );
+
+          final result = await settingsProvider.actualizarPerfil(
+            id: UserRepository.getId(),
+            nombreUsuario: _userNameController.text.trim(),
+            fechaDejarFumar:
+                DateTime.tryParse(_fechaDejarDeFumarController.text) ??
+                    user.fechaDejarFumar,
+            cigarrosAlDia: int.tryParse(_cigarrosAlDiaController.text) ??
+                user.cigarrosAlDia,
+            cigarrosPorPaquete: int.tryParse(_cigarrosPaqueteController.text) ??
+                user.cigarrosPorPaquete,
+            precioPaquete: double.tryParse(_precioPaqueteController.text) ??
+                user.precioPaquete,
+            fotoPerfil: user.fotoPerfil,
+            context: context,
+          );
+
+          Navigator.of(context, rootNavigator: true).pop(); // Quita el loader
+
+          if (result) {
+            buildSuccesMessage("localizations.perfilActualizado", context);
+            Navigator.pop(context);
+          } else {
+            buildErrorMessage(
+                settingsProvider.errorMessage ?? "localizations.errorGenerico",
+                context);
+          }
+        },
+        child: const Icon(Icons.check),
       ),
     );
   }

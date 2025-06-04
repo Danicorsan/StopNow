@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          "${horas.toString().padLeft(2, '0')}:${minutos.toString().padLeft(2, '0')}:${segundos.toString().padLeft(2, '0')}",
+                          "${horas.toString().padLeft(2, '0')} ${localizations.horas.toLowerCase()}",
                           style: TextStyle(
                             fontSize: 36.sp,
                             fontWeight: FontWeight.bold,
@@ -119,147 +119,147 @@ class _HomePageState extends State<HomePage> {
             }
 
             return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Bienvenida y frase motivadora
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: 150.h,
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            localizations.bienvenidoUsuario(
-                                user?.nombreUsuario ?? localizations.usuario),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                              color: colorScheme.onBackground,
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.w),
-                            child: Text(
-                              '"${homeProvider.getFrase()}"',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w400,
-                                color:
-                                    colorScheme.onBackground.withOpacity(0.8),
-                                height: 1.4,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(),
-
-                  // Estadísticas en tarjetas deslizables
-                  Expanded(
-                    flex: 3,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Bienvenida y frase motivadora
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    height: 150.h,
+                    alignment: Alignment.center,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          height: 300.h,
-                          child: PageView(
-                            controller: _pageController,
-                            children: [
-                              _buildTimerContainer(
-                                  homeProvider, localizations, colorScheme),
-                              _buildStatisticCard(
-                                localizations.dineroAhorrado,
-                                "${homeProvider.getDineroAhorrado().toStringAsFixed(2)} €",
-                                Icons.attach_money,
-                                colorScheme,
-                              ),
-                              _buildStatisticCard(
-                                localizations.cigarrosEvitados,
-                                "${homeProvider.getCigarrosEvitados().floor()}",
-                                Icons.smoke_free,
-                                colorScheme,
-                              ),
-                              _buildStatisticCard(
-                                localizations.tiempoDeVidaGanado,
-                                "${homeProvider.getTiempoDeVidaGanado().floor()} ${localizations.min}",
-                                Icons.favorite,
-                                colorScheme,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16.h),
-                        SmoothPageIndicator(
-                          controller: _pageController,
-                          count: 4,
-                          effect: WormEffect(
-                            dotHeight: 10.h,
-                            dotWidth: 10.w,
-                            spacing: 10.w,
-                            activeDotColor: colorScheme.primary,
-                            dotColor: colorScheme.secondary.withOpacity(0.3),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  const Divider(),
-
-                  // Método de relajación
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
                         Text(
-                          localizations.teEncuentrasConGanasDeFumar,
+                          localizations.bienvenidoUsuario(
+                              user?.nombreUsuario ?? localizations.usuario),
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 14.sp,
-                            color: colorScheme.onBackground.withOpacity(0.7),
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onBackground,
                           ),
                         ),
-                        Text(
-                          localizations.pruebaConNuestroMetodoDeRelajacion,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: colorScheme.onBackground.withOpacity(0.7),
-                          ),
-                        ),
+                        SizedBox(height: 10.h),
                         Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 10.h),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: colorScheme.primary,
-                              foregroundColor: colorScheme.onPrimary,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 50.w, vertical: 20.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.r),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pushNamed(context, AppRoutes.calma);
-                            },
-                            child: Text(
-                              localizations.metodoDeRelajacion,
-                              style: TextStyle(fontSize: 16.sp),
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          child: Text(
+                            '"${homeProvider.getFrase()}"',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w400,
+                              color: colorScheme.onBackground.withOpacity(0.8),
+                              height: 1.4,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ]);
+                ),
+                const Divider(),
+
+                // Estadísticas en tarjetas deslizables
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 300.h,
+                        child: PageView(
+                          controller: _pageController,
+                          children: [
+                            _buildTimerContainer(
+                                homeProvider, localizations, colorScheme),
+                            _buildStatisticCard(
+                              localizations.dineroAhorrado,
+                              "${homeProvider.getDineroAhorrado().toStringAsFixed(2)} €",
+                              Icons.attach_money,
+                              colorScheme,
+                            ),
+                            _buildStatisticCard(
+                              localizations.cigarrosEvitados,
+                              "${homeProvider.getCigarrosEvitados().floor()}",
+                              Icons.smoke_free,
+                              colorScheme,
+                            ),
+                            _buildStatisticCard(
+                              localizations.tiempoDeVidaGanado,
+                              "${homeProvider.getTiempoDeVidaGanado().floor()} ${localizations.min}",
+                              Icons.favorite,
+                              colorScheme,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      SmoothPageIndicator(
+                        controller: _pageController,
+                        count: 4,
+                        effect: WormEffect(
+                          dotHeight: 10.h,
+                          dotWidth: 10.w,
+                          spacing: 10.w,
+                          activeDotColor: colorScheme.primary,
+                          dotColor: colorScheme.secondary.withOpacity(0.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                const Divider(),
+
+                // Método de relajación
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Text(
+                        localizations.teEncuentrasConGanasDeFumar,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: colorScheme.onBackground.withOpacity(0.7),
+                        ),
+                      ),
+                      Text(
+                        localizations.pruebaConNuestroMetodoDeRelajacion,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: colorScheme.onBackground.withOpacity(0.7),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 10.h),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: colorScheme.primary,
+                            foregroundColor: colorScheme.onPrimary,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50.w, vertical: 20.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, AppRoutes.calma);
+                          },
+                          child: Text(
+                            localizations.metodoDeRelajacion,
+                            style: TextStyle(fontSize: 16.sp),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
           },
         ),
       ),

@@ -61,7 +61,7 @@ class UserDao {
     );
   }
 
-  // Metodo para traer todos los objetivos de un usuario ordenados por la fecha 
+  // Metodo para traer todos los objetivos de un usuario ordenados por la fecha
   //de creacion
   static Future<List<Map<String, dynamic>>> obtenerObjetivos(
       String userId) async {
@@ -138,6 +138,25 @@ await _supabase.from('public.chat_mensajes').insert({
       'nombre': nombreNuevo,
       'descripcion': descripcionNueva,
       'precio': precioNuevo,
+    }).eq('id', id);
+  }
+
+  static Future<void> actualizarPerfilUsuario({
+    required String id,
+    required String nombreUsuario,
+    required String fotoPerfil,
+    required DateTime fechaDejarFumar,
+    required int cigarrosAlDia,
+    required int cigarrosPorPaquete,
+    required double precioPaquete,
+  }) async {
+    await supabase.from('public.users').update({
+      'nombre_usuario': nombreUsuario,
+      'foto_perfil': fotoPerfil,
+      'fecha_dejar_fumar': fechaDejarFumar.toIso8601String(),
+      'cigarros_al_dia': cigarrosAlDia,
+      'cigarros_por_paquete': cigarrosPorPaquete,
+      'precio_paquete': precioPaquete,
     }).eq('id', id);
   }
 }

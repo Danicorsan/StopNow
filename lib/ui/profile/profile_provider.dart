@@ -11,6 +11,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> loadUser(BuildContext context, {String? userId}) async {
     isLoading = true;
+    userToShow = null; // Limpia el usuario anterior
     notifyListeners();
     if (userId == null) {
       userToShow =

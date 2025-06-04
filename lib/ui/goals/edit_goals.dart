@@ -160,20 +160,28 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
             : () async {
                 if (!_formKey.currentState!.validate()) {
                   buildErrorMessage(localizations.revisaCampos, context);
+                  return;
                 }
 
-                final exito =
-                    await Provider.of<GoalsProvider>(context, listen: false)
-                        .editGoal(
-                            originalGoal: widget.goal,
-                            nombreNuevo: _nombreController.text,
-                            descripcionNueva: _descripcionController.text,
-                            precioNuevo: double.parse(_precioController.text),
-                            context: context);
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => const Center(child: CircularProgressIndicator()),
+                );
+
+                final exito = await Provider.of<GoalsProvider>(context, listen: false)
+                    .editGoal(
+                  originalGoal: widget.goal,
+                  nombreNuevo: _nombreController.text.trim(),
+                  descripcionNueva: _descripcionController.text.trim(),
+                  precioNuevo: double.tryParse(_precioController.text.trim()) ?? 0.0,
+                  context: context,
+                );
+
+                Navigator.of(context, rootNavigator: true).pop(); // Quita el loader
 
                 if (exito) {
-                  Provider.of<GoalsProvider>(context, listen: false)
-                      .traerObjetivos();
+                  buildSuccesMessage("localizations.objetivoEditado", context);
                   Navigator.pop(context, true);
                 } else {
                   buildErrorMessage(localizations.errorObjetivo, context);

@@ -27,12 +27,14 @@ class RegisterProvider extends ChangeNotifier {
     try {
       cargandoImagen = true;
       final uploadedImageUrl =
-          await UserRepository.uploadProfileImage(imageFile)
-              .then((value) => value.toString());
-      fotoEmail = uploadedImageUrl;
-      print(fotoEmail);
-      cargandoImagen = false;
-      notifyListeners();
+          await UserRepository.uploadProfileImage(imageFile);
+
+      if (uploadedImageUrl is BaseResultSuccess) {  
+        fotoEmail = uploadedImageUrl.data as String;
+        print(fotoEmail);
+        cargandoImagen = false;
+        notifyListeners();
+      }
     } catch (e) {
       print('Error al subir imagen: $e');
     }

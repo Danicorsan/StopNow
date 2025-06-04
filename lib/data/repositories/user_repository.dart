@@ -216,4 +216,30 @@ class UserRepository {
       return BaseResultError('Error al actualizar objetivo: $e');
     }
   }
+
+  static Future<BaseResult> actualizarPerfilUsuario({
+    required String id,
+    required String nombreUsuario,
+    required String fotoPerfil,
+    required DateTime fechaDejarFumar,
+    required int cigarrosAlDia,
+    required int cigarrosPorPaquete,
+    required double precioPaquete,
+  }) async {
+    try {
+      await UserDao.actualizarPerfilUsuario(
+        id: id,
+        nombreUsuario: nombreUsuario,
+        fotoPerfil: fotoPerfil,
+        fechaDejarFumar: fechaDejarFumar,
+        cigarrosAlDia: cigarrosAlDia,
+        cigarrosPorPaquete: cigarrosPorPaquete,
+        precioPaquete: precioPaquete,
+      );
+
+      return BaseResultSuccess(true);
+    } catch (e) {
+      return BaseResultError('Error al actualizar perfil: $e');
+    }
+  }
 }

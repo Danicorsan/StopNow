@@ -68,7 +68,8 @@ class ChatProvider extends ChangeNotifier {
   Future<void> enviarMensaje(String texto, BuildContext context) async {
     final connectivity = await Connectivity().checkConnectivity();
     if (connectivity.first == ConnectivityResult.none) {
-      buildErrorMessage("Sin conexión a internet. No se puede enviar el mensaje.", context);
+      buildErrorMessage(
+          "Sin conexión a internet. No se puede enviar el mensaje.", context);
       return;
     }
     final user = _supabase.auth.currentUser;
@@ -76,10 +77,11 @@ class ChatProvider extends ChangeNotifier {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final nombreUsuario = userProvider.currentUser!.nombreUsuario;
-    final fotoPerfil = userProvider.currentUser!.fotoPerfil; // O el campo correcto
+    final fotoPerfil =
+        userProvider.currentUser!.fotoPerfil; // O el campo correcto
 
-    var exito = await UserRepository.enviarMensaje(
-        texto, nombreUsuario, fotoPerfil);
+    var exito =
+        await UserRepository.enviarMensaje(texto, nombreUsuario, fotoPerfil);
 
     if (exito is BaseResultError) {
       buildErrorMessage("No se ha podido enviar el mensaje", context);

@@ -17,14 +17,16 @@ class _UserAvatarState extends State<UserAvatar> {
   @override
   void initState() {
     super.initState();
+    print(widget.avatarUrl);
+
     _loadAvatar();
+    print(_avatarUrl);
   }
 
   Future<void> _loadAvatar() async {
     setState(() => _isLoading = true);
     try {
-      final url = widget
-          .avatarUrl;
+      final url = widget.avatarUrl;
       if (mounted && url != null) {
         setState(() => _avatarUrl = url);
       }

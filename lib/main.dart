@@ -16,6 +16,7 @@ import 'package:stopnow/ui/messages/message_provider.dart';
 import 'package:stopnow/ui/profile/profile_provider.dart';
 import 'package:stopnow/ui/readings/readings_provider.dart';
 import 'package:stopnow/ui/register/register_provider.dart';
+import 'package:stopnow/ui/settings/settings_provider.dart';
 import 'package:stopnow/utils/themes/theme.dart';
 import 'package:stopnow/utils/constants/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -38,6 +39,7 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (_) => SettingsProvider()),
       ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ChangeNotifierProvider(create: (_) => ChatProvider()),

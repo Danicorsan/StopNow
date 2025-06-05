@@ -7,19 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:stopnow/data/dao/user_dao.dart';
-import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/base/widgets/base_textfield.dart';
-import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:stopnow/ui/settings/settings_provider.dart';
-import 'package:stopnow/utils/validators/validator.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -31,7 +28,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _fotoPerfilController = TextEditingController();
   final TextEditingController _cigarrosAlDiaController =
       TextEditingController();
   final TextEditingController _fechaDejarDeFumarController =
@@ -45,13 +42,20 @@ class _AccountPageState extends State<AccountPage> {
   bool _cargandoImagen = false;
   bool _borrarFoto = false; // NUEVO: para saber si hay que borrar la foto
 
+  late String _originalNombreUsuario;
+  late String? _originalFotoPerfil;
+  late int _originalCigarrosAlDia;
+  late int _originalCigarrosPorPaquete;
+  late double _originalPrecioPaquete;
+  late String _originalFechaDejarFumar;
+
   @override
   void initState() {
     super.initState();
     final user = Provider.of<UserProvider>(context, listen: false).currentUser;
     if (user != null) {
       _userNameController.text = user.nombreUsuario;
-      _emailController.text =
+      _fotoPerfilController.text =
           user.fotoPerfil; // Assuming email is stored in fotoPerfil
       _cigarrosAlDiaController.text = user.cigarrosAlDia.toString();
       _fechaDejarDeFumarController.text =
@@ -60,13 +64,22 @@ class _AccountPageState extends State<AccountPage> {
 
       _cigarrosPaqueteController.text = user.cigarrosPorPaquete.toString();
       _precioPaqueteController.text = user.precioPaquete.toString();
+
+      // Guardar originales
+      _originalNombreUsuario = user.nombreUsuario;
+      _originalFotoPerfil = user.fotoPerfil;
+      _originalCigarrosAlDia = user.cigarrosAlDia;
+      _originalCigarrosPorPaquete = user.cigarrosPorPaquete;
+      _originalPrecioPaquete = user.precioPaquete;
+      _originalFechaDejarFumar =
+          DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar);
     }
   }
 
   @override
   void dispose() {
     _userNameController.dispose();
-    _emailController.dispose();
+    _fotoPerfilController.dispose();
     _cigarrosAlDiaController.dispose();
     _fechaDejarDeFumarController.dispose();
     _cigarrosPaqueteController.dispose();
@@ -104,6 +117,25 @@ class _AccountPageState extends State<AccountPage> {
     }
   }
 
+  bool _hayCambios() {
+    final nombreUsuario = _userNameController.text.trim();
+    final cigarrosAlDia = int.tryParse(_cigarrosAlDiaController.text) ?? 0;
+    final cigarrosPorPaquete =
+        int.tryParse(_cigarrosPaqueteController.text) ?? 0;
+    final precioPaquete = double.tryParse(_precioPaqueteController.text) ?? 0.0;
+    final fechaDejarFumar = _fechaDejarDeFumarController.text.toString();
+
+    return nombreUsuario != _originalNombreUsuario ||
+        cigarrosAlDia != _originalCigarrosAlDia ||
+        cigarrosPorPaquete != _originalCigarrosPorPaquete ||
+        precioPaquete != _originalPrecioPaquete ||
+        fechaDejarFumar != _originalFechaDejarFumar ||
+        _selectedImage != null ||
+        (_borrarFoto &&
+            _originalFotoPerfil != null &&
+            _originalFotoPerfil!.isNotEmpty);
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -127,82 +159,91 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
             children: [
               SizedBox(height: 20.h),
-              Stack(alignment: Alignment.center, children: [
-                GestureDetector(
-                  onTap: _cargandoImagen ? null : _pickImage,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: _selectedImage != null
-                        ? FileImage(_selectedImage!)
-                        : (!_borrarFoto &&
-                                Provider.of<UserProvider>(context,
-                                            listen: false)
-                                        .currentUser
-                                        ?.fotoPerfil !=
-                                    null &&
-                                Provider.of<UserProvider>(context,
-                                        listen: false)
-                                    .currentUser!
-                                    .fotoPerfil
-                                    .isNotEmpty)
-                            ? NetworkImage(Provider.of<UserProvider>(context,
-                                    listen: false)
-                                .currentUser!
-                                .fotoPerfil)
-                            : null,
-                    child: _cargandoImagen
-                        ? Container(
-                            color: Colors.amber,
-                            child: const CircularProgressIndicator())
-                        : (_selectedImage == null &&
-                                (_borrarFoto ||
-                                    Provider.of<UserProvider>(context,
-                                                listen: false)
-                                            .currentUser
-                                            ?.fotoPerfil ==
-                                        null ||
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: _cargandoImagen ? null : _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey.shade300,
+                      backgroundImage: _selectedImage != null
+                          ? FileImage(_selectedImage!)
+                          : null,
+                      child: _selectedImage != null
+                          ? null
+                          : (!_borrarFoto &&
+                                  Provider.of<UserProvider>(context,
+                                              listen: false)
+                                          .currentUser
+                                          ?.fotoPerfil !=
+                                      null &&
+                                  Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .currentUser!
+                                      .fotoPerfil
+                                      .isNotEmpty)
+                              ? ClipOval(
+                                  child: Image.network(
                                     Provider.of<UserProvider>(context,
                                             listen: false)
                                         .currentUser!
-                                        .fotoPerfil
-                                        .isEmpty))
-                            ? Icon(Icons.add_a_photo,
-                                size: 30, color: colorScheme.primary)
-                            : null,
-                  ),
-                ),
-                // Botón "X" para quitar la imagen
-                if (_selectedImage != null ||
-                    (!_borrarFoto &&
-                        Provider.of<UserProvider>(context, listen: false)
-                                .currentUser
-                                ?.fotoPerfil !=
-                            null &&
-                        Provider.of<UserProvider>(context, listen: false)
-                            .currentUser!
-                            .fotoPerfil
-                            .isNotEmpty))
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedImage = null;
-                          _borrarFoto = true;
-                        });
-                      },
-                      child: CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.red,
-                        child: Icon(Icons.close, color: Colors.white, size: 18),
-                      ),
+                                        .fotoPerfil,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return const Center(
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2),
+                                      );
+                                    },
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(Icons.error),
+                                  ),
+                                )
+                              : Icon(Icons.add_a_photo,
+                                  size: 30, color: colorScheme.primary),
                     ),
                   ),
-                if (_cargandoImagen)
-                  const Center(child: CircularProgressIndicator()),
-              ]),
+
+                  // Botón "X" para quitar la imagen
+                  if (_selectedImage != null ||
+                      (!_borrarFoto &&
+                          Provider.of<UserProvider>(context, listen: false)
+                                  .currentUser
+                                  ?.fotoPerfil !=
+                              null &&
+                          Provider.of<UserProvider>(context, listen: false)
+                              .currentUser!
+                              .fotoPerfil
+                              .isNotEmpty))
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedImage = null;
+                            _borrarFoto = true;
+                          });
+                        },
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Colors.red,
+                          child:
+                              Icon(Icons.close, color: Colors.white, size: 18),
+                        ),
+                      ),
+                    ),
+
+                  if (_cargandoImagen)
+                    const Center(child: CircularProgressIndicator()),
+                ],
+              ),
               SizedBox(height: 20.h),
               baseTextField(
                 controller: _userNameController,
@@ -322,6 +363,10 @@ class _AccountPageState extends State<AccountPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          final hayCambios = _hayCambios();
+
+          if (!hayCambios) return;
+
           if (!_formKey.currentState!.validate()) {
             buildErrorMessage(localizations.revisaCampos, context);
             return;

@@ -159,4 +159,13 @@ await _supabase.from('public.chat_mensajes').insert({
       'precio_paquete': precioPaquete,
     }).eq('id', id);
   }
+
+  static obtenerMensajes() async {
+    final response = await supabase
+        .from('public.chat_mensajes')
+        .select()
+        .order('fecha_envio', ascending: false);
+
+    return List<Map<String, dynamic>>.from(response);
+  }
 }

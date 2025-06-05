@@ -41,14 +41,27 @@ class ChatProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    final res = await _supabase
-        .from('public.chat_mensajes')
-        .select()
-        .order('fecha_envio', ascending: false);
+    final res = await UserRepository.getMensajes();
 
-    _mensajes.clear();
-    _mensajes.addAll(res.map((m) => MessageModel.fromMap(m)).toList());
-    notifyListeners();
+    if (res is BaseResultError) {
+      _mensajes.clear();
+      return;
+    }
+
+    if (res is BaseResultSuccess) {
+      // Si es un BaseResultSuccess, asumimos que contiene una lista de mapas
+      final List<Map<String, dynamic>> mensajesMap =
+          res.data as List<Map<String, dynamic>>;
+      if (mensajesMap.isEmpty) {
+        _mensajes.clear();
+        notifyListeners();
+        return;
+      }
+      _mensajes.clear();
+      _mensajes.addAll(
+          mensajesMap.map((mensaje) => MessageModel.fromMap(mensaje)).toList());
+      notifyListeners();
+    }
   }
 
   void _escucharMensajesNuevos() {

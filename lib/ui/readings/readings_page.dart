@@ -7,6 +7,7 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/readings/readings_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReadingsPage extends StatefulWidget {
   const ReadingsPage({super.key});
@@ -27,20 +28,21 @@ class _ReadingsPageState extends State<ReadingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final provider = context.watch<ReadingsProvider>();
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
       drawer: baseDrawer(context),
-      appBar: baseAppBar('Lecturas'),
+      appBar: baseAppBar(localizations.lecturas),
       backgroundColor: colorScheme.background,
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : provider.articulos.isEmpty
               ? Center(
                   child: Text(
-                    "No hay artículos disponibles",
+                    localizations.noHayArticulos,
                     style: TextStyle(
                       color: colorScheme.onBackground.withOpacity(0.7),
                       fontSize: 18,

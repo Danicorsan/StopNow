@@ -93,7 +93,7 @@ Drawer baseDrawer(BuildContext context) {
               _buildDrawerItem(
                 context,
                 icon: Icons.menu_book_sharp,
-                title: "Lecturas",
+                title: localizations.lecturas,
                 route: AppRoutes.readings,
                 colorScheme: colorScheme,
               ),

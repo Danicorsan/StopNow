@@ -3,6 +3,7 @@ import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalsProvider extends ChangeNotifier {
   final List<GoalModel> _goals = [];
@@ -37,10 +38,11 @@ class GoalsProvider extends ChangeNotifier {
   }
 
   Future<bool> removeGoal(String id, BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
     var exito = await UserRepository.borrarObjetivo(id);
 
     if (exito is BaseResultError) {
-      buildErrorMessage("No se pudo borrar el objetivo", context);
+      buildErrorMessage(localizations.errorBorrarObjetivo, context);
       return false;
     } else if (exito is BaseResultSuccess) {
       _goals.removeAt(
@@ -49,10 +51,10 @@ class GoalsProvider extends ChangeNotifier {
 
       await traerObjetivos();
       notifyListeners();
-      buildSuccesMessage("Objetivo borrado con exito", context);
+      buildSuccesMessage(localizations.objetivoBorradoExito, context);
       return true;
     } else {
-      buildErrorMessage("No se pudo borrar el objetivo", context);
+      buildErrorMessage(localizations.errorBorrarObjetivo, context);
       return false;
     }
   }
@@ -64,6 +66,7 @@ class GoalsProvider extends ChangeNotifier {
     required double precioNuevo,
     required BuildContext context,
   }) async {
+    final localizations = AppLocalizations.of(context)!;
     final exito = await UserRepository.actualizarObjetivo(
       id: originalGoal.id,
       nombreNuevo: nombreNuevo,
@@ -76,7 +79,7 @@ class GoalsProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } else {
-      buildErrorMessage("No se pudo editar el objetivo", context);
+      buildErrorMessage(localizations.errorEditarObjetivo, context);
       return false;
     }
   }

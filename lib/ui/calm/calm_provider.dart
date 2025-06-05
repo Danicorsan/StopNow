@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+enum CalmPhase { inhalar, retener, exhalar }
+
 class CalmProvider extends ChangeNotifier {
   bool init = false;
   late Timer _timer;
-  int _timeRemaining = 1; // Tiempo restante para cada fase
-  String _currentPhase = "Inhalar"; // Estado actual de la fase
+  int _timeRemaining = 1;
+  CalmPhase _currentPhase = CalmPhase.inhalar;
   String? _image;
-  String get currentPhase => _currentPhase;
+  CalmPhase get currentPhase => _currentPhase;
   int get timeRemaining => _timeRemaining;
   String get image => _image ?? "assets/inhala.png";
 
   void iniciar() {
     init = true;
     _timeRemaining = 4; // Comenzamos con la fase de inhalar
-    _currentPhase = "Inhalar";
+    _currentPhase = CalmPhase.inhalar;
     _iniciarTiempo();
     notifyListeners();
   }
@@ -31,28 +33,28 @@ class CalmProvider extends ChangeNotifier {
   }
 
   void _changePhase() {
-    // Cambia la fase y reinicia el tiempo para la nueva fase
-    if (_currentPhase == "Inhalar") {
-      _currentPhase = "Retener";
+    if (_currentPhase == CalmPhase.inhalar) {
+      _currentPhase = CalmPhase.retener;
       _timeRemaining = 7;
       _image = "assets/aguanta.png";
-    } else if (_currentPhase == "Retener") {
-      _currentPhase = "Exhalar";
+    } else if (_currentPhase == CalmPhase.retener) {
+      _currentPhase = CalmPhase.exhalar;
       _timeRemaining = 8;
       _image = "assets/exhala.png";
-    } else if (_currentPhase == "Exhalar") {
-      _currentPhase = "Inhalar";
+    } else if (_currentPhase == CalmPhase.exhalar) {
+      _currentPhase = CalmPhase.inhalar;
       _timeRemaining = 4;
       _image = "assets/inhala.png";
     }
-    notifyListeners(); // Actualiza la UI con el cambio de fase
+    notifyListeners();
   }
 
   void reset() {
+
     _timer.cancel();
     init = false;
     _timeRemaining = 1;
-    _currentPhase = "Inhalar";
+    _currentPhase = CalmPhase.inhalar;
     _image = "assets/inhala.png";
     notifyListeners();
   }

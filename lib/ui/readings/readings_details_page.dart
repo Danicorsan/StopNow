@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/models/reading_model.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReadingsDetailsPage extends StatelessWidget {
   final ReadingModel articulo;
@@ -9,6 +10,8 @@ class ReadingsDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: baseAppBar(articulo.titulo),
       body: SingleChildScrollView(
@@ -23,7 +26,7 @@ class ReadingsDetailsPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Por ${articulo.autor} - ${articulo.fechaCreacion.toLocal().toIso8601String().split("T").first}',
+              localizations.porAutorEnFecha(articulo.autor ?? "Desconocido", articulo.fechaCreacion.toLocal().toIso8601String().split("T").first),
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const Divider(),

@@ -181,7 +181,7 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
                 Navigator.of(context, rootNavigator: true).pop(); // Quita el loader
 
                 if (exito) {
-                  buildSuccesMessage("localizations.objetivoEditado", context);
+                  buildSuccesMessage(localizations.objetivoEditado, context);
                   Navigator.pop(context, true);
                 } else {
                   buildErrorMessage(localizations.errorObjetivo, context);

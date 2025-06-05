@@ -251,11 +251,11 @@ class _AccountPageState extends State<AccountPage> {
           Navigator.of(context, rootNavigator: true).pop(); // Quita el loader
 
           if (result) {
-            buildSuccesMessage("localizations.perfilActualizado", context);
+            buildSuccesMessage(localizations.perfilActualizado, context);
             Navigator.pop(context);
           } else {
             buildErrorMessage(
-                settingsProvider.errorMessage ?? "localizations.errorGenerico",
+                settingsProvider.errorMessage ?? localizations.errorDesconocido,
                 context);
           }
         },

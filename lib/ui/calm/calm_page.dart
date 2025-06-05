@@ -117,7 +117,7 @@ class _CalmPageState extends State<CalmPage> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          color: colorScheme.background,
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
               color: colorScheme.shadow.withOpacity(0.5),
@@ -133,7 +133,7 @@ class _CalmPageState extends State<CalmPage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Image.asset(
                 calmProvider.image,

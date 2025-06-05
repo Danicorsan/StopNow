@@ -21,17 +21,24 @@ class AchievementsPage extends StatelessWidget {
     if (days > 0) parts.add("$days ${localizations.dias}");
     if (hours > 0) parts.add("$hours ${localizations.horas}");
     if (minutes > 0) parts.add("$minutes ${localizations.min}");
-    if (seconds > 0 && parts.isEmpty) parts.add("$seconds ${localizations.segundos}");
+    if (seconds > 0 && parts.isEmpty)
+      parts.add("$seconds ${localizations.segundos}");
     return parts.join(" ");
   }
 
-  void _showAchievementDialog(BuildContext context, AchievementModel achievement, bool unlocked, Duration restante, AppLocalizations localizations) {
+  void _showAchievementDialog(
+      BuildContext context,
+      AchievementModel achievement,
+      bool unlocked,
+      Duration restante,
+      AppLocalizations localizations) {
     showDialog(
       context: context,
       builder: (context) {
         return Dialog(
           backgroundColor: unlocked ? Colors.green[50] : Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
@@ -99,7 +106,8 @@ class AchievementsPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green, size: 28),
+                          Icon(Icons.check_circle,
+                              color: Colors.green, size: 28),
                           const SizedBox(width: 8),
                           Text(
                             localizations.yaDesbloqueado,
@@ -151,10 +159,13 @@ class AchievementsPage extends StatelessWidget {
     final fechaDejarFumar = user?.fechaDejarFumar ?? now;
     final tiempoSinFumar = now.difference(fechaDejarFumar);
     final localizations = AppLocalizations.of(context)!;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final achievements = AchievementModel.getLocalizedAchievements(localizations);
+    final achievements =
+        AchievementModel.getLocalizedAchievements(localizations);
 
-    int unlocked = achievements.where((a) => tiempoSinFumar >= a.duration).length;
+    int unlocked =
+        achievements.where((a) => tiempoSinFumar >= a.duration).length;
 
     return Scaffold(
       drawer: baseDrawer(context),
@@ -168,10 +179,10 @@ class AchievementsPage extends StatelessWidget {
                 Text(
                   localizations.hasDesbloqueadoLogros(
                       unlocked, achievements.length),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF153866),
+                    color: isDarkMode ? Color.fromARGB(255, 76, 141, 227) : Color(0xFF153866),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -201,7 +212,7 @@ class AchievementsPage extends StatelessWidget {
                       context, achievement, unlocked, restante, localizations),
                   child: Card(
                     elevation: unlocked ? 6 : 2,
-                    color: unlocked ? Colors.green[50] : Colors.grey[200],
+                    color: unlocked ? isDarkMode? const Color.fromARGB(255, 33, 73, 36) : Colors.green[50] :isDarkMode? const Color.fromARGB(255, 35, 35, 35) : Colors.grey[200],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -217,13 +228,14 @@ class AchievementsPage extends StatelessWidget {
                         achievement.title,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: unlocked ? Colors.green[900] : Colors.grey[700],
+                          color:
+                              unlocked ? const Color.fromARGB(255, 1, 137, 10) : Colors.grey[700],
                         ),
                       ),
                       subtitle: Text(
                         achievement.description,
                         style: TextStyle(
-                          color: unlocked ? Colors.black : Colors.grey[600],
+                          color: unlocked ? isDarkMode ? Colors.white70 : Colors.black : Colors.grey[600],
                         ),
                       ),
                       trailing: unlocked

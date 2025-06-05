@@ -32,6 +32,7 @@ class _ReadingsPageState extends State<ReadingsPage> {
     final provider = context.watch<ReadingsProvider>();
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       drawer: baseDrawer(context),
@@ -82,7 +83,7 @@ class _ReadingsPageState extends State<ReadingsPage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: colorScheme.primary,
+                                  color: isDarkMode ? Colors.white :colorScheme.primary,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -113,7 +114,6 @@ class _ReadingsPageState extends State<ReadingsPage> {
                                     style: TextStyle(
                                       color: colorScheme.outline,
                                       fontSize: 13,
-                                      
                                     ),
                                     textAlign: TextAlign.end,
                                   ),

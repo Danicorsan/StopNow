@@ -35,11 +35,13 @@ class _ChatPageState extends State<ChatPage> {
             .currentUser
             ?.nombreUsuario ??
         '';
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: baseAppBar(localizations.chat),
       drawer: baseDrawer(context),
-      backgroundColor: const Color.fromARGB(216, 255, 255, 255),
+      backgroundColor:
+          isDarkMode ? const Color.fromARGB(255, 42, 42, 42) : const Color.fromARGB(216, 255, 255, 255),
       body: chatProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
@@ -255,10 +257,13 @@ class _ChatPageState extends State<ChatPage> {
                                                                   .onSecondary
                                                                   .withOpacity(
                                                                       0.7)
-                                                              : colorScheme
-                                                                  .onSurface
-                                                                  .withOpacity(
-                                                                      0.6),
+                                                              : contieneMencion
+                                                                  ? Colors
+                                                                      .black87
+                                                                  : colorScheme
+                                                                      .onSurface
+                                                                      .withOpacity(
+                                                                          0.6),
                                                           fontSize: 11,
                                                         ),
                                                       ),

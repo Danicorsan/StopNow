@@ -37,6 +37,7 @@ class RegisterProvider extends ChangeNotifier {
       }
     } catch (e) {
       print('Error al subir imagen: $e');
+      cargandoImagen = false;
     }
   }
 
@@ -47,6 +48,7 @@ class RegisterProvider extends ChangeNotifier {
 
     while (cargandoImagen) {
       await Future.delayed(const Duration(milliseconds: 100));
+      print("Esperando'");
     }
 
     try {

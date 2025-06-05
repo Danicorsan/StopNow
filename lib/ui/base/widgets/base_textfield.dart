@@ -18,6 +18,7 @@ Widget baseTextField({
   required BuildContext context,
 }) {
   colorScheme ??= Theme.of(context).colorScheme;
+  final isDarkMode = Theme.of(context).brightness == Brightness.dark;
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 9.h),
     child: TextFormField(
@@ -26,7 +27,7 @@ Widget baseTextField({
         errorMaxLines: 2,
         prefixIcon: Icon(icon, color: colorScheme.primary),
         labelText: label,
-        labelStyle: TextStyle(color: colorScheme.primary),
+        labelStyle: TextStyle(color: isDarkMode ? Colors.grey : colorScheme.primary),
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: colorScheme.primary),

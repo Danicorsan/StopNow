@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/models/goal_model.dart';
+import 'package:stopnow/data/models/message_model.dart';
 import 'package:stopnow/data/models/reading_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
@@ -240,6 +241,16 @@ class UserRepository {
       return BaseResultSuccess(true);
     } catch (e) {
       return BaseResultError('Error al actualizar perfil: $e');
+    }
+  }
+
+  static Future<BaseResult> getMensajes() async {
+    try {
+      final response = await UserDao.obtenerMensajes();
+
+      return BaseResultSuccess(response);
+    } catch (e) {
+      return BaseResultError('Error al obtener mensajes: $e');
     }
   }
 }

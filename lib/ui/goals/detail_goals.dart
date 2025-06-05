@@ -82,7 +82,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
         Navigator.pop(context);
       }, actions: [
         IconButton(
-          icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
+          icon: const Icon(Icons.edit, color: Colors.white),
           onPressed: () async {
             final exito = await Navigator.pushNamed(
               context,
@@ -91,12 +91,12 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
             );
             if (exito == true) {
               await _refreshGoal(context);
-              buildSuccesMessage("objetivoEditadoExito", context);
+              buildSuccesMessage(localizations.objetivoEditadoExito, context);
             }
           },
         ),
         IconButton(
-          icon: Icon(Icons.delete, color: colorScheme.primary),
+          icon: const Icon(Icons.delete, color: Colors.white),
           onPressed: () async {
             showDialog(
               context: context,
@@ -145,9 +145,9 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                       if (exito) {
                         Navigator.pop(
                             context); // Vuelve atrás (a la lista de objetivos)
-                      }else{
+                      } else {
                         buildErrorMessage(
-                            "localizations.errorEliminarObjetivo", context);
+                            localizations.errorEliminarObjetivo, context);
                       }
                       // Si hay error, el provider ya muestra el mensaje
                     },
@@ -193,6 +193,16 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                               color: colorScheme.primary,
                             ),
                           ),
+                          if (goal.descripcion.isNotEmpty)
+                            const SizedBox(height: 8),
+                          if (goal.descripcion.isNotEmpty)
+                            Text(
+                              goal.descripcion,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: colorScheme.onSurface.withOpacity(0.7),
+                              ),
+                            ),
                           const SizedBox(height: 8),
                           Text(
                             localizations

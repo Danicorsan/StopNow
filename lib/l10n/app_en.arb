@@ -199,5 +199,8 @@
   "porAutorEnFecha": "By {autor} - {fecha}",
   "inhala": "Inhale",
   "retener": "Hold",
-  "exhala": "Exhale"
+  "exhala": "Exhale",
+  "errorEliminarObjetivo": "Error deleting goal",
+  "objetivoEditadoExito" : "Goal successfully edited",
+  "editarPerfil": "Edit profile"
 }

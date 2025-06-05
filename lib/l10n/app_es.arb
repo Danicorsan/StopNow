@@ -196,5 +196,8 @@
   "porAutorEnFecha": "Por {autor} - {fecha}",
   "inhala": "Inhalar",
   "retener": "Retener",
-  "exhala": "Exhalar"
+  "exhala": "Exhalar",
+  "errorEliminarObjetivo":"Error al eliminar objetivo",
+  "objetivoEditadoExito" : "Objetivo editado con exito",
+  "editarPerfil": "Editar perfil"
 }

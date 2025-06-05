@@ -21,12 +21,9 @@ Drawer baseDrawer(BuildContext context) {
         SizedBox(
           width: double.infinity,
           child: DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  colorScheme.secondary,
-                  colorScheme.primary,
-                ],
+                colors: [Color(0xFF153866), Color(0xFF608AAE)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -37,7 +34,9 @@ Drawer baseDrawer(BuildContext context) {
                 SizedBox(
                   height: 80,
                   width: 80,
-                  child: UserAvatar(avatarUrl: user?.fotoPerfil,),
+                  child: UserAvatar(
+                    avatarUrl: user?.fotoPerfil,
+                  ),
                 ),
                 Text(
                   user?.nombreUsuario ?? localizations.usuario,

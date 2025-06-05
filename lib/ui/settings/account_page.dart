@@ -75,7 +75,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       backgroundColor: colorScheme.background,
       appBar: baseAppBar(
-        localizations.perfil,
+        localizations.editarPerfil,
         volver: true,
         onTap: () {
           Navigator.pop(context);

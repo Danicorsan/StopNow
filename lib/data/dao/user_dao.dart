@@ -124,7 +124,7 @@ await _supabase.from('public.chat_mensajes').insert({
       'nombre_usuario': nombreUsuario,
       'mensaje': texto.trim(),
       'fecha_envio': DateTime.now().toIso8601String(),
-      'foto_perfil': fotoPerfil, // NUEVO
+      'foto_perfil': fotoPerfil,
     });
   }
 

@@ -62,6 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _pickImage() async {
     final androidInfo = await DeviceInfoPlugin().androidInfo;
     final sdkInt = androidInfo.version.sdkInt;
+    final localizations = AppLocalizations.of(context)!;
 
     PermissionStatus status;
     if (sdkInt >= 33) {
@@ -86,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await openAppSettings();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Permiso denegado')),
+        SnackBar(content: Text(localizations.permisoDenegado)),
       );
     }
   }

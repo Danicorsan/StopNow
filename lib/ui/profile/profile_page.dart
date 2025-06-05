@@ -81,8 +81,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       SizedBox(height: 5.h),
                       Text(
-                        localizations.miembroDesde(
-                            userToShow.fechaRegistro.year),
+                        localizations
+                            .miembroDesde(userToShow.fechaRegistro.year),
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: colorScheme.onBackground.withOpacity(0.8),
@@ -127,9 +127,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
                           child: Center(
-                            child: Text(profileProvider.isCurrentUser
-                              ? "Cuando hayas dejado de fumar aparecerá aquí la información."
-                              : "Este usuario aún no ha dejado de fumar.",
+                            child: Text(
+                              profileProvider.isCurrentUser
+                                  ? localizations.cuandoDejesDeFumar
+                                  : localizations.usuarioNoHaDejadoFumar,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 color: colorScheme.onSurface.withOpacity(0.7),
@@ -194,8 +195,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       unlockedAchievements.isEmpty
                           ? Padding(
                               padding: const EdgeInsets.symmetric(vertical: 24),
-                              child: Text( profileProvider.isCurrentUser ?
-                                localizations.sinLogros : "Este usuario aún no ha conseguido logros.",
+                              child: Text(
+                                profileProvider.isCurrentUser
+                                    ? localizations.sinLogros
+                                    : localizations.usuarioSinLogros,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16.sp,
@@ -217,6 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 8.w, vertical: 8.h),
                                     decoration: BoxDecoration(
+                                      //TODO: cambiar color del fonodo
                                       color: colorScheme.secondary
                                           .withOpacity(0.08),
                                       borderRadius: BorderRadius.circular(18.r),

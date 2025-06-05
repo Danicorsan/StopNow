@@ -30,6 +30,18 @@ class _CalmPageState extends State<CalmPage> {
     return true; // Salir
   }
 
+  String getPhaseText(CalmPhase phase) {
+    final localizations = AppLocalizations.of(context)!;
+    switch (phase) {
+      case CalmPhase.inhalar:
+        return localizations.inhala;
+      case CalmPhase.retener:
+        return localizations.retener;
+      case CalmPhase.exhalar:
+        return localizations.exhala;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final calmProvider = Provider.of<CalmProvider>(context);
@@ -128,7 +140,7 @@ class _CalmPageState extends State<CalmPage> {
                 width: 200.w,
               ),
               Text(
-                calmProvider.currentPhase,
+                getPhaseText(calmProvider.currentPhase),
                 style: TextStyle(
                   fontSize: 30,
                   color: colorScheme.primary,

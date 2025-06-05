@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/achievement_model.dart';
+import 'package:stopnow/data/providers/theme_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -231,51 +232,62 @@ class _ProfilePageState extends State<ProfilePage> {
                                 itemBuilder: (context, index) {
                                   final achievement =
                                       unlockedAchievements[index];
-                                  return AnimatedContainer(
-                                    duration: const Duration(milliseconds: 300),
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 8.w, vertical: 8.h),
-                                    decoration: BoxDecoration(
-                                      //TODO: cambiar color del fonodo
-                                      color: colorScheme.secondary
-                                          .withOpacity(0.08),
-                                      borderRadius: BorderRadius.circular(18.r),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: colorScheme.shadow
-                                              .withOpacity(0.07),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(18.w),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor:
-                                                colorScheme.secondary,
-                                            radius: 28,
-                                            child: Icon(Icons.emoji_events,
-                                                color: colorScheme.onSecondary,
-                                                size: 32),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      _showAchievementDialog(
+                                          context,
+                                          achievement,
+                                          localizations,
+                                          colorScheme);
+                                    },
+                                    child: AnimatedContainer(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 8.w, vertical: 8.h),
+                                      decoration: BoxDecoration(
+                                        //TODO: cambiar color del fonodo
+                                        color: colorScheme.secondary
+                                            .withOpacity(0.08),
+                                        borderRadius:
+                                            BorderRadius.circular(18.r),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: colorScheme.shadow
+                                                .withOpacity(0.07),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
                                           ),
-                                          SizedBox(height: 12.h),
-                                          Text(
-                                            achievement.title,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18.sp,
-                                              color: colorScheme.secondary,
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(18.w),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor:
+                                                  colorScheme.secondary,
+                                              radius: 28,
+                                              child: Icon(Icons.emoji_events,
+                                                  color:
+                                                      colorScheme.onSecondary,
+                                                  size: 32),
                                             ),
-                                          ),
-                                          SizedBox(height: 8.h),
-                                          /*
+                                            SizedBox(height: 12.h),
+                                            Text(
+                                              achievement.title,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.sp,
+                                                color: colorScheme.secondary,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8.h),
+                                            /*
                                           Text(
                                             achievement.description,
                                             textAlign: TextAlign.center,
@@ -285,7 +297,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                           ),
                                           */
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );
@@ -343,6 +356,67 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showAchievementDialog(
+      BuildContext context,
+      AchievementModel achievement,
+      AppLocalizations localizations,
+      colorScheme) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor:
+              isDarkMode ? const Color.fromARGB(255, 55, 55, 55) : const Color.fromARGB(255, 230, 230, 230),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  backgroundColor: colorScheme.secondary,
+                  radius: 36,
+                  child: Icon(
+                    Icons.emoji_events,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  achievement.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                    color: colorScheme.secondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  achievement.description,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color:  isDarkMode ? Colors.white : Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(localizations.cerrar),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

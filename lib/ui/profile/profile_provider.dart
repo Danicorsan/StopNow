@@ -13,14 +13,13 @@ class ProfileProvider extends ChangeNotifier {
     isLoading = true;
     userToShow = null; // Limpia el usuario anterior
     notifyListeners();
-    if (userId == null) {
-      userToShow =
-          Provider.of<UserProvider>(context, listen: false).currentUser;
-      isCurrentUser = true;
-    } else {
-      userToShow = await UserDao.traerUsuario(userId);
-      isCurrentUser = false;
-    }
+
+    // Siempre pide el usuario actualizado al repositorio
+    final user = userId == null
+        ? await UserRepository.usuarioActual()
+        : await UserDao.traerUsuario(userId);
+
+    userToShow = user;
     isLoading = false;
     notifyListeners();
   }

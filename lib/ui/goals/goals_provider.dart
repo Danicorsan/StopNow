@@ -37,24 +37,17 @@ class GoalsProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> removeGoal(String id, BuildContext context) async {
-    final localizations = AppLocalizations.of(context)!;
+  Future<bool> removeGoal(String id) async {
     var exito = await UserRepository.borrarObjetivo(id);
 
     if (exito is BaseResultError) {
-      buildErrorMessage(localizations.errorBorrarObjetivo, context);
       return false;
     } else if (exito is BaseResultSuccess) {
-      _goals.removeAt(
-        _goals.indexWhere((element) => element.id == id),
-      );
-
+      _goals.removeAt(_goals.indexWhere((element) => element.id == id));
       await traerObjetivos();
       notifyListeners();
-      buildSuccesMessage(localizations.objetivoBorradoExito, context);
       return true;
     } else {
-      buildErrorMessage(localizations.errorBorrarObjetivo, context);
       return false;
     }
   }

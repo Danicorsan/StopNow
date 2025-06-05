@@ -124,10 +124,6 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                       foregroundColor: colorScheme.onError,
                     ),
                     onPressed: () async {
-                      // Cierra el diálogo de confirmación primero
-                      Navigator.of(context, rootNavigator: true).pop();
-
-                      // Muestra el loader
                       showDialog(
                         context: context,
                         barrierDismissible: false,
@@ -137,19 +133,23 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
 
                       bool exito = await Provider.of<GoalsProvider>(context,
                               listen: false)
-                          .removeGoal(goal.id, context);
+                          .removeGoal(goal.id);
 
-                      // Quita el loader
-                      Navigator.of(context, rootNavigator: true).pop();
+                      if (!mounted) return; // <--- IMPORTANTE
+                      Navigator.of(context, rootNavigator: true)
+                          .pop(); // Cierra el diálogo
+                      Navigator.of(context, rootNavigator: true)
+                          .pop(); // Quita el loader
 
                       if (exito) {
-                        Navigator.pop(
-                            context); // Vuelve atrás (a la lista de objetivos)
+                        buildSuccesMessage(
+                            localizations.objetivoBorradoExito, context);
                       } else {
-                        buildErrorMessage(
-                            localizations.errorEliminarObjetivo, context);
+                        buildErrorMessage(localizations.errorBorrarObjetivo, context);
                       }
-                      // Si hay error, el provider ya muestra el mensaje
+
+                      Navigator.pop(context); 
+
                     },
                     child: Text(localizations.aceptar),
                   ),

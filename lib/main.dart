@@ -44,19 +44,19 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ChangeNotifierProvider(create: (_) => ChatProvider()),
       ChangeNotifierProvider(
-        create: (context) => GoalsProvider(),
+        create: (_) => GoalsProvider(),
       ),
       ChangeNotifierProvider(
-        create: (context) => CalmProvider(),
+        create: (_) => CalmProvider(),
       ),
       ChangeNotifierProvider(
-        create: (context) => LoginProvider(),
+        create: (_) => LoginProvider(),
       ),
       ChangeNotifierProvider(
-        create: (context) => RegisterProvider(),
+        create: (_) => RegisterProvider(),
       ),
       ChangeNotifierProvider(
-          create: (context) => UserProvider(usuarioInicial: offlineUser)),
+          create: (_) => UserProvider(usuarioInicial: offlineUser)),
       ChangeNotifierProvider(create: (_) => ReadingsProvider()),
     ],
     child: const MyApp(),

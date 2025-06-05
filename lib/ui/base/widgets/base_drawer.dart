@@ -9,7 +9,7 @@ import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Drawer baseDrawer(BuildContext context) {
-  final user = Provider.of<UserProvider>(context, listen: false).currentUser;
+  final user = Provider.of<UserProvider>(context).currentUser;
   final localizations = AppLocalizations.of(context)!;
   final theme = Theme.of(context);
   final colorScheme = theme.colorScheme;

@@ -82,25 +82,25 @@ class UserRepository {
 
   static Future<BaseResult> uploadProfileImage(File imageFile) async {
     try {
-      final userId =
-          supabase.auth.currentUser?.id ?? Exception('Usuario no autenticado');
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) {
+        return BaseResultError('Usuario no autenticado');
+      }
 
       final fileExt = extension(imageFile.path);
       final fileName = 'profile_$userId$fileExt';
 
-      // Subir imagen
       await supabase.storage
           .from('avatars')
           .upload(fileName, imageFile, fileOptions: FileOptions(upsert: true));
 
       final signedUrl = await supabase.storage
           .from('avatars')
-          .createSignedUrl(fileName, 60 * 60 * 24 * 365); // 1 año en segundos
+          .createSignedUrl(fileName, 60 * 60 * 24 * 365); // 1 año
 
       return BaseResultSuccess(signedUrl);
     } catch (e) {
-      print('Error al subir imagen: $e');
-      throw BaseResultError('Error al subir la imagen de perfil');
+      return BaseResultError('Error al subir la imagen de perfil: $e');
     }
   }
 
@@ -221,7 +221,7 @@ class UserRepository {
   static Future<BaseResult> actualizarPerfilUsuario({
     required String id,
     required String nombreUsuario,
-    required String fotoPerfil,
+    required String? fotoPerfil,
     required DateTime fechaDejarFumar,
     required int cigarrosAlDia,
     required int cigarrosPorPaquete,
@@ -251,6 +251,32 @@ class UserRepository {
       return BaseResultSuccess(response);
     } catch (e) {
       return BaseResultError('Error al obtener mensajes: $e');
+    }
+  }
+
+  static Future<BaseResult> actualizarMensajesNombreYFoto({
+    required String userId,
+    required String? nuevaFotoPerfil,
+    required String nuevoNombreUsuario,
+  }) async {
+    try {
+      await UserDao.actualizarMensajesNombreYFoto(
+        userId: userId,
+        nuevaFotoPerfil: nuevaFotoPerfil,
+        nuevoNombreUsuario: nuevoNombreUsuario,
+      );
+      return BaseResultSuccess(true);
+    } catch (e) {
+      return BaseResultError('Error al actualizar mensajes: $e');
+    }
+  }
+
+  static Future<BaseResult> borrarFotoPerfilAntigua(String urlFoto) async {
+    try {
+      await UserDao.borrarFotoPerfilAntigua(urlFoto);
+      return BaseResultSuccess(true);
+    } catch (e) {
+      return BaseResultError('Error al borrar la foto antigua: $e');
     }
   }
 }

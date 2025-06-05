@@ -74,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (status.isGranted) {
       final picker = ImagePicker();
       final pickedFile =
-          await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
       if (pickedFile != null) {
         setState(() {
           _selectedImage = File(pickedFile.path);
@@ -338,10 +338,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     elevation: 5,
                   ),
                   onPressed: () async {
-
-                    if (registerProvider.registerState == RegisterState.loading){
-                    return; // Evita múltiples pulsaciones mientras se carga
-                  }
+                    if (registerProvider.registerState ==
+                        RegisterState.loading) {
+                      return; // Evita múltiples pulsaciones mientras se carga
+                    }
 
                     if (!_formKey.currentState!.validate()) {
                       buildErrorMessage(localizations.revisaCampos, context);

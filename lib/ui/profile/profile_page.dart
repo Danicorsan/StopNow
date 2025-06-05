@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/achievement_model.dart';
+import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
@@ -56,7 +59,20 @@ class _ProfilePageState extends State<ProfilePage> {
         achievements.where((a) => tiempoSinFumar >= a.duration).toList();
 
     return Scaffold(
-      appBar: baseAppBar(localizations.perfil),
+      appBar: baseAppBar(localizations.perfil, actions: [
+        if (widget.userId == null)
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.settingsAcount)
+                  .then((value) {
+                // Recargar el perfil después de editar
+                Provider.of<ProfileProvider>(context, listen: false)
+                    .loadUser(context);
+              });
+            },
+          ),
+      ]),
       drawer: widget.userId == null ? baseDrawer(context) : null,
       backgroundColor: colorScheme.background,
       body: SingleChildScrollView(

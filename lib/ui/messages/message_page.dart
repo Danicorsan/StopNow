@@ -22,6 +22,17 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  bool _firstLoad = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    //if (_firstLoad) {
+    // Recarga mensajes cada vez que entras a la pantalla
+    Provider.of<ChatProvider>(context, listen: false).cargarMensajes();
+    _firstLoad = false;
+    //}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +51,9 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: baseAppBar(localizations.chat),
       drawer: baseDrawer(context),
-      backgroundColor:
-          isDarkMode ? const Color.fromARGB(255, 42, 42, 42) : const Color.fromARGB(216, 255, 255, 255),
+      backgroundColor: isDarkMode
+          ? const Color.fromARGB(255, 42, 42, 42)
+          : const Color.fromARGB(216, 255, 255, 255),
       body: chatProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(

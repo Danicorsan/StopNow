@@ -123,7 +123,6 @@ await _supabase.from('public.chat_mensajes').insert({
       'usuario_id': supabase.auth.currentUser?.id,
       'nombre_usuario': nombreUsuario,
       'mensaje': texto.trim(),
-      'fecha_envio': DateTime.now().toIso8601String(),
       'foto_perfil': fotoPerfil,
     });
   }
@@ -144,7 +143,7 @@ await _supabase.from('public.chat_mensajes').insert({
   static Future<void> actualizarPerfilUsuario({
     required String id,
     required String nombreUsuario,
-    required String fotoPerfil,
+    required String? fotoPerfil,
     required DateTime fechaDejarFumar,
     required int cigarrosAlDia,
     required int cigarrosPorPaquete,
@@ -167,5 +166,24 @@ await _supabase.from('public.chat_mensajes').insert({
         .order('fecha_envio', ascending: false);
 
     return List<Map<String, dynamic>>.from(response);
+  }
+
+  static Future<void> actualizarMensajesNombreYFoto({
+    required String userId,
+    required String? nuevaFotoPerfil,
+    required String nuevoNombreUsuario,
+  }) async {
+    await supabase.from('public.chat_mensajes').update({
+      'foto_perfil': nuevaFotoPerfil,
+      'nombre_usuario': nuevoNombreUsuario,
+    }).eq('usuario_id', userId);
+  }
+
+  static Future<void> borrarFotoPerfilAntigua(String urlFoto) async {
+    final storage = Supabase.instance.client.storage;
+    const bucket = 'avatars'; // Cambia por el nombre de tu bucket
+    final path =
+        urlFoto.split('/').last; // O ajusta según tu estructura de URLs
+    await storage.from(bucket).remove([path]);
   }
 }

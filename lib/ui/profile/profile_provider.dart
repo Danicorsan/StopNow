@@ -3,6 +3,7 @@ import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 
 class ProfileProvider extends ChangeNotifier {
   UserModel? userToShow;
@@ -11,7 +12,6 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> loadUser(BuildContext context, {String? userId}) async {
     isLoading = true;
-    userToShow = null; // Limpia el usuario anterior
     notifyListeners();
 
     // Siempre pide el usuario actualizado al repositorio

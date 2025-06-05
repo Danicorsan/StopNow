@@ -1,8 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/network/base_result.dart';
@@ -36,6 +41,10 @@ class _AccountPageState extends State<AccountPage> {
   final TextEditingController _precioPaqueteController =
       TextEditingController();
 
+  File? _selectedImage;
+  bool _cargandoImagen = false;
+  bool _borrarFoto = false; // NUEVO: para saber si hay que borrar la foto
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +74,36 @@ class _AccountPageState extends State<AccountPage> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    final sdkInt = androidInfo.version.sdkInt;
+    final localizations = AppLocalizations.of(context)!;
+
+    PermissionStatus status;
+    if (sdkInt >= 33) {
+      status = await Permission.photos.request();
+    } else {
+      status = await Permission.storage.request();
+    }
+
+    if (status.isGranted) {
+      final picker = ImagePicker();
+      final pickedFile =
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+      }
+    } else if (status.isPermanentlyDenied) {
+      await openAppSettings();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(localizations.permisoDenegado)),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -88,15 +127,82 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
             children: [
               SizedBox(height: 20.h),
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: colorScheme.surfaceVariant,
-                child: UserAvatar(
-                  avatarUrl: Provider.of<UserProvider>(context, listen: false)
-                      .currentUser
-                      ?.fotoPerfil,
+              Stack(alignment: Alignment.center, children: [
+                GestureDetector(
+                  onTap: _cargandoImagen ? null : _pickImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: _selectedImage != null
+                        ? FileImage(_selectedImage!)
+                        : (!_borrarFoto &&
+                                Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .currentUser
+                                        ?.fotoPerfil !=
+                                    null &&
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .currentUser!
+                                    .fotoPerfil
+                                    .isNotEmpty)
+                            ? NetworkImage(Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .currentUser!
+                                .fotoPerfil)
+                            : null,
+                    child: _cargandoImagen
+                        ? Container(
+                            color: Colors.amber,
+                            child: const CircularProgressIndicator())
+                        : (_selectedImage == null &&
+                                (_borrarFoto ||
+                                    Provider.of<UserProvider>(context,
+                                                listen: false)
+                                            .currentUser
+                                            ?.fotoPerfil ==
+                                        null ||
+                                    Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .currentUser!
+                                        .fotoPerfil
+                                        .isEmpty))
+                            ? Icon(Icons.add_a_photo,
+                                size: 30, color: colorScheme.primary)
+                            : null,
+                  ),
                 ),
-              ),
+                // Botón "X" para quitar la imagen
+                if (_selectedImage != null ||
+                    (!_borrarFoto &&
+                        Provider.of<UserProvider>(context, listen: false)
+                                .currentUser
+                                ?.fotoPerfil !=
+                            null &&
+                        Provider.of<UserProvider>(context, listen: false)
+                            .currentUser!
+                            .fotoPerfil
+                            .isNotEmpty))
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedImage = null;
+                          _borrarFoto = true;
+                        });
+                      },
+                      child: CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Colors.red,
+                        child: Icon(Icons.close, color: Colors.white, size: 18),
+                      ),
+                    ),
+                  ),
+                if (_cargandoImagen)
+                  const Center(child: CircularProgressIndicator()),
+              ]),
               SizedBox(height: 20.h),
               baseTextField(
                 controller: _userNameController,
@@ -225,12 +331,33 @@ class _AccountPageState extends State<AccountPage> {
               Provider.of<UserProvider>(context, listen: false).currentUser;
           if (user == null) return;
 
-          // Mostrar loader modal
           showDialog(
             context: context,
             barrierDismissible: false,
             builder: (_) => const Center(child: CircularProgressIndicator()),
           );
+
+          String? fotoPerfilUrl = user.fotoPerfil;
+
+          // Si hay una nueva imagen seleccionada, súbela y obtén la nueva URL
+          if (_selectedImage != null) {
+            final exito = await settingsProvider.actualizarFotoPerfil(
+                _selectedImage!, context);
+            if (exito) {
+              fotoPerfilUrl = Provider.of<UserProvider>(context, listen: false)
+                  .currentUser!
+                  .fotoPerfil;
+            } else {
+              Navigator.of(context, rootNavigator: true).pop();
+              buildErrorMessage(
+                settingsProvider.errorMessage ?? localizations.errorDesconocido,
+                context,
+              );
+              return;
+            }
+          } else if (_borrarFoto) {
+            fotoPerfilUrl = null; // Si se quitó la foto, sube null
+          }
 
           final result = await settingsProvider.actualizarPerfil(
             id: UserRepository.getId(),
@@ -244,19 +371,20 @@ class _AccountPageState extends State<AccountPage> {
                 user.cigarrosPorPaquete,
             precioPaquete: double.tryParse(_precioPaqueteController.text) ??
                 user.precioPaquete,
-            fotoPerfil: user.fotoPerfil,
+            fotoPerfil: fotoPerfilUrl,
             context: context,
           );
 
-          Navigator.of(context, rootNavigator: true).pop(); // Quita el loader
+          Navigator.of(context, rootNavigator: true).pop();
 
           if (result) {
             buildSuccesMessage(localizations.perfilActualizado, context);
             Navigator.pop(context);
           } else {
             buildErrorMessage(
-                settingsProvider.errorMessage ?? localizations.errorDesconocido,
-                context);
+              settingsProvider.errorMessage ?? localizations.errorDesconocido,
+              context,
+            );
           }
         },
         child: const Icon(Icons.check),

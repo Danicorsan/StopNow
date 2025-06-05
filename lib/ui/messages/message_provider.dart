@@ -76,6 +76,19 @@ class ChatProvider extends ChangeNotifier {
           notifyListeners();
         },
       )
+      ..onPostgresChanges(
+        event: PostgresChangeEvent.update,
+        schema: 'public',
+        table: 'public.chat_mensajes',
+        callback: (payload) {
+          final actualizado = MessageModel.fromMap(payload.newRecord);
+          final index = _mensajes.indexWhere((m) => m.id == actualizado.id);
+          if (index != -1) {
+            _mensajes[index] = actualizado;
+            notifyListeners();
+          }
+        },
+      )
       ..subscribe();
   }
 
@@ -91,8 +104,7 @@ class ChatProvider extends ChangeNotifier {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final nombreUsuario = userProvider.currentUser!.nombreUsuario;
-    final fotoPerfil =
-        userProvider.currentUser!.fotoPerfil; // O el campo correcto
+    final fotoPerfil = userProvider.currentUser!.fotoPerfil;
 
     var exito =
         await UserRepository.enviarMensaje(texto, nombreUsuario, fotoPerfil);
@@ -101,5 +113,9 @@ class ChatProvider extends ChangeNotifier {
       buildErrorMessage(localizations.errorEnviarMensaje, context);
       return;
     }
+  }
+
+  Future<void> cargarMensajes() async {
+    await _cargarMensajes();
   }
 }

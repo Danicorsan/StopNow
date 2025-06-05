@@ -11,6 +11,7 @@ import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatProvider extends ChangeNotifier {
   final List<MessageModel> _mensajes = [];
@@ -66,10 +67,10 @@ class ChatProvider extends ChangeNotifier {
   }
 
   Future<void> enviarMensaje(String texto, BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
     final connectivity = await Connectivity().checkConnectivity();
     if (connectivity.first == ConnectivityResult.none) {
-      buildErrorMessage(
-          "Sin conexión a internet. No se puede enviar el mensaje.", context);
+      buildErrorMessage(localizations.errorSinConexionMensaje, context);
       return;
     }
     final user = _supabase.auth.currentUser;
@@ -84,7 +85,7 @@ class ChatProvider extends ChangeNotifier {
         await UserRepository.enviarMensaje(texto, nombreUsuario, fotoPerfil);
 
     if (exito is BaseResultError) {
-      buildErrorMessage("No se ha podido enviar el mensaje", context);
+      buildErrorMessage(localizations.errorEnviarMensaje, context);
       return;
     }
   }

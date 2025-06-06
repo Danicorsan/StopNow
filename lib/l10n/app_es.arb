@@ -218,5 +218,8 @@
   "errorConexion": "Comprueba la conexión.",
   "revisaCorreoyContrasenia":"Revisa el correo y la contraseña",
   "porfavorIngreseUsuarioYContrasenia": "Por favor, ingrese el usuario y la contraseña",
-  "noSePudoObtenerElUsuarioActual":"No se pudo obtener el usuario actual"
+  "noSePudoObtenerElUsuarioActual":"No se pudo obtener el usuario actual",
+  "temaOscuroActivo": "Tema oscuro activado",
+  "temaClaroActivo": "Tema oscuro activado",
+  "temaOscuro": "Modo oscuro"
 }

@@ -192,7 +192,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 40),
             Center(
               child: Text(
-                "StopNow v0.7.0",
+                "StopNow v0.9.0",
                 style: TextStyle(
                   color: colorScheme.onBackground.withOpacity(0.7),
                   fontWeight: FontWeight.w500,

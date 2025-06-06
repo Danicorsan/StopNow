@@ -48,6 +48,7 @@ class _CalmPageState extends State<CalmPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -75,7 +76,7 @@ class _CalmPageState extends State<CalmPage> {
                         style: TextStyle(
                             fontSize: 30.sp,
                             fontWeight: FontWeight.bold,
-                            color: colorScheme.primary)),
+                            color: isDarkMode? Colors.white : colorScheme.primary)),
                   ),
                   Padding(
                       padding: EdgeInsets.symmetric(
@@ -85,7 +86,7 @@ class _CalmPageState extends State<CalmPage> {
                         localizations.descripcionTecnica478,
                         style: TextStyle(
                           fontSize: 16.sp,
-                          color: colorScheme.onBackground,
+                          color: isDarkMode ? Colors.white70 : colorScheme.onBackground,
                         ),
                       )),
                   SizedBox(

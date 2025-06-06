@@ -363,6 +363,7 @@ class _AccountPageState extends State<AccountPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          FocusScope.of(context).unfocus();
           final hayCambios = _hayCambios();
 
           if (!hayCambios) return;

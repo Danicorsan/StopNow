@@ -29,7 +29,7 @@ class RegisterProvider extends ChangeNotifier {
       final uploadedImageUrl =
           await UserRepository.uploadProfileImage(imageFile);
 
-      if (uploadedImageUrl is BaseResultSuccess) {  
+      if (uploadedImageUrl is BaseResultSuccess) {
         fotoEmail = uploadedImageUrl.data as String;
         print(fotoEmail);
         cargandoImagen = false;
@@ -63,9 +63,18 @@ class RegisterProvider extends ChangeNotifier {
           precioPaquete);
 
       if (result is BaseResultError) {
-        registerState = RegisterState.error;
         errorMessage = result.message;
-      } else {
+        if (result.message.contains("User already registered")) {
+          errorMessage = "El correo electrónico ya está en uso.";
+        }
+        if (result.message.contains("duplicate key value")) {
+          errorMessage = "El nombre de usuario ya está en uso.";
+        }
+        if (result.message.contains("No address associated with hostname")) {
+          errorMessage = "Comprueba la conexión.";
+        }
+        registerState = RegisterState.error;
+      } else if (result is BaseResultSuccess) {
         registerState = RegisterState.success;
       }
     } catch (e) {

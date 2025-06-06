@@ -1,13 +1,37 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/achievement_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
+import 'package:stopnow/ui/achievement/achievement_detail.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AchievementsPage extends StatelessWidget {
+class AchievementsPage extends StatefulWidget {
   const AchievementsPage({super.key});
+
+  @override
+  State<AchievementsPage> createState() => _AchievementsPageState();
+}
+
+class _AchievementsPageState extends State<AchievementsPage> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Refresca cada segundo
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   String _formatDuration(Duration d, AppLocalizations localizations) {
     if (d.inSeconds <= 0) return localizations.yaDesbloqueado;
@@ -47,121 +71,12 @@ class AchievementsPage extends StatelessWidget {
       AppLocalizations localizations) {
     showDialog(
       context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: unlocked ? Colors.green[50] : Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircleAvatar(
-                  backgroundColor: unlocked ? Colors.green : Colors.grey,
-                  radius: 36,
-                  child: Icon(
-                    unlocked ? Icons.emoji_events : Icons.lock_outline,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  achievement.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    color: unlocked ? Colors.green[900] : Colors.grey[700],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  achievement.description,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: unlocked ? Colors.black : Colors.grey[600],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                if (!unlocked)
-                  Column(
-                    children: [
-                      Text(
-                        localizations.teQuedaParaDesbloquearlo,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          _formatDuration(restante, localizations),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.deepOrange,
-                          ),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                if (unlocked)
-                  Column(
-                    children: [
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.check_circle,
-                              color: Colors.green, size: 28),
-                          const SizedBox(width: 8),
-                          Text(
-                            localizations.yaDesbloqueado,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green[800],
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 600),
-                        curve: Curves.easeInOut,
-                        height: 6,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.green[300],
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.green.withOpacity(0.3),
-                              blurRadius: 8,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(localizations.cerrar),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (_) => AchievementDetailDialog(
+        achievement: achievement,
+        unlocked: unlocked,
+        restante: restante,
+        localizations: localizations,
+      ),
     );
   }
 

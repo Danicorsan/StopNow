@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stopnow/data/helper/local_database_helper.dart';
@@ -167,8 +168,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           showDialog(
                             context: context,
                             barrierDismissible: false,
-                            builder: (_) => const Center(
-                                child: CircularProgressIndicator()),
+                            builder: (_) => Center(
+                              child: LoadingAnimationWidget.flickr(
+                                leftDotColor: colorScheme.primary,
+                                rightDotColor: colorScheme.secondary,
+                                size: 50,
+                              ),
+                            ),
                           );
 
                           Provider.of<UserProvider>(context, listen: false)

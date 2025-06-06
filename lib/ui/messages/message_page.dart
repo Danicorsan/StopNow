@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
@@ -55,7 +56,13 @@ class _ChatPageState extends State<ChatPage> {
           ? const Color.fromARGB(255, 42, 42, 42)
           : const Color.fromARGB(216, 255, 255, 255),
       body: chatProvider.isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: LoadingAnimationWidget.flickr(
+                leftDotColor: colorScheme.primary,
+                rightDotColor: colorScheme.secondary,
+                size: 50,
+              ),
+            )
           : Column(
               children: [
                 Expanded(
@@ -340,7 +347,7 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(height: 8),
                               Text(
                                 localizations.intentaMasTarde,
-                                    //"Por favor, revisa tu conexión e inténtalo de nuevo.",
+                                //"Por favor, revisa tu conexión e inténtalo de nuevo.",
                                 style: TextStyle(
                                   color: colorScheme.onSurface.withOpacity(0.5),
                                   fontSize: 14,

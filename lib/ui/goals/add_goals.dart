@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
@@ -48,8 +49,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: colorScheme.primary),
           labelText: label,
-          labelStyle:
-              TextStyle(color: isDarkMode ? Colors.grey : Colors.black),
+          labelStyle: TextStyle(color: isDarkMode ? Colors.grey : Colors.black),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(color: colorScheme.primary),
@@ -144,7 +144,13 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) => const Center(child: CircularProgressIndicator()),
+            builder: (_) => Center(
+              child: LoadingAnimationWidget.flickr(
+                leftDotColor: colorScheme.primary,
+                rightDotColor: colorScheme.secondary,
+                size: 50,
+              ),
+            ),
           );
 
           final exito =

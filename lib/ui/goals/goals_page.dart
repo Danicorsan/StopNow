@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/routes/app_routes.dart';
@@ -20,8 +21,6 @@ class GoalsPage extends StatefulWidget {
 
 //TODO verificar campos, nombre repetido, precio negativo, descripcion vacia, y poder editar el objetivo
 class _GoalsPageState extends State<GoalsPage> {
-  var isLoading = false;
-
   @override
   void initState() {
     GoalsProvider provider = Provider.of<GoalsProvider>(context, listen: false);
@@ -36,7 +35,6 @@ class _GoalsPageState extends State<GoalsPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final conexion = UserRepository.tienesConexion();
 
     return Scaffold(
       appBar: baseAppBar(localizations.objetivos),
@@ -45,8 +43,12 @@ class _GoalsPageState extends State<GoalsPage> {
       body: Consumer<GoalsProvider>(
         builder: (context, provider, _) {
           return provider.isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? Center(
+                  child: LoadingAnimationWidget.flickr(
+                    leftDotColor: colorScheme.primary,
+                    rightDotColor: colorScheme.secondary,
+                    size: 50,
+                  ),
                 )
               : provider.goals.isEmpty
                   ? Center(

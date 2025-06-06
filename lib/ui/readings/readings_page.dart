@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:stopnow/routes/app_routes.dart';
@@ -39,7 +40,11 @@ class _ReadingsPageState extends State<ReadingsPage> {
       appBar: baseAppBar(localizations.lecturas),
       backgroundColor: colorScheme.background,
       body: provider.isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: LoadingAnimationWidget.flickr(
+                leftDotColor: colorScheme.primary,
+                rightDotColor: colorScheme.secondary,
+                size: 50,
+              ),)
           : provider.articulos.isEmpty
               ? Center(
                   child: Text(

@@ -16,6 +16,7 @@ class ReadingsProvider extends ChangeNotifier {
     var result = await UserRepository.traerArticulos();
 
     if (result is BaseResultSuccess) {
+      //await Future.delayed(const Duration(milliseconds: 1000));
       isLoading = false;
 
       _articulos = result.data;

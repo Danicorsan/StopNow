@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/achievement_model.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
@@ -47,7 +48,11 @@ class _ProfilePageState extends State<ProfilePage> {
       return Scaffold(
         appBar: baseAppBar(localizations.perfil),
         backgroundColor: colorScheme.background,
-        body: const Center(child: CircularProgressIndicator()),
+        body: Center(child: LoadingAnimationWidget.flickr(
+                leftDotColor: colorScheme.primary,
+                rightDotColor: colorScheme.secondary,
+                size: 50,
+              ),),
       );
     }
 

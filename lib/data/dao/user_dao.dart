@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,7 +20,7 @@ class UserDao {
       'id': id,
       'nombre_usuario': nombreUsuario,
       'foto_perfil': fotoEmail,
-      'fecha_dejar_fumar': fechaDejarFumar.toIso8601String(),
+      'fecha_dejar_fumar': fechaDejarFumar.toUtc().toIso8601String(),
       'cigarros_al_dia': cigarrosAlDia,
       'cigarros_por_paquete': cigarrosPorPaquete,
       'precio_paquete': precioPaquete,
@@ -85,16 +87,17 @@ class UserDao {
     DateTime nuevaFecha = DateTime.now();
     final userId = supabase.auth.currentUser?.id;
     await supabase.from('public.users').update({
-      'fecha_dejar_fumar': nuevaFecha.toIso8601String(),
+      'fecha_dejar_fumar': nuevaFecha.toUtc().toIso8601String(),
     }).eq('id', userId!);
   }
 
   // Metodo para traer los articulos de lectura del usuario
   static Future<List<Map<String, dynamic>>> obtenerArticulos() async {
+    //LENGUAJE del movil
     final response = await supabase
         .from('public.articulos')
         .select()
-        .eq('idioma', "es") //locale.languageCode)
+        .eq('idioma', "es")
         .order('fecha_creacion', ascending: false);
 
     if (response.isEmpty) {
@@ -152,7 +155,7 @@ await _supabase.from('public.chat_mensajes').insert({
     await supabase.from('public.users').update({
       'nombre_usuario': nombreUsuario,
       'foto_perfil': fotoPerfil,
-      'fecha_dejar_fumar': fechaDejarFumar.toIso8601String(),
+      'fecha_dejar_fumar': fechaDejarFumar.toUtc().toIso8601String(),
       'cigarros_al_dia': cigarrosAlDia,
       'cigarros_por_paquete': cigarrosPorPaquete,
       'precio_paquete': precioPaquete,

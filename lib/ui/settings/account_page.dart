@@ -60,9 +60,8 @@ class _AccountPageState extends State<AccountPage> {
           user.fotoPerfil; // Assuming email is stored in fotoPerfil
       _cigarrosAlDiaController.text = user.cigarrosAlDia.toString();
       _fechaDejarDeFumarController.text =
-          "${user.fechaDejarFumar.year}-${user.fechaDejarFumar.month.toString().padLeft(2, '0')}-${user.fechaDejarFumar.day.toString().padLeft(2, '0')} "
-          "${user.fechaDejarFumar.hour.toString().padLeft(2, '0')}:${user.fechaDejarFumar.minute.toString().padLeft(2, '0')}";
-
+          DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar.toLocal());
+          
       _cigarrosPaqueteController.text = user.cigarrosPorPaquete.toString();
       _precioPaqueteController.text = user.precioPaquete.toString();
 
@@ -73,7 +72,7 @@ class _AccountPageState extends State<AccountPage> {
       _originalCigarrosPorPaquete = user.cigarrosPorPaquete;
       _originalPrecioPaquete = user.precioPaquete;
       _originalFechaDejarFumar =
-          DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar);
+          DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar.toLocal());
     }
   }
 

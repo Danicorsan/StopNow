@@ -39,11 +39,11 @@ class LocalDbHelper {
     await db.insert('user_progress', {
       'nombreUsuario': user.nombreUsuario,
       'fotoPerfil': user.fotoPerfil,
-      'fechaDejarFumar': user.fechaDejarFumar.toIso8601String(),
+      'fechaDejarFumar': user.fechaDejarFumar.toUtc().toIso8601String(),
       'cigarrosAlDia': user.cigarrosAlDia,
       'cigarrosPorPaquete': user.cigarrosPorPaquete,
       'precioPaquete': user.precioPaquete,
-      'fechaRegistro': user.fechaRegistro.toIso8601String(),
+      'fechaRegistro': user.fechaRegistro.toUtc().toIso8601String(),
     });
   }
 
@@ -60,7 +60,8 @@ class LocalDbHelper {
       return UserModel(
         nombreUsuario: json['nombreUsuario'] as String,
         fotoPerfil: json['fotoPerfil'] as String,
-        fechaDejarFumar: DateTime.parse(json['fechaDejarFumar'] as String),
+        fechaDejarFumar:
+            DateTime.parse(json['fechaDejarFumar'] as String).toLocal(),
         cigarrosAlDia: json['cigarrosAlDia'] as int,
         cigarrosPorPaquete: json['cigarrosPorPaquete'] as int,
         precioPaquete: json['precioPaquete'] as double,

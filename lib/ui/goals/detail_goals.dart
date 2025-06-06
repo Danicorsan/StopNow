@@ -145,11 +145,11 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                         buildSuccesMessage(
                             localizations.objetivoBorradoExito, context);
                       } else {
-                        buildErrorMessage(localizations.errorBorrarObjetivo, context);
+                        buildErrorMessage(
+                            localizations.errorBorrarObjetivo, context);
                       }
 
-                      Navigator.pop(context); 
-
+                      Navigator.pop(context);
                     },
                     child: Text(localizations.aceptar),
                   ),
@@ -221,7 +221,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                     const SizedBox(height: 16),
                     Text(
                       localizations.ahorroCigarros(
-                          cigarrosEvitados, dineroAhorrado.toStringAsFixed(2)),
+                          dineroAhorrado.toStringAsFixed(2), cigarrosEvitados),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.green[

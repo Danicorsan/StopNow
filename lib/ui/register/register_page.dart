@@ -338,6 +338,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     elevation: 5,
                   ),
                   onPressed: () async {
+                    FocusScope.of(context).unfocus();
                     if (registerProvider.registerState ==
                         RegisterState.loading) {
                       return; // Evita múltiples pulsaciones mientras se carga

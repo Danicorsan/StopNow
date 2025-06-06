@@ -107,8 +107,6 @@ class _GoalsPageState extends State<GoalsPage> {
               Provider.of<GoalsProvider>(context, listen: false)
                   .traerObjetivos();
               buildSuccesMessage(localizations.objetivoExito, context);
-            } else {
-              buildErrorMessage(localizations.errorObjetivo, context);
             }
           },
           elevation: 6,

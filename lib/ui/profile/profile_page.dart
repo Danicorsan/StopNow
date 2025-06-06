@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/achievement_model.dart';
-import 'package:stopnow/data/providers/theme_provider.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -400,7 +399,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 CircleAvatar(
                   backgroundColor: colorScheme.secondary,
                   radius: 36,
-                  child: Icon(
+                  child: const Icon(
                     Icons.emoji_events,
                     color: Colors.white,
                     size: 40,

@@ -59,7 +59,6 @@ class GoalsProvider extends ChangeNotifier {
     required double precioNuevo,
     required BuildContext context,
   }) async {
-    final localizations = AppLocalizations.of(context)!;
     final exito = await UserRepository.actualizarObjetivo(
       id: originalGoal.id,
       nombreNuevo: nombreNuevo,
@@ -72,7 +71,6 @@ class GoalsProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } else {
-      buildErrorMessage(localizations.errorEditarObjetivo, context);
       return false;
     }
   }

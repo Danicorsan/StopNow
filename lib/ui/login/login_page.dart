@@ -110,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 5,
                 ),
                 onPressed: () async {
+                  FocusScope.of(context).unfocus();
                   if (loginProvider.loginState == LoginState.loading) {
                     return; // Evita múltiples pulsaciones mientras se carga
                   }

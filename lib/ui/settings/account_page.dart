@@ -142,6 +142,8 @@ class _AccountPageState extends State<AccountPage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final settingsProvider = Provider.of<SettingsProvider>(context);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
 
     return Scaffold(
       backgroundColor: colorScheme.background,
@@ -166,7 +168,7 @@ class _AccountPageState extends State<AccountPage> {
                     onTap: _cargandoImagen ? null : _pickImage,
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: Colors.grey.shade300,
+                      backgroundColor: isDarkMode ? const Color.fromARGB(255, 61, 61, 61) : Colors.grey.shade300,
                       backgroundImage: _selectedImage != null
                           ? FileImage(_selectedImage!)
                           : null,

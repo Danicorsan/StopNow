@@ -9,11 +9,15 @@ class ReadingsProvider extends ChangeNotifier {
 
   List<ReadingModel> get articulos => List.unmodifiable(_articulos);
 
-  Future<void> cargarArticulos(/*Locale locale*/) async {
+  Future<void> cargarArticulos(String locale) async {
+    if (locale != "es" && locale != "en") {
+      locale = "es";
+    }
+
     isLoading = true;
     notifyListeners();
 
-    var result = await UserRepository.traerArticulos();
+    var result = await UserRepository.traerArticulos(locale);
 
     if (result is BaseResultSuccess) {
       //await Future.delayed(const Duration(milliseconds: 1000));

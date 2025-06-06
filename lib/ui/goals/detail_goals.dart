@@ -91,7 +91,8 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     final double porcentaje = (dineroAhorrado / goal.precio).clamp(0, 1);
 
     return Scaffold(
-      appBar: baseAppBar(localizations.detallesObjetivo, volver: true, onTap: () {
+      appBar:
+          baseAppBar(localizations.detallesObjetivo, volver: true, onTap: () {
         Navigator.pop(context);
       }, actions: [
         IconButton(
@@ -212,7 +213,9 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
-                              color: isDarkMode ? Colors.white : colorScheme.primary,
+                              color: isDarkMode
+                                  ? Colors.white
+                                  : colorScheme.primary,
                             ),
                           ),
                           if (goal.descripcion.isNotEmpty)
@@ -220,6 +223,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                           if (goal.descripcion.isNotEmpty)
                             Text(
                               goal.descripcion,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: colorScheme.onSurface.withOpacity(0.7),

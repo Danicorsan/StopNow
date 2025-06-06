@@ -90,6 +90,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         key: _formKey,
         child: ListView(
           children: [
+            SizedBox(height: 20.h,),
             _buildTextField(
               controller: _nombreController,
               label: localizations.nombre,

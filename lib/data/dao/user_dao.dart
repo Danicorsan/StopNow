@@ -92,12 +92,12 @@ class UserDao {
   }
 
   // Metodo para traer los articulos de lectura del usuario
-  static Future<List<Map<String, dynamic>>> obtenerArticulos() async {
+  static Future<List<Map<String, dynamic>>> obtenerArticulos(String locale) async {
     //LENGUAJE del movil
     final response = await supabase
         .from('public.articulos')
         .select()
-        .eq('idioma', "es")
+        .eq('idioma', locale)
         .order('fecha_creacion', ascending: false);
 
     if (response.isEmpty) {

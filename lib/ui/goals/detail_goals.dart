@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +24,21 @@ class DetailGoalsPage extends StatefulWidget {
 class _DetailGoalsPageState extends State<DetailGoalsPage> {
   late GoalModel goal;
   bool isLoading = false;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     goal = widget.goal;
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> _refreshGoal(BuildContext context) async {
@@ -51,19 +63,19 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final double precioPaquete = user?.precioPaquete ?? 0;
     final int cigarrosPorPaquete = user?.cigarrosPorPaquete ?? 1;
     final int cigarrosAlDia = user?.cigarrosAlDia ?? 1;
-    final DateTime fechaDejarFumar = user?.fechaDejarFumar ?? DateTime.now();
 
-    final int diasSinFumar = DateTime.now().difference(fechaDejarFumar).inDays;
-    final int cigarrosEvitados = diasSinFumar * cigarrosAlDia;
+    // --- Cálculo actualizado en tiempo real ---
+    final Duration duracion = DateTime.now().difference(goal.fechaCreacion);
+    final double diasDesdeGoal = duracion.inSeconds / Duration.secondsPerDay;
+    final double cigarrosEvitados = diasDesdeGoal * cigarrosAlDia;
     final double precioPorCigarro =
         precioPaquete / (cigarrosPorPaquete == 0 ? 1 : cigarrosPorPaquete);
     final double dineroAhorrado = cigarrosEvitados * precioPorCigarro;
-    //final int minutosGanados = cigarrosEvitados * 11;
-    //final double horasGanadas = minutosGanados / 60;
 
     final double dineroFaltante =
         (goal.precio - dineroAhorrado).clamp(0, goal.precio);
@@ -72,14 +84,14 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
             .ceil()
             .clamp(0, double.infinity)
             .toInt();
-    final double horasFaltantes =
-        ((goal.precio - dineroAhorrado) / precioPorCigarro * 11 / 60)
+    final double minutosFaltantes =
+        ((goal.precio - dineroAhorrado) / precioPorCigarro * 11)
             .clamp(0, double.infinity);
 
     final double porcentaje = (dineroAhorrado / goal.precio).clamp(0, 1);
 
     return Scaffold(
-      appBar: baseAppBar(goal.nombre, volver: true, onTap: () {
+      appBar: baseAppBar(localizations.detallesObjetivo, volver: true, onTap: () {
         Navigator.pop(context);
       }, actions: [
         IconButton(
@@ -141,7 +153,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                               listen: false)
                           .removeGoal(goal.id);
 
-                      if (!mounted) return; // <--- IMPORTANTE
+                      if (!mounted) return;
                       Navigator.of(context, rootNavigator: true)
                           .pop(); // Cierra el diálogo
                       Navigator.of(context, rootNavigator: true)
@@ -200,7 +212,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
-                              color: colorScheme.primary,
+                              color: isDarkMode ? Colors.white : colorScheme.primary,
                             ),
                           ),
                           if (goal.descripcion.isNotEmpty)
@@ -230,8 +242,8 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                     _buildContainerBarra(porcentaje, colorScheme),
                     const SizedBox(height: 16),
                     Text(
-                      localizations.ahorroCigarros(
-                          dineroAhorrado.toStringAsFixed(2), cigarrosEvitados),
+                      localizations
+                          .ahorroCigarros(dineroAhorrado.toStringAsFixed(2)),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.green[
@@ -255,8 +267,9 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                     ),
                     const SizedBox(height: 10),
                     _buildContainerSecundario(
-                      label: localizations.horasFaltantes,
-                      value: "${horasFaltantes.toStringAsFixed(1)} h",
+                      label: localizations.tiempoRestante,
+                      value:
+                          _formatearTiempoFaltante(minutosFaltantes, context),
                       colorScheme: colorScheme,
                     ),
                     const SizedBox(height: 24),
@@ -321,6 +334,14 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     required String value,
     required ColorScheme colorScheme,
   }) {
+    final localizations = AppLocalizations.of(context)!;
+
+    // Normaliza el valor para detectar cualquier "cero"
+    final normalized =
+        value.replaceAll('€', '').replaceAll(' ', '').replaceAll(',', '.');
+    final isZero =
+        normalized == "0" || normalized == "0.0" || normalized == "0.00";
+
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -336,16 +357,19 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
         ],
       ),
       width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(label,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
-          Text(value,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+            Text(isZero ? localizations.completado : value,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+          ],
+        ),
       ),
     );
   }
@@ -404,5 +428,35 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
         ],
       ),
     );
+  }
+
+  String _formatearTiempoFaltante(
+      double minutosFaltantes, BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
+    if (minutosFaltantes == 0) {
+      return "0";
+    } else if (minutosFaltantes < 1) {
+      return localizations.menosDeUnMinutoMinuscula;
+    } else if (minutosFaltantes < 60) {
+      final min = minutosFaltantes.floor();
+      if (min == 1) {
+        return "1 ${localizations.minutoMinusculaSingular}";
+      }
+      return "$min ${localizations.minutosMinusculaPlural}";
+    } else if (minutosFaltantes < 1440) {
+      // menos de 24 horas
+      final horas = (minutosFaltantes / 60).floor();
+      if (horas == 1) {
+        return "1 ${localizations.horaMinusculaSingular}";
+      }
+      return "$horas ${localizations.horasMinusculaPlural}";
+    } else {
+      final dias = (minutosFaltantes / 1440).floor();
+      if (dias == 1) {
+        return "1 ${localizations.diaMinusculaSingular}";
+      }
+      return "$dias ${localizations.diasMinusculaPlural}";
+    }
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -153,14 +155,19 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
             ),
           );
 
+          String nombre = _nombreController.text.trim();
+          if (nombre.isNotEmpty) {
+            nombre = nombre[0].toUpperCase() + nombre.substring(1);
+          }
+
           final exito =
               await Provider.of<GoalsProvider>(context, listen: false).addGoal(
             GoalModel(
-              usuarioId: UserRepository.getId(),
-              nombre: _nombreController.text.trim(),
-              descripcion: _descripcionController.text.trim(),
-              precio: double.tryParse(_precioController.text.trim()) ?? 0.0,
-            ),
+                usuarioId: UserRepository.getId(),
+                nombre: nombre,
+                descripcion: _descripcionController.text.trim(),
+                precio: double.tryParse(_precioController.text.trim()) ?? 0.0,
+                fechaCreacion: DateTime.now()),
             context,
           );
 

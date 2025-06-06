@@ -57,12 +57,11 @@
       "precio": {}
     }
   },
-  "ahorroCigarros": "¡Has ahorrado {dinero} € evitando fumar {cigarros} cigarros!",
+  "ahorroCigarros": "¡Has ahorrado {dinero} € desde que añadiste el objetivo!",
   "@ahorroCigarros": {
-    "description": "Cantidad ahorrada y cigarros evitados",
+    "description": "Cantidad ahorrada",
     "placeholders": {
-      "dinero": {},
-      "cigarros": {}
+      "dinero": {}
     }
   },
   "dineroFaltante": "Dinero que falta",
@@ -221,5 +220,9 @@
   "noSePudoObtenerElUsuarioActual":"No se pudo obtener el usuario actual",
   "temaOscuroActivo": "Tema oscuro activado",
   "temaClaroActivo": "Tema oscuro activado",
-  "temaOscuro": "Modo oscuro"
+  "temaOscuro": "Modo oscuro",
+  "tiempoRestante":"Tiempo restante",
+  "completado":"Completado",
+  "detallesObjetivo":"Detalles del objetivo",
+  "cambiaElTema":"Activa el modo oscuro"
 }

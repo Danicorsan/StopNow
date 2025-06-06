@@ -33,7 +33,6 @@ Future<void> main() async {
   final connectivity = await Connectivity().checkConnectivity();
   UserModel? offlineUser;
   if (connectivity.first == ConnectivityResult.none) {
-    print("SIN INTERNET: Cargando usuario offline de SQLite");
     offlineUser = await LocalDbHelper.getUserProgress();
   }
 

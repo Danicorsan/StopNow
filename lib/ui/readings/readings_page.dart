@@ -23,7 +23,8 @@ class _ReadingsPageState extends State<ReadingsPage> {
     super.initState();
     // Para asegurarnos de que los artículos se carguen después de que el widget se haya construido,
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ReadingsProvider>().cargarArticulos();
+      final locale = Localizations.localeOf(context).languageCode;
+      context.read<ReadingsProvider>().cargarArticulos(locale);
     });
   }
 
@@ -40,11 +41,13 @@ class _ReadingsPageState extends State<ReadingsPage> {
       appBar: baseAppBar(localizations.lecturas),
       backgroundColor: colorScheme.background,
       body: provider.isLoading
-          ? Center(child: LoadingAnimationWidget.flickr(
+          ? Center(
+              child: LoadingAnimationWidget.flickr(
                 leftDotColor: colorScheme.primary,
                 rightDotColor: colorScheme.secondary,
                 size: 50,
-              ),)
+              ),
+            )
           : provider.articulos.isEmpty
               ? Center(
                   child: Text(
@@ -88,7 +91,9 @@ class _ReadingsPageState extends State<ReadingsPage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: isDarkMode ? Colors.white :colorScheme.primary,
+                                  color: isDarkMode
+                                      ? Colors.white
+                                      : colorScheme.primary,
                                 ),
                               ),
                               const SizedBox(height: 8),

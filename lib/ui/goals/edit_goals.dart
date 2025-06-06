@@ -80,6 +80,9 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
         key: _formKey,
         child: ListView(
           children: [
+            SizedBox(
+              height: 20.h,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 9.h),
               child: TextFormField(
@@ -163,7 +166,6 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
                   buildErrorMessage(localizations.revisaCampos, context);
                   return;
                 }
-
                 showDialog(
                   context: context,
                   barrierDismissible: false,

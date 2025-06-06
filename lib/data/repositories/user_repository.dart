@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/models/goal_model.dart';
@@ -179,9 +180,10 @@ class UserRepository {
   }
 
   // Metodo para traer articulos de lectura
-  static Future<BaseResult> traerArticulos() async {
+  static Future<BaseResult> traerArticulos(String locale) async {
+
     try {
-      final response = await UserDao.obtenerArticulos();
+      final response = await UserDao.obtenerArticulos(locale);
 
       if (response.isEmpty) {
         return BaseResultError('No se encontraron artículos de lectura');

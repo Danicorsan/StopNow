@@ -19,7 +19,6 @@ class GoalsPage extends StatefulWidget {
   State<GoalsPage> createState() => _GoalsPageState();
 }
 
-//TODO verificar campos, nombre repetido, precio negativo, descripcion vacia, y poder editar el objetivo
 class _GoalsPageState extends State<GoalsPage> {
   @override
   void initState() {
@@ -43,63 +42,117 @@ class _GoalsPageState extends State<GoalsPage> {
       backgroundColor: colorScheme.background,
       body: Consumer<GoalsProvider>(
         builder: (context, provider, _) {
-          return provider.isLoading
-              ? Center(
-                  child: LoadingAnimationWidget.flickr(
-                    leftDotColor: colorScheme.primary,
-                    rightDotColor: colorScheme.secondary,
-                    size: 50,
-                  ),
-                )
-              : provider.goals.isEmpty
-                  ? Center(
-                      child: Text(
-                        localizations.noTienesObjetivos,
-                        style: TextStyle(
-                          color: colorScheme.onBackground,
-                          fontSize: 18.sp,
-                        ),
+          if (provider.isLoading) {
+            return Center(
+              child: LoadingAnimationWidget.flickr(
+                leftDotColor: colorScheme.primary,
+                rightDotColor: colorScheme.secondary,
+                size: 50,
+              ),
+            );
+          }
+          if (provider.goals.isEmpty) {
+            return Center(
+              child: Text(
+                localizations.noTienesObjetivos,
+                style: TextStyle(
+                  color: colorScheme.onBackground,
+                  fontSize: 18.sp,
+                ),
+              ),
+            );
+          }
+
+          final goals = provider.goals;
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
+            child: GridView.builder(
+              itemCount: goals.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 12.h,
+                crossAxisSpacing: 12.w,
+                childAspectRatio: 1, // Mantiene cuadrado
+              ),
+              itemBuilder: (context, index) {
+                final goal = goals[index];
+                // Si es el último y hay impar, lo centramos
+                final isLast =
+                    index == goals.length - 1 && goals.length % 2 != 0;
+                return Align(
+                  alignment: isLast ? Alignment.center : Alignment.topCenter,
+                  child: SizedBox(
+                    width: 170,
+                    height: 170,
+                    child: Card(
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    )
-                  : ListView.builder(
-                      itemCount: provider.goals.length,
-                      itemBuilder: (_, index) {
-                        final goal = provider.goals[index];
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 10.h),
-                          child: Card(
-                            elevation: 6,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            color: colorScheme.surface.withOpacity(0.93),
-                            child: ListTile(
-                              leading: CircleAvatar(
+                      color: colorScheme.surface.withOpacity(0.93),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.detailGoal,
+                            arguments: goal,
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
                                 backgroundColor: colorScheme.secondary,
+                                radius: 28,
                                 child: Icon(Icons.emoji_events,
-                                    color: colorScheme.onSecondary),
+                                    color: colorScheme.onSecondary, size: 32),
                               ),
-                              title: Text(
+                              SizedBox(height: 12.h),
+                              Text(
                                 goal.nombre,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: isDarkMode ? Colors.white :colorScheme.primary,
+                                  color: isDarkMode
+                                      ? Colors.white
+                                      : colorScheme.primary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.sp,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.detailGoal,
-                                  arguments: goal,
-                                );
-                              },
-                            ),
+                              if (goal.descripcion.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6.0),
+                                  child: Flexible(
+                                    child: Text(
+                                      goal.descripcion,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: colorScheme.onSurface
+                                            .withOpacity(0.7),
+                                        fontSize: 13.sp,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                        );
-                      },
-                    );
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
         },
       ),
       floatingActionButton: Builder(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/base/widgets/base_textfield.dart';
@@ -111,6 +112,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
+                  final conexion = await UserRepository.tienesConexion();
+                  if (!conexion) {
+                    buildErrorMessage(localizations.sinConexion, context);
+                    return;
+                  }
                   if (loginProvider.loginState == LoginState.loading) {
                     return; // Evita múltiples pulsaciones mientras se carga
                   }

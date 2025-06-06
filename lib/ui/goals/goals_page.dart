@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -35,6 +36,7 @@ class _GoalsPageState extends State<GoalsPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final conexion = UserRepository.tienesConexion();
 
     return Scaffold(
       appBar: baseAppBar(localizations.objetivos),
@@ -101,6 +103,11 @@ class _GoalsPageState extends State<GoalsPage> {
         builder: (context) => FloatingActionButton(
           backgroundColor: colorScheme.primary,
           onPressed: () async {
+            final conexion = await UserRepository.tienesConexion();
+            if (!conexion) {
+              buildErrorMessage(localizations.sinConexion, context);
+              return;
+            }
             bool? exito =
                 await Navigator.pushNamed(context, AppRoutes.addGoal) as bool?;
             if (exito == true) {

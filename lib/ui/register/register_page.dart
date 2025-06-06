@@ -339,13 +339,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     elevation: 5,
                   ),
                   onPressed: () async {
-                    /*
-                    final conexion = await UserRepository.tienesConexion();
-                    if (!conexion){
-
-                    }
-                    */
                     FocusScope.of(context).unfocus();
+                    final conexion = await UserRepository.tienesConexion();
+                    if (!conexion) {
+                      buildErrorMessage(localizations.sinConexion, context);
+                      return;
+                    }
                     if (registerProvider.registerState ==
                         RegisterState.loading) {
                       return; // Evita múltiples pulsaciones mientras se carga

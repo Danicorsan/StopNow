@@ -103,11 +103,11 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
               builder: (context) => AlertDialog(
                 backgroundColor: colorScheme.surface,
                 title: Text(
-                  localizations.recaida,
+                  localizations.confirmarBorrado,
                   style: TextStyle(color: colorScheme.primary),
                 ),
                 content: Text(
-                  localizations.dialogoRecaida,
+                  localizations.mensajeConfirmarBorradoObjetivo,
                   style: TextStyle(color: colorScheme.onSurface),
                 ),
                 actions: [

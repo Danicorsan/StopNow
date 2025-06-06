@@ -12,6 +12,7 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -57,9 +58,13 @@ class _SettingsPageState extends State<SettingsPage> {
               title: localizations.cuenta,
               subtitle: localizations.gestionaInformacion,
               color: colorScheme.secondary,
-              onTap: () {
-                Navigator.pushNamed(
-                    context, AppRoutes.settingsAcount);
+              onTap: () async {
+                final conexion = await UserRepository.tienesConexion();
+                if (!conexion) {
+                  buildErrorMessage(localizations.sinConexion, context);
+                  return;
+                }
+                Navigator.pushNamed(context, AppRoutes.settingsAcount);
               },
               colorScheme: colorScheme,
             ),
@@ -68,7 +73,13 @@ class _SettingsPageState extends State<SettingsPage> {
               title: localizations.recaida,
               subtitle: localizations.mensajeRecaida,
               color: colorScheme.secondary,
-              onTap: () {
+              onTap: () async {
+                final conexion = await UserRepository.tienesConexion();
+                if (!conexion) {
+                  buildErrorMessage(localizations.sinConexion, context);
+                  return;
+                }
+
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -127,8 +138,48 @@ class _SettingsPageState extends State<SettingsPage> {
               subtitle: localizations.salirCuenta,
               color: colorScheme.secondary,
               onTap: () {
-                Provider.of<UserProvider>(context, listen: false).clearUser();
-                logout();
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: colorScheme.surface,
+                    title: Text(
+                      localizations.confirmarCerrarSesion,
+                      style: TextStyle(color: colorScheme.primary),
+                    ),
+                    content: Text(
+                      localizations.mensajeConfirmarCerrarSesion,
+                      style: TextStyle(color: colorScheme.onSurface),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          localizations.cancelar,
+                          style: TextStyle(color: colorScheme.primary),
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.error,
+                          foregroundColor: colorScheme.onError,
+                        ),
+                        onPressed: () async {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+
+                          Provider.of<UserProvider>(context, listen: false)
+                              .clearUser();
+                          logout();
+                        },
+                        child: Text(localizations.aceptar),
+                      ),
+                    ],
+                  ),
+                );
               },
               colorScheme: colorScheme,
             ),
@@ -228,10 +279,8 @@ Widget _buildThemeSwitchCard(BuildContext context,
           themeProvider.toggleTheme(value);
         },
         activeColor: colorScheme.secondary,
-        inactiveThumbColor:
-            colorScheme.primary,
-        inactiveTrackColor: colorScheme.primary
-            .withOpacity(0.1),
+        inactiveThumbColor: colorScheme.primary,
+        inactiveTrackColor: colorScheme.primary.withOpacity(0.1),
       ),
       onTap: () {
         themeProvider.toggleTheme(!isDark);

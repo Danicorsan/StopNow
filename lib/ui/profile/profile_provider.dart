@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:stopnow/data/helper/local_database_helper.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
@@ -14,9 +17,13 @@ class ProfileProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    // Siempre pide el usuario actualizado al repositorio
+    // Si no tiene conexion, carga el usuario de sqlite
+    final conexion = await UserRepository.tienesConexion();
+
     final user = userId == null
-        ? await UserRepository.usuarioActual()
+        ? conexion
+            ? await UserRepository.usuarioActual()
+            : await LocalDbHelper.getUserProgress()
         : await UserDao.traerUsuario(userId);
 
     userToShow = user;

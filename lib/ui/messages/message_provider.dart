@@ -18,6 +18,7 @@ class ChatProvider extends ChangeNotifier {
   final SupabaseClient _supabase = Supabase.instance.client;
   RealtimeChannel? _canal;
   var isLoading = true;
+  var conexion = true;
 
   List<MessageModel> get mensajes => List.unmodifiable(_mensajes);
 
@@ -38,9 +39,14 @@ class ChatProvider extends ChangeNotifier {
     if (connectivity.first == ConnectivityResult.none) {
       // Mostrar mensaje o dejar la lista vacía
       _mensajes.clear();
+      conexion = false;
       notifyListeners();
       return;
     }
+    conexion = true;
+    notifyListeners();
+
+    // Llamada al repositorio para obtener los mensajes
     final res = await UserRepository.getMensajes();
 
     if (res is BaseResultError) {

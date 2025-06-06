@@ -202,5 +202,17 @@
   "exhala": "Exhale",
   "errorEliminarObjetivo": "Error deleting goal",
   "objetivoEditadoExito" : "Goal successfully edited",
-  "editarPerfil": "Edit profile"
+  "editarPerfil": "Edit profile",
+  "confirmarBorrado": "Are you sure?",
+  "mensajeConfirmarBorradoObjetivo": "Are you sure you want to delete this goal? This action cannot be undone.",
+  "confirmarCerrarSesion": "Log out?",
+  "mensajeConfirmarCerrarSesion": "Are you sure you want to log out? You will need to log in again to continue.",
+  "sinConexion": "No internet connection",
+  "intentaMasTarde": "Please check your connection and try again",
+  "minutosMinusculaPlural": "minutes",
+"horaMinusculaSingular": "hour",
+"horasMinusculaPlural": "hours",
+"diaMinusculaSingular": "day",
+"diasMinusculaPlural": "days",
+"menosDeUnMinutoMinuscula": "less than a minute"
 }

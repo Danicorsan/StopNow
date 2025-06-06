@@ -59,98 +59,109 @@ class _ChatPageState extends State<ChatPage> {
           : Column(
               children: [
                 Expanded(
-                  child: mensajes.isEmpty
-                      ? Center(
-                          child: Text(
-                            localizations.noHayMensajes,
-                            style: TextStyle(
-                              color: colorScheme.onSurface.withOpacity(0.6),
-                            ),
-                          ),
-                        )
-                      : ListView.builder(
-                          controller: _scrollController,
-                          reverse: true,
-                          padding: const EdgeInsets.all(12),
-                          itemCount: mensajes.length,
-                          itemBuilder: (context, index) {
-                            final mensaje = mensajes[index];
-                            final esMio = mensaje.usuarioId == myUserId;
-                            final contieneMencion = myNombreUsuario
-                                    .isNotEmpty &&
-                                mensaje.mensaje.contains('@$myNombreUsuario') &&
-                                !esMio;
+                  child: chatProvider.conexion
+                      ? mensajes.isEmpty
+                          ? Center(
+                              child: Text(
+                                localizations.noHayMensajes,
+                                style: TextStyle(
+                                  color: colorScheme.onSurface.withOpacity(0.6),
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              controller: _scrollController,
+                              reverse: true,
+                              padding: const EdgeInsets.all(12),
+                              itemCount: mensajes.length,
+                              itemBuilder: (context, index) {
+                                final mensaje = mensajes[index];
+                                final esMio = mensaje.usuarioId == myUserId;
+                                final contieneMencion =
+                                    myNombreUsuario.isNotEmpty &&
+                                        mensaje.mensaje
+                                            .contains('@$myNombreUsuario') &&
+                                        !esMio;
 
-                            bool mostrarFecha = false;
-                            if (index == mensajes.length - 1) {
-                              mostrarFecha = true;
-                            } else {
-                              final mensajeSiguiente = mensajes[index + 1];
-                              if (!_esMismaFecha(mensaje.fechaEnvio,
-                                  mensajeSiguiente.fechaEnvio)) {
-                                mostrarFecha = true;
-                              }
-                            }
+                                bool mostrarFecha = false;
+                                if (index == mensajes.length - 1) {
+                                  mostrarFecha = true;
+                                } else {
+                                  final mensajeSiguiente = mensajes[index + 1];
+                                  if (!_esMismaFecha(mensaje.fechaEnvio,
+                                      mensajeSiguiente.fechaEnvio)) {
+                                    mostrarFecha = true;
+                                  }
+                                }
 
-                            return KeyedSubtree(
-                              key: ValueKey(mensaje
-                                  .id), // Para asegurarnos que no se mezclen las fotos de perfil
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  if (mostrarFecha)
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8),
-                                      child: Center(
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4, horizontal: 12),
-                                          decoration: BoxDecoration(
-                                            color: colorScheme.surfaceVariant,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: Text(
-                                            _formatearFechaLabel(
-                                                mensaje.fechaEnvio, context),
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: colorScheme.onSurface
-                                                  .withOpacity(0.7),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  Row(
-                                    mainAxisAlignment: esMio
-                                        ? MainAxisAlignment.end
-                                        : MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                return KeyedSubtree(
+                                  key: ValueKey(mensaje
+                                      .id), // Para asegurarnos que no se mezclen las fotos de perfil
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
-                                      if (!esMio)
+                                      if (mostrarFecha)
                                         Padding(
-                                          padding: EdgeInsets.only(right: 4.h),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                AppRoutes.profile,
-                                                arguments: mensaje.usuarioId,
-                                              );
-                                            },
-                                            child: SizedBox(
-                                              height: 30,
-                                              width: 30,
-                                              child: UserAvatar(
-                                                avatarUrl: mensaje.fotoPerfil,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          child: Center(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 4,
+                                                      horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    colorScheme.surfaceVariant,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Text(
+                                                _formatearFechaLabel(
+                                                    mensaje.fechaEnvio,
+                                                    context),
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: colorScheme.onSurface
+                                                      .withOpacity(0.7),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
+                                      Row(
+                                        mainAxisAlignment: esMio
+                                            ? MainAxisAlignment.end
+                                            : MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          if (!esMio)
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 4.h),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    AppRoutes.profile,
+                                                    arguments:
+                                                        mensaje.usuarioId,
+                                                  );
+                                                },
+                                                child: SizedBox(
+                                                  height: 30,
+                                                  width: 30,
+                                                  child: UserAvatar(
+                                                    avatarUrl:
+                                                        mensaje.fotoPerfil,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
 
-                                      /*Padding(
+                                          /*Padding(
                                           padding:
                                               const EdgeInsets.only(top: 38, right: 8.0),
                                           child: SizedBox(
@@ -162,137 +173,182 @@ class _ChatPageState extends State<ChatPage> {
                                           ),
                                         ),
                                         */
-                                      Flexible(
-                                        child: ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                            maxWidth: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.7,
-                                          ),
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 4),
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 14),
-                                            decoration: BoxDecoration(
-                                              color: contieneMencion
-                                                  ? const Color.fromARGB(
-                                                      255, 217, 235, 255)
-                                                  : esMio
-                                                      ? colorScheme.secondary
-                                                      : colorScheme
-                                                          .surfaceVariant,
-                                              border: contieneMencion
-                                                  ? Border.all(
-                                                      color:
-                                                          colorScheme.tertiary,
-                                                      width: 2,
-                                                    )
-                                                  : null,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft:
-                                                    const Radius.circular(16),
-                                                topRight:
-                                                    const Radius.circular(16),
-                                                bottomLeft: Radius.circular(
-                                                    esMio ? 16 : 0),
-                                                bottomRight: Radius.circular(
-                                                    esMio ? 0 : 16),
+                                          Flexible(
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                maxWidth: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.7,
                                               ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: colorScheme.shadow
-                                                      .withOpacity(0.04),
-                                                  blurRadius: 2,
-                                                  offset: const Offset(0, 2),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                if (mensaje.nombreUsuario !=
-                                                        null &&
-                                                    mensaje.nombreUsuario
-                                                        .isNotEmpty &&
-                                                    !esMio)
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 2),
-                                                    child: Text(
-                                                      mensaje.nombreUsuario,
-                                                      style: TextStyle(
-                                                        color:
-                                                            colorScheme.primary,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 13,
-                                                      ),
-                                                    ),
+                                              child: Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 4),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10,
+                                                        horizontal: 14),
+                                                decoration: BoxDecoration(
+                                                  color: contieneMencion
+                                                      ? const Color.fromARGB(
+                                                          255, 217, 235, 255)
+                                                      : esMio
+                                                          ? colorScheme
+                                                              .secondary
+                                                          : colorScheme
+                                                              .surfaceVariant,
+                                                  border: contieneMencion
+                                                      ? Border.all(
+                                                          color: colorScheme
+                                                              .tertiary,
+                                                          width: 2,
+                                                        )
+                                                      : null,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        const Radius.circular(
+                                                            16),
+                                                    topRight:
+                                                        const Radius.circular(
+                                                            16),
+                                                    bottomLeft: Radius.circular(
+                                                        esMio ? 16 : 0),
+                                                    bottomRight:
+                                                        Radius.circular(
+                                                            esMio ? 0 : 16),
                                                   ),
-                                                Stack(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 48.0),
-                                                      child: contieneMencion
-                                                          ? _buildMensajeConMencion(
-                                                              mensaje.mensaje,
-                                                              myNombreUsuario,
-                                                              colorScheme,
-                                                            )
-                                                          : Text(
-                                                              mensaje.mensaje,
-                                                              style: TextStyle(
-                                                                color: esMio
-                                                                    ? colorScheme
-                                                                        .onSecondary
-                                                                    : colorScheme
-                                                                        .onSurface,
-                                                                fontSize: 16,
-                                                              ),
-                                                            ),
-                                                    ),
-                                                    Positioned(
-                                                      bottom: 0,
-                                                      right: 0,
-                                                      child: Text(
-                                                        _formatHora(
-                                                            mensaje.fechaEnvio),
-                                                        style: TextStyle(
-                                                          color: esMio
-                                                              ? colorScheme
-                                                                  .onSecondary
-                                                                  .withOpacity(
-                                                                      0.7)
-                                                              : contieneMencion
-                                                                  ? Colors
-                                                                      .black87
-                                                                  : colorScheme
-                                                                      .onSurface
-                                                                      .withOpacity(
-                                                                          0.6),
-                                                          fontSize: 11,
-                                                        ),
-                                                      ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: colorScheme.shadow
+                                                          .withOpacity(0.04),
+                                                      blurRadius: 2,
+                                                      offset:
+                                                          const Offset(0, 2),
                                                     ),
                                                   ],
                                                 ),
-                                              ],
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    if (mensaje.nombreUsuario !=
+                                                            null &&
+                                                        mensaje.nombreUsuario
+                                                            .isNotEmpty &&
+                                                        !esMio)
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                bottom: 2),
+                                                        child: Text(
+                                                          mensaje.nombreUsuario,
+                                                          style: TextStyle(
+                                                            color: colorScheme
+                                                                .primary,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 13,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    Stack(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 48.0),
+                                                          child: contieneMencion
+                                                              ? _buildMensajeConMencion(
+                                                                  mensaje
+                                                                      .mensaje,
+                                                                  myNombreUsuario,
+                                                                  colorScheme,
+                                                                )
+                                                              : Text(
+                                                                  mensaje
+                                                                      .mensaje,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: esMio
+                                                                        ? colorScheme
+                                                                            .onSecondary
+                                                                        : colorScheme
+                                                                            .onSurface,
+                                                                    fontSize:
+                                                                        16,
+                                                                  ),
+                                                                ),
+                                                        ),
+                                                        Positioned(
+                                                          bottom: 0,
+                                                          right: 0,
+                                                          child: Text(
+                                                            _formatHora(mensaje
+                                                                .fechaEnvio),
+                                                            style: TextStyle(
+                                                              color: esMio
+                                                                  ? colorScheme
+                                                                      .onSecondary
+                                                                      .withOpacity(
+                                                                          0.7)
+                                                                  : contieneMencion
+                                                                      ? Colors
+                                                                          .black87
+                                                                      : colorScheme
+                                                                          .onSurface
+                                                                          .withOpacity(
+                                                                              0.6),
+                                                              fontSize: 11,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                );
+                              },
+                            )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.wifi_off,
+                                  size: 48,
+                                  color:
+                                      colorScheme.onSurface.withOpacity(0.4)),
+                              SizedBox(height: 16),
+                              Text(
+                                localizations
+                                    .sinConexion, // Ejemplo: "Sin conexión a internet"
+                                style: TextStyle(
+                                  color: colorScheme.onSurface.withOpacity(0.6),
+                                  fontSize: 18,
+                                ),
                               ),
-                            );
-                          },
+                              SizedBox(height: 8),
+                              Text(
+                                localizations.intentaMasTarde,
+                                    //"Por favor, revisa tu conexión e inténtalo de nuevo.",
+                                style: TextStyle(
+                                  color: colorScheme.onSurface.withOpacity(0.5),
+                                  fontSize: 14,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                 ),
                 const Divider(height: 1),

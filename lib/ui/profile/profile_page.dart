@@ -175,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         _buildStatisticRow(
                           localizations.tiempoVidaGanadoEstadistica,
-                          "${((homeProvider.getTiempoDeVidaGanado() / 60).floor())} ${localizations.horas}",
+                          formatTiempoGanado(homeProvider, localizations),
                           colorScheme,
                         ),
                       ]
@@ -331,6 +331,24 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  String formatTiempoGanado(
+      HomeProvider homeProvider, AppLocalizations localizations) {
+    final dias = homeProvider.getTiempoDeVidaGanado() ~/
+        1440; // Convertir minutos a días
+    final horas = (homeProvider.getTiempoDeVidaGanado() % 1440) ~/
+        60; // Resto de minutos a horas
+    final minutos =
+        homeProvider.getTiempoDeVidaGanado() % 60; // Resto de minutos
+
+    if (dias > 0) {
+      return "${dias.floor()} ${localizations.dias}";
+    } else if (horas > 0) {
+      return "${horas.floor()} ${localizations.horas}";
+    } else {
+      return "${minutos.floor()} ${localizations.min}";
+    }
+  }
+
   Widget _buildStatisticRow(
       String title, String value, ColorScheme colorScheme) {
     return Padding(
@@ -369,8 +387,9 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor:
-              isDarkMode ? const Color.fromARGB(255, 55, 55, 55) : const Color.fromARGB(255, 230, 230, 230),
+          backgroundColor: isDarkMode
+              ? const Color.fromARGB(255, 55, 55, 55)
+              : const Color.fromARGB(255, 230, 230, 230),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Padding(
@@ -402,7 +421,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   achievement.description,
                   style: TextStyle(
                     fontSize: 16,
-                    color:  isDarkMode ? Colors.white : Colors.black,
+                    color: isDarkMode ? Colors.white : Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),

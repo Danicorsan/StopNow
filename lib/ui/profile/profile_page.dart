@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/achievement_model.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
+import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -63,7 +65,13 @@ class _ProfilePageState extends State<ProfilePage> {
         if (widget.userId == null)
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {
+            onPressed: () async {
+              final conexion = await UserRepository.tienesConexion();
+              if (!conexion) {
+                buildErrorMessage(localizations.sinConexion, context);
+                return;
+              }
+
               Navigator.pushNamed(context, AppRoutes.settingsAcount)
                   .then((value) {
                 // Recargar el perfil después de editar

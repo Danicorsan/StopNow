@@ -199,5 +199,11 @@
   "exhala": "Exhalar",
   "errorEliminarObjetivo":"Error al eliminar objetivo",
   "objetivoEditadoExito" : "Objetivo editado con exito",
-  "editarPerfil": "Editar perfil"
+  "editarPerfil": "Editar perfil",
+  "confirmarBorrado": "¿Estás seguro?",
+  "mensajeConfirmarBorradoObjetivo": "¿Estás seguro de que quieres borrar este objetivo? Esta acción no se puede deshacer.",
+  "confirmarCerrarSesion": "¿Cerrar sesión?",
+  "mensajeConfirmarCerrarSesion": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión de nuevo para continuar.",
+  "sinConexion": "Sin conexión a internet",
+  "intentaMasTarde": "Por favor, revisa tu conexión e inténtalo de nuevo."
 }

@@ -288,6 +288,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           "${finalDateTime.year}-${finalDateTime.month.toString().padLeft(2, '0')}-${finalDateTime.day.toString().padLeft(2, '0')} "
                           "${finalDateTime.hour.toString().padLeft(2, '0')}:${finalDateTime.minute.toString().padLeft(2, '0')}";
                       registerProvider.setFechaDejarFumar(finalDateTime);
+                      print(finalDateTime);
+                      print(finalDateTime.toIso8601String());
+                      print(finalDateTime.toLocal());
                     }
                   },
                   validator: (value) => (value == null || value.isEmpty)

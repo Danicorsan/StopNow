@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
@@ -97,67 +98,69 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const Divider(),
 
-                if (fechaDejarFumar != null && fechaDejarFumar.isAfter(now))
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(32.w),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.r),
-                          gradient: LinearGradient(
-                            colors: [
-                              colorScheme.secondary,
-                              colorScheme.primary
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        padding: EdgeInsets.all(24.w),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.hourglass_top,
-                                size: 60.sp, color: colorScheme.onPrimary),
-                            SizedBox(height: 20.h),
-                            Text(
-                              localizations.dejarasDeFumarEn,
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onPrimary,
+                fechaDejarFumar!.isAfter(now)
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(32.w),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.r),
+                              gradient: LinearGradient(
+                                colors: [
+                                  colorScheme.secondary,
+                                  colorScheme.primary
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                              textAlign: TextAlign.center,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 16.h),
-                            Text(
-                              _formatearTiempoRestante(
-                                  fechaDejarFumar, context),
-                              style: TextStyle(
-                                fontSize: 36.sp,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onPrimary,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 10.h),
-                            Text(
-                              "${localizations.fechaDeDejarFumar}: ${fechaDejarFumar.day.toString().padLeft(2, '0')}/${fechaDejarFumar.month.toString().padLeft(2, '0')}/${fechaDejarFumar.year} ${fechaDejarFumar.hour.toString().padLeft(2, '0')}:${fechaDejarFumar.minute.toString().padLeft(2, '0')}",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: colorScheme.onPrimary.withOpacity(0.8),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 10.h),
-                            /*
+                            padding: EdgeInsets.all(24.w),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.hourglass_top,
+                                    size: 60.sp, color: colorScheme.onPrimary),
+                                SizedBox(height: 20.h),
+                                Text(
+                                  localizations.dejarasDeFumarEn,
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onPrimary,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  _formatearTiempoRestante(
+                                      fechaDejarFumar, context),
+                                  style: TextStyle(
+                                    fontSize: 36.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onPrimary,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  "${localizations.fechaDeDejarFumar}: "
+                                  "${DateFormat('dd/MM/yyyy HH:mm').format(fechaDejarFumar.toLocal())}",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color:
+                                        colorScheme.onPrimary.withOpacity(0.8),
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 10.h),
+                                /*
                         Text(
                           _formatearTiempoRestante(fechaDejarFumar, context),
                           style: TextStyle(
@@ -167,60 +170,61 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         */
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        flex: 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 300.h,
+                              child: PageView(
+                                controller: _pageController,
+                                children: [
+                                  _buildTimerContainer(
+                                      homeProvider, localizations, colorScheme),
+                                  _buildStatisticCard(
+                                    localizations.dineroAhorrado,
+                                    "${homeProvider.getDineroAhorrado().toStringAsFixed(2)} €",
+                                    Icons.attach_money,
+                                    colorScheme,
+                                  ),
+                                  _buildStatisticCard(
+                                    localizations.cigarrosEvitados,
+                                    "${homeProvider.getCigarrosEvitados().floor()}",
+                                    Icons.smoke_free,
+                                    colorScheme,
+                                  ),
+                                  _buildStatisticCard(
+                                    localizations.tiempoDeVidaGanado,
+                                    "${homeProvider.getTiempoDeVidaGanado().floor()} ${localizations.min}",
+                                    Icons.favorite,
+                                    colorScheme,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            SmoothPageIndicator(
+                              controller: _pageController,
+                              count: 4,
+                              effect: WormEffect(
+                                dotHeight: 10.h,
+                                dotWidth: 10.w,
+                                spacing: 10.w,
+                                activeDotColor: colorScheme.primary,
+                                dotColor:
+                                    colorScheme.secondary.withOpacity(0.3),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                  )
-                else
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 300.h,
-                          child: PageView(
-                            controller: _pageController,
-                            children: [
-                              _buildTimerContainer(
-                                  homeProvider, localizations, colorScheme),
-                              _buildStatisticCard(
-                                localizations.dineroAhorrado,
-                                "${homeProvider.getDineroAhorrado().toStringAsFixed(2)} €",
-                                Icons.attach_money,
-                                colorScheme,
-                              ),
-                              _buildStatisticCard(
-                                localizations.cigarrosEvitados,
-                                "${homeProvider.getCigarrosEvitados().floor()}",
-                                Icons.smoke_free,
-                                colorScheme,
-                              ),
-                              _buildStatisticCard(
-                                localizations.tiempoDeVidaGanado,
-                                "${homeProvider.getTiempoDeVidaGanado().floor()} ${localizations.min}",
-                                Icons.favorite,
-                                colorScheme,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16.h),
-                        SmoothPageIndicator(
-                          controller: _pageController,
-                          count: 4,
-                          effect: WormEffect(
-                            dotHeight: 10.h,
-                            dotWidth: 10.w,
-                            spacing: 10.w,
-                            activeDotColor: colorScheme.primary,
-                            dotColor: colorScheme.secondary.withOpacity(0.3),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
                 SizedBox(height: 20.h),
                 const Divider(),
 
@@ -433,7 +437,7 @@ class _HomePageState extends State<HomePage> {
       return localizations.menosDeUnMinutoMinuscula;
     } else if (diff.inMinutes < 60) {
       if (diff.inMinutes == 1) {
-        return "${diff.inMinutes}${localizations.minutoMinusculaSingular}";
+        return "${diff.inMinutes} ${localizations.minutoMinusculaSingular}";
       }
       return "${diff.inMinutes} ${localizations.minutosMinusculaPlural}";
     } else if (diff.inHours < 24) {

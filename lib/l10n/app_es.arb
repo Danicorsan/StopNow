@@ -212,5 +212,11 @@
   "diaMinusculaSingular": "día",
   "diasMinusculaPlural": "días",
   "menosDeUnMinutoMinuscula": "menos de un minuto",
-  "minutoMinusculaSingular": "minuto"
+  "minutoMinusculaSingular": "minuto",
+  "emailEnUso": "El correo electrónico ya está en uso.",
+  "usuarioEnUso": "El nombre de usuario ya está en uso.",
+  "errorConexion": "Comprueba la conexión.",
+  "revisaCorreoyContrasenia":"Revisa el correo y la contraseña",
+  "porfavorIngreseUsuarioYContrasenia": "Por favor, ingrese el usuario y la contraseña",
+  "noSePudoObtenerElUsuarioActual":"No se pudo obtener el usuario actual"
 }

@@ -210,10 +210,16 @@
   "sinConexion": "No internet connection",
   "intentaMasTarde": "Please check your connection and try again",
   "minutosMinusculaPlural": "minutes",
-"horaMinusculaSingular": "hour",
-"horasMinusculaPlural": "hours",
-"diaMinusculaSingular": "day",
-"diasMinusculaPlural": "days",
-"menosDeUnMinutoMinuscula": "less than a minute",
-"minutoMinusculaSingular": "minute"
+  "horaMinusculaSingular": "hour",
+  "horasMinusculaPlural": "hours",
+  "diaMinusculaSingular": "day",
+  "diasMinusculaPlural": "days",
+  "menosDeUnMinutoMinuscula": "less than a minute",
+  "minutoMinusculaSingular": "minute",
+  "emailEnUso": "The email address is already in use.",
+  "usuarioEnUso": "The username is already in use.",
+  "errorConexion": "Check your internet connection.",
+  "revisaCorreoyContrasenia":"Check email and password",
+  "porfavorIngreseUsuarioYContrasenia": "Please enter your username and password",
+  "noSePudoObtenerElUsuarioActual":"Could not obtain the current user"
 }

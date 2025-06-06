@@ -8,6 +8,7 @@ import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/data/shared_preferences/shared_preferences.dart';
 import 'package:stopnow/ui/login/login_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginProvider extends ChangeNotifier {
   String errorMessage = "";
@@ -17,12 +18,13 @@ class LoginProvider extends ChangeNotifier {
   LoginState loginState = LoginState.initial;
 
   Future<void> login(BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
     loginState = LoginState.loading;
     notifyListeners();
 
     if (correo.isEmpty || contrasenia.isEmpty) {
       loginState = LoginState.error;
-      errorMessage = "Por favor, ingrese su correo y contraseña";
+      errorMessage = localizations.porfavorIngreseUsuarioYContrasenia;
       notifyListeners();
       return;
     }
@@ -31,7 +33,7 @@ class LoginProvider extends ChangeNotifier {
 
     if (result is BaseResultError) {
       loginState = LoginState.error;
-      errorMessage = "Revisa el correo y la contraseña";
+      errorMessage = localizations.revisaCorreoyContrasenia;
       notifyListeners();
       return;
     } else if (result is BaseResultSuccess) {
@@ -39,7 +41,7 @@ class LoginProvider extends ChangeNotifier {
       final user = await UserRepository.usuarioActual();
       if (user == null) {
         loginState = LoginState.error;
-        errorMessage = "No se pudo obtener el usuario actual";
+        errorMessage = localizations.noSePudoObtenerElUsuarioActual;
         notifyListeners();
         return;
       }

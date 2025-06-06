@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
@@ -380,7 +381,13 @@ class _AccountPageState extends State<AccountPage> {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) => const Center(child: CircularProgressIndicator()),
+            builder: (_) => Center(
+              child: LoadingAnimationWidget.flickr(
+                leftDotColor: colorScheme.primary,
+                rightDotColor: colorScheme.secondary,
+                size: 50,
+              ),
+            ),
           );
 
           String? fotoPerfilUrl = user.fotoPerfil;

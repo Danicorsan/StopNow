@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stopnow/data/helper/local_database_helper.dart';
@@ -41,6 +42,8 @@ class _InitPageState extends State<InitPage> {
     final prefs = await SharedPreferences.getInstance();
     final hasAccount = prefs.getBool('hasAccount') ?? false;
 
+    await Future.delayed(Duration(seconds: 2));
+
     if (hasAccount) {
       // Si hay cuenta, carga usuario desde SQLite (ya debe estar sincronizado tras login)
       final offlineUser = await LocalDbHelper.getUserProgress();
@@ -59,10 +62,15 @@ class _InitPageState extends State<InitPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    ThemeData theme = Theme.of(context);
+    ColorScheme colorScheme = theme.colorScheme;
+    return Scaffold(
+      backgroundColor: colorScheme.background,
       body: Center(
-        child: CircularProgressIndicator(
-          color: Color(0xFF608AAE),
+        child: LoadingAnimationWidget.flickr(
+          leftDotColor: colorScheme.primary,
+          rightDotColor: colorScheme.secondary,
+          size: 50,
         ),
       ),
     );

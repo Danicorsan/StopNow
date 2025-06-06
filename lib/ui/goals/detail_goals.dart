@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
@@ -127,8 +128,13 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
-                        builder: (_) =>
-                            const Center(child: CircularProgressIndicator()),
+                        builder: (_) => Center(
+                          child: LoadingAnimationWidget.flickr(
+                            leftDotColor: colorScheme.primary,
+                            rightDotColor: colorScheme.secondary,
+                            size: 50,
+                          ),
+                        ),
                       );
 
                       bool exito = await Provider.of<GoalsProvider>(context,
@@ -160,8 +166,12 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
         ),
       ]),
       body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
+          ? Center(
+              child: LoadingAnimationWidget.flickr(
+                leftDotColor: colorScheme.primary,
+                rightDotColor: colorScheme.secondary,
+                size: 50,
+              ),
             )
           : Padding(
               padding: const EdgeInsets.all(24.0),

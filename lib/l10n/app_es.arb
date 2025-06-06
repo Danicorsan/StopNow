@@ -211,5 +211,6 @@
   "horasMinusculaPlural": "horas",
   "diaMinusculaSingular": "día",
   "diasMinusculaPlural": "días",
-  "menosDeUnMinutoMinuscula": "menos de un minuto"
+  "menosDeUnMinutoMinuscula": "menos de un minuto",
+  "minutoMinusculaSingular": "minuto"
 }

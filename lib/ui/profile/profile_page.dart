@@ -48,11 +48,13 @@ class _ProfilePageState extends State<ProfilePage> {
       return Scaffold(
         appBar: baseAppBar(localizations.perfil),
         backgroundColor: colorScheme.background,
-        body: Center(child: LoadingAnimationWidget.flickr(
-                leftDotColor: colorScheme.primary,
-                rightDotColor: colorScheme.secondary,
-                size: 50,
-              ),),
+        body: Center(
+          child: LoadingAnimationWidget.flickr(
+            leftDotColor: colorScheme.primary,
+            rightDotColor: colorScheme.secondary,
+            size: 50,
+          ),
+        ),
       );
     }
 
@@ -350,7 +352,11 @@ class _ProfilePageState extends State<ProfilePage> {
       if (minutos < 1) {
         return localizations.menosDeUnMinutoMinuscula;
       } else {
-        return "$minutos ${localizations.minutosMinusculaPlural}";
+        if (minutos == 1) {
+          return "1 ${localizations.minutoMinusculaSingular}";
+        } else {
+          return "$minutos ${localizations.minutosMinusculaPlural}";
+        }
       }
     }
   }
@@ -378,7 +384,11 @@ class _ProfilePageState extends State<ProfilePage> {
       if (minutos < 1) {
         return localizations.menosDeUnMinutoMinuscula;
       } else {
-        return "$minutos ${localizations.minutosMinusculaPlural}";
+        if (minutos == 1) {
+          return "1 ${localizations.minutoMinusculaSingular}";
+        } else {
+          return "$minutos ${localizations.minutosMinusculaPlural}";
+        }
       }
     }
   }

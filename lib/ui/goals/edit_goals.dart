@@ -166,25 +166,28 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
-                  builder: (_) => const Center(child: CircularProgressIndicator()),
+                  builder: (_) =>
+                      const Center(child: CircularProgressIndicator()),
                 );
 
-                final exito = await Provider.of<GoalsProvider>(context, listen: false)
-                    .editGoal(
+                final exito =
+                    await Provider.of<GoalsProvider>(context, listen: false)
+                        .editGoal(
                   originalGoal: widget.goal,
                   nombreNuevo: _nombreController.text.trim(),
                   descripcionNueva: _descripcionController.text.trim(),
-                  precioNuevo: double.tryParse(_precioController.text.trim()) ?? 0.0,
+                  precioNuevo:
+                      double.tryParse(_precioController.text.trim()) ?? 0.0,
                   context: context,
                 );
 
-                Navigator.of(context, rootNavigator: true).pop(); // Quita el loader
+                Navigator.of(context, rootNavigator: true)
+                    .pop(); // Quita el loader
 
-                if (exito) {
-                  buildSuccesMessage(localizations.objetivoEditado, context);
-                  Navigator.pop(context, true);
-                } else {
+                if (!exito) {
                   buildErrorMessage(localizations.errorObjetivo, context);
+                } else {
+                  Navigator.pop(context, true);
                 }
               },
         child: const Icon(Icons.check),

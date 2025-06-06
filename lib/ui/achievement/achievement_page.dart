@@ -30,7 +30,7 @@ class AchievementsPage extends StatelessWidget {
     }
     if (minutes > 0) {
       parts.add(minutes == 1
-          ? "1 ${localizations.minutosMinusculaPlural}"
+          ? "1 ${localizations.minutoMinusculaSingular}"
           : "$minutes ${localizations.minutosMinusculaPlural}");
     }
     if (seconds > 0 && parts.isEmpty) {

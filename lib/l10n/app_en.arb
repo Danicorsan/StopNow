@@ -214,5 +214,6 @@
 "horasMinusculaPlural": "hours",
 "diaMinusculaSingular": "day",
 "diasMinusculaPlural": "days",
-"menosDeUnMinutoMinuscula": "less than a minute"
+"menosDeUnMinutoMinuscula": "less than a minute",
+"minutoMinusculaSingular": "minute"
 }

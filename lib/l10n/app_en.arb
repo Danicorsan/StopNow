@@ -57,12 +57,11 @@
       "precio": {}
     }
   },
-  "ahorroCigarros": "You have saved {dinero} € by avoiding {cigarros} cigarettes!",
+  "ahorroCigarros": "You have saved {dinero} € since you added the goal!",
   "@ahorroCigarros": {
-    "description": "Money saved and cigarettes avoided",
+    "description": "Money saved",
     "placeholders": {
-      "dinero": {},
-      "cigarros": {}
+      "dinero": {}
     }
   },
   "dineroFaltante": "Money remaining",
@@ -221,5 +220,9 @@
   "errorConexion": "Check your internet connection.",
   "revisaCorreoyContrasenia":"Check email and password",
   "porfavorIngreseUsuarioYContrasenia": "Please enter your username and password",
-  "noSePudoObtenerElUsuarioActual":"Could not obtain the current user"
+  "noSePudoObtenerElUsuarioActual":"Could not obtain the current user",
+  "tiempoRestante":"Remaining Time",
+  "completado":"Completed",
+  "detallesObjetivo":"Goal details",
+  "cambiaElTema":"Activate dark mode"
 }

@@ -35,6 +35,7 @@ class _GoalsPageState extends State<GoalsPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: baseAppBar(localizations.objetivos),
@@ -82,7 +83,7 @@ class _GoalsPageState extends State<GoalsPage> {
                               title: Text(
                                 goal.nombre,
                                 style: TextStyle(
-                                  color: colorScheme.primary,
+                                  color: isDarkMode ? Colors.white :colorScheme.primary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.sp,
                                 ),

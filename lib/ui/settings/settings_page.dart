@@ -273,7 +273,7 @@ Widget _buildThemeSwitchCard(BuildContext context,
         ),
       ),
       subtitle: Text(
-        isDark ? localizations.temaOscuroActivo : localizations.temaClaroActivo,
+        localizations.cambiaElTema,
         style: TextStyle(
           color: colorScheme.onSurface.withOpacity(0.7),
           fontSize: 13,

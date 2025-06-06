@@ -1,9 +1,10 @@
 class GoalModel {
-  String id;
-  String usuarioId;
-  String nombre;
-  String descripcion;
-  double precio;
+  final String id;
+  final String usuarioId;
+  final String nombre;
+  final String descripcion;
+  final double precio;
+  final DateTime fechaCreacion;
 
   GoalModel({
     this.id = '',
@@ -11,15 +12,26 @@ class GoalModel {
     required this.nombre,
     required this.descripcion,
     required this.precio,
+    required this.fechaCreacion,
   });
 
   factory GoalModel.fromJson(Map<String, dynamic> json) {
     return GoalModel(
-      id: json['id'] as String? ?? '',
-      usuarioId: json['usuario_id'] as String,
-      nombre: json['nombre'] as String,
-      descripcion: json['descripcion'] as String,
-      precio: (json['precio'] as num).toDouble(),
+      id: json['id'] ?? '',
+      usuarioId: json['usuarioId'] ?? '',
+      nombre: json['nombre'] ?? '',
+      descripcion: json['descripcion'] ?? '',
+      precio: (json['precio'] as num?)?.toDouble() ?? 0.0,
+      fechaCreacion: DateTime.parse(json['fecha_creado']).toLocal(),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'usuarioId': usuarioId,
+        'nombre': nombre,
+        'descripcion': descripcion,
+        'precio': precio,
+        'fecha_creado': fechaCreacion.toUtc().toIso8601String(),
+      };
 }

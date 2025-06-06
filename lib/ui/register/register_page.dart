@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
@@ -338,6 +339,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     elevation: 5,
                   ),
                   onPressed: () async {
+                    /*
+                    final conexion = await UserRepository.tienesConexion();
+                    if (!conexion){
+
+                    }
+                    */
                     FocusScope.of(context).unfocus();
                     if (registerProvider.registerState ==
                         RegisterState.loading) {

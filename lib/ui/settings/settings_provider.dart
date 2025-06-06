@@ -74,12 +74,17 @@ class SettingsProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       return true;
-    } else {
-      errorMessage = result is BaseResultError ? result.message : null;
+    } else if (result is BaseResultError) {
+      if (result.message.contains('duplicate key value')) {
+        errorMessage = 'El nombre de usuario ya está en uso';
+      } else {
+        errorMessage = result.message;
+      }
       isLoading = false;
       notifyListeners();
       return false;
     }
+    return false;
   }
 
   Future<bool> actualizarFotoPerfil(

@@ -186,4 +186,11 @@ await _supabase.from('public.chat_mensajes').insert({
         urlFoto.split('/').last; // O ajusta según tu estructura de URLs
     await storage.from(bucket).remove([path]);
   }
+
+  static nombresDeUsuarios({required String nombreUsuario}) {
+    return supabase
+        .from('public.users')
+        .select('nombre_usuario')
+        .ilike('nombre_usuario', nombreUsuario);
+  }
 }

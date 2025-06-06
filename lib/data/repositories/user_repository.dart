@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ffi';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/models/goal_model.dart';
@@ -49,7 +51,14 @@ class UserRepository {
     int cigarrosPorPaquete,
     double precioPaquete,
   ) async {
+    // 1. Chequeo de nombre de usuario
     try {
+      final nombres =
+          await UserDao.nombresDeUsuarios(nombreUsuario: nombreUsuario);
+      if (nombres.isNotEmpty) {
+        return BaseResultError('duplicate key value');
+      }
+
       final response = await _authService.signUp(correo, pass);
 
       final userId = response.user?.id;
@@ -57,15 +66,20 @@ class UserRepository {
         return BaseResultError('No se pudo registrar el usuario.');
       }
 
-      await UserDao.insertarUsuario(
-        id: userId,
-        nombreUsuario: nombreUsuario,
-        fotoEmail: fotoEmail,
-        fechaDejarFumar: fechaDejarFumar,
-        cigarrosAlDia: cigarrosAlDia,
-        cigarrosPorPaquete: cigarrosPorPaquete,
-        precioPaquete: precioPaquete,
-      );
+      try {
+        await UserDao.insertarUsuario(
+          id: userId,
+          nombreUsuario: nombreUsuario,
+          fotoEmail: fotoEmail,
+          fechaDejarFumar: fechaDejarFumar,
+          cigarrosAlDia: cigarrosAlDia,
+          cigarrosPorPaquete: cigarrosPorPaquete,
+          precioPaquete: precioPaquete,
+        );
+      } catch (e) {
+        // Aquí no puedes borrar el usuario de Supabase desde el cliente
+        return BaseResultError('Error al guardar los datos del usuario.');
+      }
 
       return BaseResultSuccess(true);
     } catch (e) {
@@ -240,7 +254,7 @@ class UserRepository {
 
       return BaseResultSuccess(true);
     } catch (e) {
-      return BaseResultError('Error al actualizar perfil: $e');
+      return BaseResultError(e.toString());
     }
   }
 
@@ -278,5 +292,14 @@ class UserRepository {
     } catch (e) {
       return BaseResultError('Error al borrar la foto antigua: $e');
     }
+  }
+
+  static Future<bool> tienesConexion() async {
+    final connectivity = await Connectivity().checkConnectivity();
+
+    if (connectivity.first == ConnectivityResult.none) {
+      return false;
+    }
+    return true;
   }
 }

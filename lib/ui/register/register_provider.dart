@@ -64,15 +64,6 @@ class RegisterProvider extends ChangeNotifier {
 
       if (result is BaseResultError) {
         errorMessage = result.message;
-        if (result.message.contains("User already registered")) {
-          errorMessage = "El correo electrónico ya está en uso.";
-        }
-        if (result.message.contains("duplicate key value")) {
-          errorMessage = "El nombre de usuario ya está en uso.";
-        }
-        if (result.message.contains("No address associated with hostname")) {
-          errorMessage = "Comprueba la conexión.";
-        }
         registerState = RegisterState.error;
       } else if (result is BaseResultSuccess) {
         registerState = RegisterState.success;

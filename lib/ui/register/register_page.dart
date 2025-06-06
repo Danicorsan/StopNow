@@ -365,11 +365,25 @@ class _RegisterPageState extends State<RegisterPage> {
                             'password': _passwordController.text,
                           });
                     } else {
-                      buildErrorMessage(
-                          registerProvider.errorMessage.isEmpty
-                              ? localizations.errorDesconocido
-                              : registerProvider.errorMessage,
-                          context);
+                      if (registerProvider.errorMessage
+                          .contains("User already registered")) {
+                        buildErrorMessage(localizations.emailEnUso, context);
+                        //errorMessage = "El correo electrónico ya está en uso.";
+                      } else if (registerProvider.errorMessage
+                          .contains("duplicate key value")) {
+                        buildErrorMessage(localizations.usuarioEnUso, context);
+                        //errorMessage = "El nombre de usuario ya está en uso.";
+                      } else if (registerProvider.errorMessage
+                          .contains("No address associated with hostname")) {
+                        buildErrorMessage(localizations.errorConexion, context);
+                        //errorMessage = "Comprueba la conexión.";
+                      } else {
+                        buildErrorMessage(
+                            registerProvider.errorMessage.isEmpty
+                                ? localizations.errorDesconocido
+                                : registerProvider.errorMessage,
+                            context);
+                      }
                     }
                   },
                   child: registerProvider.registerState == RegisterState.loading

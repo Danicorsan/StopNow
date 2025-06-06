@@ -205,5 +205,11 @@
   "confirmarCerrarSesion": "¿Cerrar sesión?",
   "mensajeConfirmarCerrarSesion": "¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión de nuevo para continuar.",
   "sinConexion": "Sin conexión a internet",
-  "intentaMasTarde": "Por favor, revisa tu conexión e inténtalo de nuevo."
+  "intentaMasTarde": "Por favor, revisa tu conexión e inténtalo de nuevo.",
+  "minutosMinusculaPlural": "minutos",
+  "horaMinusculaSingular": "hora",
+  "horasMinusculaPlural": "horas",
+  "diaMinusculaSingular": "día",
+  "diasMinusculaPlural": "días",
+  "menosDeUnMinutoMinuscula": "menos de un minuto"
 }

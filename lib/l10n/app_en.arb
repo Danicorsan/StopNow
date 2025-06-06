@@ -208,5 +208,11 @@
   "confirmarCerrarSesion": "Log out?",
   "mensajeConfirmarCerrarSesion": "Are you sure you want to log out? You will need to log in again to continue.",
   "sinConexion": "No internet connection",
-  "intentaMasTarde": "Please check your connection and try again"
+  "intentaMasTarde": "Please check your connection and try again",
+  "minutosMinusculaPlural": "minutes",
+"horaMinusculaSingular": "hour",
+"horasMinusculaPlural": "hours",
+"diaMinusculaSingular": "day",
+"diasMinusculaPlural": "days",
+"menosDeUnMinutoMinuscula": "less than a minute"
 }

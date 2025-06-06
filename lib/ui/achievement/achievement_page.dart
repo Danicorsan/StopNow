@@ -18,11 +18,24 @@ class AchievementsPage extends StatelessWidget {
     final seconds = d.inSeconds % 60;
     List<String> parts = [];
     if (years > 0) parts.add("$years ${localizations.anios}");
-    if (days > 0) parts.add("$days ${localizations.dias}");
-    if (hours > 0) parts.add("$hours ${localizations.horas}");
-    if (minutes > 0) parts.add("$minutes ${localizations.min}");
-    if (seconds > 0 && parts.isEmpty)
+    if (days > 0) {
+      parts.add(days == 1
+          ? "1 ${localizations.diaMinusculaSingular}"
+          : "$days ${localizations.diasMinusculaPlural}");
+    }
+    if (hours > 0) {
+      parts.add(hours == 1
+          ? "1 ${localizations.horaMinusculaSingular}"
+          : "$hours ${localizations.horasMinusculaPlural}");
+    }
+    if (minutes > 0) {
+      parts.add(minutes == 1
+          ? "1 ${localizations.minutosMinusculaPlural}"
+          : "$minutes ${localizations.minutosMinusculaPlural}");
+    }
+    if (seconds > 0 && parts.isEmpty) {
       parts.add("$seconds ${localizations.segundos}");
+    }
     return parts.join(" ");
   }
 
@@ -182,7 +195,9 @@ class AchievementsPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Color.fromARGB(255, 76, 141, 227) : Color(0xFF153866),
+                    color: isDarkMode
+                        ? Color.fromARGB(255, 76, 141, 227)
+                        : Color(0xFF153866),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -212,7 +227,13 @@ class AchievementsPage extends StatelessWidget {
                       context, achievement, unlocked, restante, localizations),
                   child: Card(
                     elevation: unlocked ? 6 : 2,
-                    color: unlocked ? isDarkMode? const Color.fromARGB(255, 33, 73, 36) : Colors.green[50] :isDarkMode? const Color.fromARGB(255, 35, 35, 35) : Colors.grey[200],
+                    color: unlocked
+                        ? isDarkMode
+                            ? const Color.fromARGB(255, 33, 73, 36)
+                            : Colors.green[50]
+                        : isDarkMode
+                            ? const Color.fromARGB(255, 35, 35, 35)
+                            : Colors.grey[200],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -228,14 +249,19 @@ class AchievementsPage extends StatelessWidget {
                         achievement.title,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color:
-                              unlocked ? const Color.fromARGB(255, 1, 137, 10) : Colors.grey[700],
+                          color: unlocked
+                              ? const Color.fromARGB(255, 1, 137, 10)
+                              : Colors.grey[700],
                         ),
                       ),
                       subtitle: Text(
                         achievement.description,
                         style: TextStyle(
-                          color: unlocked ? isDarkMode ? Colors.white70 : Colors.black : Colors.grey[600],
+                          color: unlocked
+                              ? isDarkMode
+                                  ? Colors.white70
+                                  : Colors.black
+                              : Colors.grey[600],
                         ),
                       ),
                       trailing: unlocked

@@ -95,12 +95,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          "${horas.toString().padLeft(2, '0')} ${localizations.horas.toLowerCase()}",
+                          _formatearTiempoRestante(fechaDejarFumar, context),
                           style: TextStyle(
                             fontSize: 36.sp,
                             fontWeight: FontWeight.bold,
                             color: colorScheme.onPrimary,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 10.h),
                         Text(
@@ -111,6 +112,17 @@ class _HomePageState extends State<HomePage> {
                           ),
                           textAlign: TextAlign.center,
                         ),
+                        SizedBox(height: 10.h),
+                        /*
+                        Text(
+                          _formatearTiempoRestante(fechaDejarFumar, context),
+                          style: TextStyle(
+                            fontSize: 36.sp,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onPrimary,
+                          ),
+                        ),
+                        */
                       ],
                     ),
                   ),
@@ -412,5 +424,30 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  String _formatearTiempoRestante(DateTime fecha, BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final ahora = DateTime.now();
+    final diff = fecha.difference(ahora);
+
+    if (diff.inMinutes < 1) {
+      return localizations.menosDeUnMinutoMinuscula;
+    } else if (diff.inMinutes < 60) {
+      return "${diff.inMinutes} ${localizations.minutosMinusculaPlural}";
+    } else if (diff.inHours < 24) {
+      if (diff.inHours == 1) {
+        return "1 ${localizations.horaMinusculaSingular}";
+      } else {
+        return "${diff.inHours} ${localizations.horasMinusculaPlural}";
+      }
+    } else {
+      final dias = diff.inDays;
+      if (dias == 1) {
+        return "1 ${localizations.diaMinusculaSingular}";
+      } else {
+        return "$dias ${localizations.diasMinusculaPlural}";
+      }
+    }
   }
 }

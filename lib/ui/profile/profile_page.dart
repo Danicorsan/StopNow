@@ -330,29 +330,51 @@ class _ProfilePageState extends State<ProfilePage> {
     final minutos = homeProvider.getMinutos();
 
     if (dias > 0) {
-      return "$dias ${localizations.dias}";
+      if (dias == 1) {
+        return "1 ${localizations.diaMinusculaSingular}";
+      } else {
+        return "$dias ${localizations.diasMinusculaPlural}";
+      }
     } else if (horas > 0) {
-      return "$horas ${localizations.horas}";
+      if (horas == 1) {
+        return "1 ${localizations.horaMinusculaSingular}";
+      } else {
+        return "$horas ${localizations.horasMinusculaPlural}";
+      }
     } else {
-      return "$minutos ${localizations.min}";
+      if (minutos < 1) {
+        return localizations.menosDeUnMinutoMinuscula;
+      } else {
+        return "$minutos ${localizations.minutosMinusculaPlural}";
+      }
     }
   }
 
   String formatTiempoGanado(
       HomeProvider homeProvider, AppLocalizations localizations) {
-    final dias = homeProvider.getTiempoDeVidaGanado() ~/
-        1440; // Convertir minutos a días
-    final horas = (homeProvider.getTiempoDeVidaGanado() % 1440) ~/
-        60; // Resto de minutos a horas
-    final minutos =
-        homeProvider.getTiempoDeVidaGanado() % 60; // Resto de minutos
+    final totalMinutos = homeProvider.getTiempoDeVidaGanado().floor();
+    final dias = totalMinutos ~/ 1440; // 1440 minutos en un día
+    final horas = (totalMinutos % 1440) ~/ 60;
+    final minutos = totalMinutos % 60;
 
     if (dias > 0) {
-      return "${dias.floor()} ${localizations.dias}";
+      if (dias == 1) {
+        return "1 ${localizations.diaMinusculaSingular}";
+      } else {
+        return "$dias ${localizations.diasMinusculaPlural}";
+      }
     } else if (horas > 0) {
-      return "${horas.floor()} ${localizations.horas}";
+      if (horas == 1) {
+        return "1 ${localizations.horaMinusculaSingular}";
+      } else {
+        return "$horas ${localizations.horasMinusculaPlural}";
+      }
     } else {
-      return "${minutos.floor()} ${localizations.min}";
+      if (minutos < 1) {
+        return localizations.menosDeUnMinutoMinuscula;
+      } else {
+        return "$minutos ${localizations.minutosMinusculaPlural}";
+      }
     }
   }
 

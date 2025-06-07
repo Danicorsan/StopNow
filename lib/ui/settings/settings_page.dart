@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stopnow/data/helper/local_database_helper.dart';
@@ -73,6 +74,19 @@ class _SettingsPageState extends State<SettingsPage> {
                   return;
                 }
                 Navigator.pushNamed(context, AppRoutes.settingsAcount);
+              },
+              colorScheme: colorScheme,
+            ),
+            // En tu SettingsPage, añade una opción:
+            _buildSettingsCard(
+              icon: Icons.notifications,
+              title:
+                  localizations.gestionarPermisos, // Añade esta clave a tu l10n
+              subtitle: localizations
+                  .gestionarPermisosDesc, // Añade esta clave a tu l10n
+              color: colorScheme.secondary,
+              onTap: () async {
+                await openAppSettings();
               },
               colorScheme: colorScheme,
             ),

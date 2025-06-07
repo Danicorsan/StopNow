@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    final homeProvider = HomeProvider(userToShow);
+    final homeProvider = HomeProvider(userToShow, localizations);
     var achievements = AchievementModel.getLocalizedAchievements(localizations);
 
     final now = DateTime.now();
@@ -179,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         _buildStatisticRow(
                           localizations.cigarrosEvitadosEstadistica,
-                          "${homeProvider.getCigarrosEvitados().floor()} ${localizations.cigarros}",
+                          "${homeProvider.getCigarrosEvitados().floor()} ${localizations.cigarros.toLowerCase()}",
                           colorScheme,
                         ),
                         _buildStatisticRow(

@@ -9,6 +9,7 @@ import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:timezone/timezone.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,12 +21,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late HomeProvider homeProvider;
   final PageController _pageController = PageController();
+  bool _initialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    final user = Provider.of<UserProvider>(context, listen: false).currentUser;
-    homeProvider = HomeProvider(user);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final user =
+          Provider.of<UserProvider>(context, listen: false).currentUser;
+      homeProvider = HomeProvider(user, AppLocalizations.of(context)!);
+      _initialized = true;
+    }
   }
 
   @override
@@ -201,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   _buildStatisticCard(
                                     localizations.tiempoDeVidaGanado,
-                                    "${homeProvider.getTiempoDeVidaGanado().floor()} ${localizations.min}",
+                                    "${homeProvider.getTiempoDeVidaGanado().floor()} ${localizations.min.toLowerCase()}",
                                     Icons.favorite,
                                     colorScheme,
                                   ),
@@ -332,8 +338,8 @@ class _HomePageState extends State<HomePage> {
                 _buildTimeBlock("${homeProvider.getAnios()}",
                     localizations.anios, valueStyle, labelStyle),
                 _buildTimeBlock("${homeProvider.getMeses()}",
-                    localizations.meses, valueStyle, labelStyle),
-                _buildTimeBlock("${homeProvider.getDias()}", localizations.dias,
+                    localizations.meses.toLowerCase(), valueStyle, labelStyle),
+                _buildTimeBlock("${homeProvider.getDias()}", localizations.dias.toLowerCase(),
                     valueStyle, labelStyle),
               ],
             ),
@@ -344,19 +350,19 @@ class _HomePageState extends State<HomePage> {
               children: [
                 _buildTimeBlock(
                   homeProvider.getHoras().toString().padLeft(2, '0'),
-                  localizations.horas,
+                  localizations.horas.toLowerCase(),
                   valueStyle,
                   labelStyle,
                 ),
                 _buildTimeBlock(
                   homeProvider.getMinutos().toString().padLeft(2, '0'),
-                  localizations.min,
+                  localizations.min.toLowerCase(),
                   valueStyle,
                   labelStyle,
                 ),
                 _buildTimeBlock(
                   homeProvider.getSegundos().toString().padLeft(2, '0'),
-                  localizations.seg,
+                  localizations.seg.toLowerCase(),
                   valueStyle,
                   labelStyle,
                 ),

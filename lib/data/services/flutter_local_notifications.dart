@@ -44,7 +44,7 @@ class AchievementsNotificationService {
             '[Notificaciones] Programando notificación para "${achievement.title}" en $scheduledDate');
         await _notifications.zonedSchedule(
             i + 100, // Unique id
-            achievement.title,
+            "${localizations.logroCompletado}: ${achievement.title}",
             achievement.description,
             scheduledDate,
             const NotificationDetails(

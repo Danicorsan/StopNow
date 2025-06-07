@@ -17,6 +17,7 @@ import 'package:stopnow/ui/profile/profile_provider.dart';
 import 'package:stopnow/ui/readings/readings_details_page.dart';
 import 'package:stopnow/ui/readings/readings_page.dart';
 import 'package:stopnow/ui/register/register_page.dart';
+import 'package:stopnow/ui/settings/about_page.dart';
 import 'package:stopnow/ui/settings/account_page.dart';
 import 'package:stopnow/ui/settings/settings_page.dart';
 import 'package:stopnow/ui/welcome/welcome_page.dart';
@@ -39,6 +40,7 @@ class AppRoutes {
   static const String achievement = '/achievement';
   static const String readings = '/readings';
   static const String readingDetail = '/readingDetail';
+  static const String about = '/settings/about';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -147,6 +149,12 @@ class AppRoutes {
       case readings:
         return MaterialPageRoute(
           builder: (_) => const ReadingsPage(),
+          settings: settings,
+        );
+
+      case about:
+        return MaterialPageRoute(
+          builder: (_) => const AboutPage(),
           settings: settings,
         );
 

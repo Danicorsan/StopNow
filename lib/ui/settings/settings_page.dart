@@ -189,6 +189,16 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               colorScheme: colorScheme,
             ),
+            _buildSettingsCard(
+              icon: Icons.info_outline,
+              title: localizations.acercaDe,
+              subtitle: localizations.informacionSobreStopnow,
+              color: colorScheme.secondary,
+              onTap: () async {
+                Navigator.pushNamed(context, AppRoutes.about);
+              },
+              colorScheme: colorScheme,
+            ),
             const SizedBox(height: 40),
             Center(
               child: Text(

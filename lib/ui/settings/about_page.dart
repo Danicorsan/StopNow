@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -11,12 +12,7 @@ class AboutPage extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Acerca de StopNow"),
-        backgroundColor: colorScheme.primary,
-        foregroundColor: Colors.white,
-        centerTitle: true,
-      ),
+      appBar: baseAppBar(localizations.aboutStopnow),
       body: Padding(
         padding: EdgeInsets.all(24.w),
         child: Column(
@@ -44,7 +40,7 @@ class AboutPage extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              "v0.9.0",
+              "v1.0.0",
               style: TextStyle(
                 color: colorScheme.secondary,
                 fontSize: 16.sp,
@@ -53,7 +49,7 @@ class AboutPage extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Card(
-              color: colorScheme.surface.withOpacity(0.95),
+              color: colorScheme.surface.withOpacity(0.90),
               elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
@@ -63,17 +59,19 @@ class AboutPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "¿Qué es StopNow?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.sp,
-                        color: colorScheme.primary,
+                    Center(
+                      child: Text(
+                        localizations.queEsStopNow,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.sp,
+                          color: colorScheme.primary,
+                        ),
                       ),
                     ),
                     SizedBox(height: 10.h),
                     Text(
-                      "StopNow es una aplicación diseñada para ayudarte a dejar de fumar y mejorar tu salud. Lleva un registro de tu progreso, ahorros, logros y te motiva cada día con frases y estadísticas personalizadas.",
+                      localizations.descripcionStopNow,
                       style: TextStyle(
                         fontSize: 15.sp,
                         color: colorScheme.onSurface.withOpacity(0.8),
@@ -81,7 +79,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
                     Text(
-                      "Funcionalidades principales:",
+                      localizations.funcionalidadesPrincipales,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.secondary,
@@ -90,12 +88,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     SizedBox(height: 6.h),
                     Text(
-                      "• Seguimiento de días sin fumar\n"
-                      "• Estadísticas de salud y dinero ahorrado\n"
-                      "• Comunidad y chat\n"
-                      "• Logros y motivación\n"
-                      "• Lecturas y recursos útiles\n"
-                      "• Modo claro y oscuro",
+                      localizations.funcionesStopNow,
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: colorScheme.onSurface.withOpacity(0.7),
@@ -107,7 +100,7 @@ class AboutPage extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              "Desarrollado por Daniel Cortés Sánchez. - 2025",
+              localizations.desarrolladoPorMi,
               style: TextStyle(
                 color: colorScheme.onBackground.withOpacity(0.6),
                 fontSize: 13.sp,

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
+import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:stopnow/ui/base/widgets/base_textfield.dart';
@@ -127,7 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                   await loginProvider.login(context);
 
                   if (loginProvider.loginState == LoginState.success) {
-                    Navigator.pushReplacementNamed(context, '/home');
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, AppRoutes.home, (route) => false);
                   } else if (loginProvider.loginState == LoginState.error) {
                     buildErrorMessage(loginProvider.errorMessage, context);
                   }

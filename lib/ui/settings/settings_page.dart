@@ -134,6 +134,16 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             _buildThemeSwitchCard(context, localizations, colorScheme),
             _buildSettingsCard(
+              icon: Icons.info_outline,
+              title: localizations.acercaDe,
+              subtitle: localizations.informacionSobreStopnow,
+              color: colorScheme.secondary,
+              onTap: () async {
+                Navigator.pushNamed(context, AppRoutes.about);
+              },
+              colorScheme: colorScheme,
+            ),
+            _buildSettingsCard(
               icon: Icons.logout,
               title: localizations.cerrarSesion,
               subtitle: localizations.salirCuenta,
@@ -189,20 +199,10 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               colorScheme: colorScheme,
             ),
-            _buildSettingsCard(
-              icon: Icons.info_outline,
-              title: localizations.acercaDe,
-              subtitle: localizations.informacionSobreStopnow,
-              color: colorScheme.secondary,
-              onTap: () async {
-                Navigator.pushNamed(context, AppRoutes.about);
-              },
-              colorScheme: colorScheme,
-            ),
             const SizedBox(height: 40),
             Center(
               child: Text(
-                "StopNow v0.9.0",
+                "StopNow v1.0.0",
                 style: TextStyle(
                   color: colorScheme.onBackground.withOpacity(0.7),
                   fontWeight: FontWeight.w500,

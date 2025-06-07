@@ -31,10 +31,12 @@ class _InitPageState extends State<InitPage> {
       final offlineUser = await LocalDbHelper.getUserProgress();
       if (offlineUser != null) {
         Provider.of<UserProvider>(context, listen: false).setUser(offlineUser);
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.home, (route) => false);
         return;
       } else {
-        Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.welcome, (route) => false);
         return;
       }
     }
@@ -49,14 +51,14 @@ class _InitPageState extends State<InitPage> {
       final offlineUser = await LocalDbHelper.getUserProgress();
       if (offlineUser != null) {
         Provider.of<UserProvider>(context, listen: false).setUser(offlineUser);
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home,(route) => false);
         return;
       } else {
-        Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+        Navigator.pushNamedAndRemoveUntil(context, AppRoutes.welcome,(route) => false);
         return;
       }
     } else {
-      Navigator.pushReplacementNamed(context, AppRoutes.welcome);
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.welcome,(route) => false);
     }
   }
 

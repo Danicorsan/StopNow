@@ -141,7 +141,7 @@ Widget _buildDrawerItem(
       var currentRoute = ModalRoute.of(context)?.settings.name;
       // Evitar que se navegue a la misma pantalla
       if (currentRoute != route) {
-        Navigator.pushNamed(context, route);
+        Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
       }
     },
   );

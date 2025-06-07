@@ -1,19 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
 import 'package:stopnow/data/models/goal_model.dart';
-import 'package:stopnow/data/models/message_model.dart';
 import 'package:stopnow/data/models/reading_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class UserRepository {
   static final AuthService _authService = AuthService();
@@ -97,13 +95,10 @@ class UserRepository {
 
   static Future<BaseResult> uploadProfileImage(File imageFile) async {
     try {
-      final userId = supabase.auth.currentUser?.id;
-      if (userId == null) {
-        return BaseResultError('Usuario no autenticado');
-      }
-
       final fileExt = extension(imageFile.path);
-      final fileName = 'profile_$userId$fileExt';
+      final fecha = DateTime.now().millisecondsSinceEpoch;
+      final uuid = const Uuid().v4();
+      final fileName = 'avatar_${uuid}_$fecha$fileExt';
 
       await supabase.storage
           .from('avatars')
@@ -181,7 +176,6 @@ class UserRepository {
 
   // Metodo para traer articulos de lectura
   static Future<BaseResult> traerArticulos(String locale) async {
-
     try {
       final response = await UserDao.obtenerArticulos(locale);
 

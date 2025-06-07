@@ -362,7 +362,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     if (registerProvider.registerState ==
                         RegisterState.success) {
-                      Navigator.pushReplacementNamed(context, AppRoutes.login,
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, AppRoutes.login, (route) => false,
                           arguments: {
                             'email': _emailController.text,
                             'password': _passwordController.text,

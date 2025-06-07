@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class RegisterProvider extends ChangeNotifier {
   Future<void> setProfileImage(File imageFile) async {
     try {
       cargandoImagen = true;
+      print("Subiendo la imagen");
       final uploadedImageUrl =
           await UserRepository.uploadProfileImage(imageFile);
 
@@ -38,6 +40,7 @@ class RegisterProvider extends ChangeNotifier {
     } catch (e) {
       print('Error al subir imagen: $e');
       cargandoImagen = false;
+      notifyListeners();
     }
   }
 
@@ -46,12 +49,19 @@ class RegisterProvider extends ChangeNotifier {
     registerState = RegisterState.loading;
     notifyListeners();
 
-    while (cargandoImagen) {
-      await Future.delayed(const Duration(milliseconds: 100));
-      print("Esperando'");
-    }
-
     try {
+      await Future.any([
+        () async {
+          while (cargandoImagen) {
+            await Future.delayed(const Duration(milliseconds: 100));
+            print("Esperando'");
+          }
+        }(),
+        Future.delayed(const Duration(seconds: 10), () {
+          throw TimeoutException("Error al subir la imagen");
+        }),
+      ]);
+
       final result = await UserRepository.register(
           email,
           password,

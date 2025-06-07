@@ -1,12 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:stopnow/data/helper/local_database_helper.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/providers/theme_provider.dart';
+import 'package:stopnow/data/services/flutter_local_notifications.dart';
 import 'package:stopnow/l10n/l10n.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
@@ -24,10 +29,26 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializa Supabase
   await Supabase.initialize(
     url: SupabaseCredential.url,
     anonKey: SupabaseCredential.anonKey,
   );
+
+  // Pedir permisos de notificaciones en Android 13 o superior
+  if (Platform.isAndroid) {
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    if (androidInfo.version.sdkInt >= 33) {
+      // Android 13 o superior
+      await Permission.notification.request();
+    }
+  }
+
+  // Iniciamos las notificaciones
+  await AchievementsNotificationService.init();
 
   // Carga offline antes de runApp
   final connectivity = await Connectivity().checkConnectivity();
@@ -92,7 +113,6 @@ class MyApp extends StatelessWidget {
               }
               return const Locale('es', 'ES');
             },
-            //home: LecturaPage(),
           );
         },
       ),

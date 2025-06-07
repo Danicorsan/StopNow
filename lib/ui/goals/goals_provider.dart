@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
-import 'package:stopnow/ui/base/widgets/base_error.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoalsProvider extends ChangeNotifier {
   final List<GoalModel> _goals = [];

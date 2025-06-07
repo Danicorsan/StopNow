@@ -9,6 +9,7 @@ import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsProvider extends ChangeNotifier {
   bool isLoading = false;
@@ -38,6 +39,7 @@ class SettingsProvider extends ChangeNotifier {
       cigarrosAlDia: cigarrosAlDia,
       cigarrosPorPaquete: cigarrosPorPaquete,
       precioPaquete: precioPaquete,
+      localizations: AppLocalizations.of(context),
     );
 
     if (result is BaseResultSuccess) {

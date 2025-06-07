@@ -3,9 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/helper/local_database_helper.dart';
 import 'package:stopnow/data/models/user_model.dart';
-import 'package:stopnow/data/providers/user_provider.dart';
 import 'package:stopnow/data/dao/user_dao.dart';
-import 'package:provider/provider.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 
 class ProfileProvider extends ChangeNotifier {

@@ -10,8 +10,10 @@ import 'package:stopnow/data/models/reading_model.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:stopnow/data/network/base_result.dart';
 import 'package:stopnow/data/services/auth_service.dart';
+import 'package:stopnow/data/services/flutter_local_notifications.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserRepository {
   static final AuthService _authService = AuthService();
@@ -159,14 +161,23 @@ class UserRepository {
     }
   }
 
-  static Future<BaseResult> reiniciarFechaFumar() async {
+  static Future<BaseResult> reiniciarFechaFumar(
+      AppLocalizations? localizations) async {
     try {
       final userId = supabase.auth.currentUser?.id;
       if (userId == null) {
         return BaseResultError('Usuario no autenticado');
       }
-
+      DateTime fechaDejarFumar = DateTime.now();
       final response = await UserDao.actualizarFechaDejarFumar();
+
+      // Programar notificaciones si se pasa localizations
+      if (localizations != null) {
+        await AchievementsNotificationService.scheduleAchievementNotifications(
+          fechaDejarFumar: fechaDejarFumar,
+          localizations: localizations,
+        );
+      }
 
       return BaseResultSuccess(response);
     } catch (e) {
@@ -236,6 +247,7 @@ class UserRepository {
     required int cigarrosAlDia,
     required int cigarrosPorPaquete,
     required double precioPaquete,
+    AppLocalizations? localizations, // <-- Añade este parámetro opcional
   }) async {
     try {
       await UserDao.actualizarPerfilUsuario(
@@ -247,6 +259,14 @@ class UserRepository {
         cigarrosPorPaquete: cigarrosPorPaquete,
         precioPaquete: precioPaquete,
       );
+
+      // Recalcula notificaciones si se pasa localizations
+      if (localizations != null) {
+        await AchievementsNotificationService.scheduleAchievementNotifications(
+          fechaDejarFumar: fechaDejarFumar,
+          localizations: localizations,
+        );
+      }
 
       return BaseResultSuccess(true);
     } catch (e) {
@@ -297,5 +317,9 @@ class UserRepository {
       return false;
     }
     return true;
+  }
+
+  static Future<void> cancelAllNotifications() async {
+    await AchievementsNotificationService.cancelAll();
   }
 }

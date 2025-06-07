@@ -15,11 +15,16 @@ class AchievementModel {
           loc.logro_2_title, loc.logro_2_desc, const Duration(hours: 8)),
       AchievementModel(
           loc.logro_3_title, loc.logro_3_desc, const Duration(hours: 12)),
-      AchievementModel(loc.logro_4_title, loc.logro_4_desc, const Duration(days: 1)),
-      AchievementModel(loc.logro_5_title, loc.logro_5_desc, const Duration(days: 2)),
-      AchievementModel(loc.logro_6_title, loc.logro_6_desc, const Duration(days: 3)),
-      AchievementModel(loc.logro_7_title, loc.logro_7_desc, const Duration(days: 5)),
-      AchievementModel(loc.logro_8_title, loc.logro_8_desc, const Duration(days: 7)),
+      AchievementModel(
+          loc.logro_4_title, loc.logro_4_desc, const Duration(days: 1)),
+      AchievementModel(
+          loc.logro_5_title, loc.logro_5_desc, const Duration(days: 2)),
+      AchievementModel(
+          loc.logro_6_title, loc.logro_6_desc, const Duration(days: 3)),
+      AchievementModel(
+          loc.logro_7_title, loc.logro_7_desc, const Duration(days: 5)),
+      AchievementModel(
+          loc.logro_8_title, loc.logro_8_desc, const Duration(days: 7)),
       AchievementModel(
           loc.logro_9_title, loc.logro_9_desc, const Duration(days: 10)),
       AchievementModel(
@@ -45,4 +50,3 @@ class AchievementModel {
     ];
   }
 }
-

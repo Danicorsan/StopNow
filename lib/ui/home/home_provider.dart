@@ -5,50 +5,51 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:stopnow/data/models/user_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-final frasesMotivadoras = [
-  "¡Felicidades! Has dejado de fumar.",
-  "Cada día es una victoria.",
-  "Tu salud es lo más importante.",
-  "Eres más fuerte de lo que piensas.",
-  "Cada día sin fumar es un logro.",
-  "La vida es mejor sin tabaco.",
-  "Celebra tus logros, por pequeños que sean.",
-  "Tu esfuerzo vale la pena.",
-  "Cada día es una nueva oportunidad.",
-  "Sigue adelante, estás haciendo un gran trabajo.",
-  "Cada respiro sin humo es una victoria.",
-  "Hoy es un buen día para seguir ganando.",
-  "Lo difícil ya empezó. Lo valiente eres tú.",
-  "Un día más fuerte, un cigarro menos.",
-  "Esto no es fácil, pero tampoco imposible.",
-  "Estás más lejos del primer cigarro, y más cerca de tu meta.",
-  "Menos humo, más vida.",
-  "No necesitas uno. Ya lo sabes.",
-  "Tu yo de mañana te está aplaudiendo.",
-  "No estás empezando de cero. Estás empezando desde la experiencia.",
-  "Cada minuto limpio suma. Cada minuto cuenta.",
-  "Tú mandas. No el impulso.",
-  "Estás cambiando tu historia, un día a la vez.",
-  "Cada día sin fumar es un paso hacia una vida más saludable.",
-  "Tu esfuerzo hoy es tu recompensa mañana.",
-  "La vida es mejor sin humo.",
-  "Cada día es una nueva oportunidad para ser más fuerte.",
-  "Eres un guerrero, sigue luchando.",
-  "Cada respiro limpio es un regalo para ti mismo.",
-  "Tu salud es tu mayor tesoro, cuídala.",
-  "Cada día sin fumar es un paso hacia una vida más plena.",
-  "Eres capaz de lograrlo, no te rindas.",
-];
+List<String> getFrasesMotivadoras(AppLocalizations loc) => [
+      loc.frasebienvenida1,
+      loc.frasebienvenida2,
+      loc.frasebienvenida3,
+      loc.frasebienvenida4,
+      loc.frasebienvenida5,
+      loc.frasebienvenida6,
+      loc.frasebienvenida7,
+      loc.frasebienvenida8,
+      loc.frasebienvenida9,
+      loc.frasebienvenida10,
+      loc.frasebienvenida11,
+      loc.frasebienvenida12,
+      loc.frasebienvenida13,
+      loc.frasebienvenida14,
+      loc.frasebienvenida15,
+      loc.frasebienvenida16,
+      loc.frasebienvenida17,
+      loc.frasebienvenida18,
+      loc.frasebienvenida19,
+      loc.frasebienvenida20,
+      loc.frasebienvenida21,
+      loc.frasebienvenida22,
+      loc.frasebienvenida23,
+      loc.frasebienvenida24,
+      loc.frasebienvenida25,
+      loc.frasebienvenida26,
+      loc.frasebienvenida27,
+      loc.frasebienvenida28,
+      loc.frasebienvenida29,
+      loc.frasebienvenida30,
+      loc.frasebienvenida31,
+      loc.frasebienvenida32,
+    ];
 
 class HomeProvider with ChangeNotifier {
   final UserModel? user;
   Timer? _timer;
   late final String _fraseDelDia;
 
-  HomeProvider(this.user) {
-    _fraseDelDia =
-        frasesMotivadoras[Random().nextInt(frasesMotivadoras.length)];
+  HomeProvider(this.user, AppLocalizations loc) {
+    final frases = getFrasesMotivadoras(loc);
+    _fraseDelDia = frases[Random().nextInt(frases.length)];
     _startTimer();
   }
 

@@ -29,7 +29,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 Future<void> main() async {
-
+  // Aseguramos que los bindings de Flutter estén inicializados
   WidgetsFlutterBinding.ensureInitialized();
 
   // Inicializa Supabase

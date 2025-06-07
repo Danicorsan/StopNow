@@ -224,5 +224,13 @@
   "tiempoRestante":"Remaining Time",
   "completado":"Completed",
   "detallesObjetivo":"Goal details",
-  "cambiaElTema":"Activate dark mode"
+  "cambiaElTema":"Activate dark mode",
+  "acercaDe":"About page",
+  "informacionSobreStopnow":"Information about StopNow",
+  "aboutStopnow":"About StopNow",
+  "queEsStopNow": "What is StopNow",
+  "descripcionStopNow": "StopNow is an app designed to help you quit smoking and improve your health. Track your progress, savings, achievements, and get daily motivation with personalized quotes and statistics.",
+  "funcionalidadesPrincipales": "Main features",
+  "funcionesStopNow": "• Track smoke-free days\n• Health and money-saving stats\n• Community and chat\n• Achievements and motivation\n• Helpful readings and resources",
+  "desarrolladoPorMi": "Developed by Daniel Cortés Sánchez - 2025"
 }

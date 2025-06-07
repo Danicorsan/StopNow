@@ -128,19 +128,17 @@ class _GoalsPageState extends State<GoalsPage> {
                               if (goal.descripcion.isNotEmpty)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 6.0),
-                                  child: Flexible(
-                                    child: Text(
-                                      goal.descripcion,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: colorScheme.onSurface
-                                            .withOpacity(0.7),
-                                        fontSize: 13.sp,
-                                        fontStyle: FontStyle.italic,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                  child: Text(
+                                    goal.descripcion,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: colorScheme.onSurface
+                                          .withOpacity(0.7),
+                                      fontSize: 13.sp,
+                                      fontStyle: FontStyle.italic,
                                     ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                             ],

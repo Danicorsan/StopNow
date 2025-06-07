@@ -11,6 +11,7 @@ import 'package:stopnow/l10n/l10n.dart';
 import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/calm/calm_provider.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
+import 'package:stopnow/ui/init/init_page.dart';
 import 'package:stopnow/ui/login/login_provider.dart';
 import 'package:stopnow/ui/messages/message_provider.dart';
 import 'package:stopnow/ui/profile/profile_provider.dart';

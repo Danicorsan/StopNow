@@ -224,5 +224,13 @@
   "tiempoRestante":"Tiempo restante",
   "completado":"Completado",
   "detallesObjetivo":"Detalles del objetivo",
-  "cambiaElTema":"Activa el modo oscuro"
+  "cambiaElTema":"Activa el modo oscuro",
+  "acercaDe":"Acerca de",
+  "informacionSobreStopnow":"Información sobre StopNow",
+  "aboutStopnow":"Acerca de StopNow",
+  "queEsStopNow": "¿Qué es StopNow?",
+  "descripcionStopNow": "StopNow es una aplicación diseñada para ayudarte a dejar de fumar y mejorar tu salud. Lleva un registro de tu progreso, ahorros, logros y te motiva cada día con frases y estadísticas personalizadas.",
+  "funcionalidadesPrincipales":"Funcionalidades principales",
+  "funcionesStopNow":"• Seguimiento de días sin fumar\n• Estadísticas de salud y dinero ahorrado\n• Comunidad y chat\n• Logros y motivación\n• Lecturas y recursos útiles",
+  "desarrolladoPorMi":"Desarrollado por Daniel Cortés Sánchez - 2025"
 }

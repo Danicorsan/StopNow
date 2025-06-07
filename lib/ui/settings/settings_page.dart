@@ -25,14 +25,21 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
+
+    // Elimina los datos del usuario
     await prefs.setBool('hasAccount', false);
     await prefs.remove('email');
     await prefs.remove('password');
     await LocalDbHelper.deleteUserProgress();
 
+    // Elimina el usuario del UserProvider y restablece el tema
     Provider.of<UserProvider>(context, listen: false).clearUser();
     Provider.of<ThemeProvider>(context, listen: false).toggleTheme(false);
 
+    // Elimina las notificaciones programadas
+    await UserRepository.cancelAllNotifications();
+
+    // Navega a la pantalla de bienvenida y elimina todas las rutas anteriores
     Navigator.of(context).pushNamedAndRemoveUntil(
       AppRoutes.welcome,
       (Route<dynamic> route) => false,
@@ -107,8 +114,10 @@ class _SettingsPageState extends State<SettingsPage> {
                           foregroundColor: colorScheme.onError,
                         ),
                         onPressed: () async {
-                          var result =
-                              await UserRepository.reiniciarFechaFumar();
+                          AppLocalizations localizations =
+                              AppLocalizations.of(context)!;
+                          var result = await UserRepository.reiniciarFechaFumar(
+                              localizations);
 
                           if (result is BaseResultError) {
                             return;

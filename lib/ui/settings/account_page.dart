@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_final_fields
 
 import 'dart:io';
 
@@ -61,7 +61,7 @@ class _AccountPageState extends State<AccountPage> {
       _cigarrosAlDiaController.text = user.cigarrosAlDia.toString();
       _fechaDejarDeFumarController.text =
           DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar.toLocal());
-          
+
       _cigarrosPaqueteController.text = user.cigarrosPorPaquete.toString();
       _precioPaqueteController.text = user.precioPaquete.toString();
 
@@ -144,7 +144,6 @@ class _AccountPageState extends State<AccountPage> {
     final settingsProvider = Provider.of<SettingsProvider>(context);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-
     return Scaffold(
       backgroundColor: colorScheme.background,
       appBar: baseAppBar(
@@ -168,7 +167,9 @@ class _AccountPageState extends State<AccountPage> {
                     onTap: _cargandoImagen ? null : _pickImage,
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: isDarkMode ? const Color.fromARGB(255, 61, 61, 61) : Colors.grey.shade300,
+                      backgroundColor: isDarkMode
+                          ? const Color.fromARGB(255, 61, 61, 61)
+                          : Colors.grey.shade300,
                       backgroundImage: _selectedImage != null
                           ? FileImage(_selectedImage!)
                           : null,
@@ -233,7 +234,7 @@ class _AccountPageState extends State<AccountPage> {
                             _borrarFoto = true;
                           });
                         },
-                        child: CircleAvatar(
+                        child: const CircleAvatar(
                           radius: 16,
                           backgroundColor: Colors.red,
                           child:

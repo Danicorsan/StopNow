@@ -42,7 +42,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: baseAppBar(localizations.chat),
       drawer: baseDrawer(context),
       backgroundColor: isDarkMode
-          ? const Color.fromARGB(255, 42, 42, 42)
+          ?  const Color.fromARGB(255, 42, 42, 42)
           : const Color.fromARGB(216, 255, 255, 255),
       body: chatProvider.isLoading
           ? Center(
@@ -324,7 +324,7 @@ class _ChatPageState extends State<ChatPage> {
                                   size: 48,
                                   color:
                                       colorScheme.onSurface.withOpacity(0.4)),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               Text(
                                 localizations
                                     .sinConexion, // Ejemplo: "Sin conexión a internet"
@@ -333,7 +333,7 @@ class _ChatPageState extends State<ChatPage> {
                                   fontSize: 18,
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 localizations.intentaMasTarde,
                                 //"Por favor, revisa tu conexión e inténtalo de nuevo.",

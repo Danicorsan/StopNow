@@ -33,36 +33,6 @@ class _AchievementsPageState extends State<AchievementsPage> {
     super.dispose();
   }
 
-  String _formatDuration(Duration d, AppLocalizations localizations) {
-    if (d.inSeconds <= 0) return localizations.yaDesbloqueado;
-    final years = d.inDays ~/ 365;
-    final days = d.inDays % 365;
-    final hours = d.inHours % 24;
-    final minutes = d.inMinutes % 60;
-    final seconds = d.inSeconds % 60;
-    List<String> parts = [];
-    if (years > 0) parts.add("$years ${localizations.anios}");
-    if (days > 0) {
-      parts.add(days == 1
-          ? "1 ${localizations.diaMinusculaSingular}"
-          : "$days ${localizations.diasMinusculaPlural}");
-    }
-    if (hours > 0) {
-      parts.add(hours == 1
-          ? "1 ${localizations.horaMinusculaSingular}"
-          : "$hours ${localizations.horasMinusculaPlural}");
-    }
-    if (minutes > 0) {
-      parts.add(minutes == 1
-          ? "1 ${localizations.minutoMinusculaSingular}"
-          : "$minutes ${localizations.minutosMinusculaPlural}");
-    }
-    if (seconds > 0 && parts.isEmpty) {
-      parts.add("$seconds ${localizations.segundos}");
-    }
-    return parts.join(" ");
-  }
-
   void _showAchievementDialog(
       BuildContext context,
       AchievementModel achievement,
@@ -111,8 +81,8 @@ class _AchievementsPageState extends State<AchievementsPage> {
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: isDarkMode
-                        ? Color.fromARGB(255, 76, 141, 227)
-                        : Color(0xFF153866),
+                        ? const Color.fromARGB(255, 76, 141, 227)
+                        : const Color(0xFF153866),
                   ),
                 ),
                 const SizedBox(height: 8),

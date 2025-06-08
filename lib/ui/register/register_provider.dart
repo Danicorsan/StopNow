@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
 import 'dart:io';
 
@@ -27,23 +25,20 @@ class RegisterProvider extends ChangeNotifier {
   Future<void> setProfileImage(File? imageFile) async {
     try {
       if (imageFile == null) {
-        print("No se ha seleccionado ninguna imagen");
         return;
       }
 
       cargandoImagen = true;
-      print("Subiendo la imagen");
+
       final uploadedImageUrl =
           await UserRepository.uploadProfileImage(imageFile);
 
       if (uploadedImageUrl is BaseResultSuccess) {
         fotoEmail = uploadedImageUrl.data as String;
-        print(fotoEmail);
         cargandoImagen = false;
         notifyListeners();
       }
     } catch (e) {
-      print('Error al subir imagen: $e');
       cargandoImagen = false;
       notifyListeners();
     }
@@ -59,7 +54,6 @@ class RegisterProvider extends ChangeNotifier {
         () async {
           while (cargandoImagen) {
             await Future.delayed(const Duration(milliseconds: 100));
-            print("Esperando'");
           }
         }(),
         Future.delayed(const Duration(seconds: 20), () {

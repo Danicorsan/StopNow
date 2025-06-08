@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously,
 
 import 'dart:io';
 
@@ -79,7 +79,6 @@ class _RegisterPageState extends State<RegisterPage> {
       if (pickedFile != null) {
         setState(() {
           _selectedImage = File(pickedFile.path);
-          print('Selected image: ${_selectedImage!.path}');
         });
       }
     } else if (status.isPermanentlyDenied) {
@@ -156,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     });
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.white,
                                       shape: BoxShape.circle,
                                       boxShadow: [
@@ -166,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                       ],
                                     ),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.close,
                                       color: Colors.red,
                                       size: 22,
@@ -328,9 +327,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           "${finalDateTime.year}-${finalDateTime.month.toString().padLeft(2, '0')}-${finalDateTime.day.toString().padLeft(2, '0')} "
                           "${finalDateTime.hour.toString().padLeft(2, '0')}:${finalDateTime.minute.toString().padLeft(2, '0')}";
                       registerProvider.setFechaDejarFumar(finalDateTime);
-                      print(finalDateTime);
-                      print(finalDateTime.toIso8601String());
-                      print(finalDateTime.toLocal());
                     }
                   },
                   validator: (value) => (value == null || value.isEmpty)

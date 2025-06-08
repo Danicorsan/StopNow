@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -104,7 +102,7 @@ class UserRepository {
 
       await supabase.storage
           .from('avatars')
-          .upload(fileName, imageFile, fileOptions: FileOptions(upsert: true));
+          .upload(fileName, imageFile, fileOptions: const FileOptions(upsert: true));
 
       final signedUrl = await supabase.storage
           .from('avatars')
@@ -126,7 +124,6 @@ class UserRepository {
       );
       return BaseResultSuccess(true);
     } catch (e) {
-      print('Error al subir objetivo: $e');
       return BaseResultError('Error al subir objetivo: $e');
     }
   }
@@ -156,7 +153,6 @@ class UserRepository {
       );
       return BaseResultSuccess(true);
     } catch (e) {
-      print('Error al borrar objetivo: $e');
       return BaseResultError('Error al borrar objetivo: $e');
     }
   }
@@ -197,7 +193,6 @@ class UserRepository {
       return BaseResultSuccess(
           response.map<ReadingModel>((a) => ReadingModel.fromMap(a)).toList());
     } catch (e) {
-      print('Error al cargarrrrrrrrrrrrrrrrrrrrrrrrrrrrrr artículos: $e');
       return BaseResultError('Error al cargar artículos: $e');
     }
   }
@@ -234,7 +229,6 @@ class UserRepository {
       );
       return BaseResultSuccess(true);
     } catch (e) {
-      print('Error al actualizar objetivo: $e');
       return BaseResultError('Error al actualizar objetivo: $e');
     }
   }
@@ -247,7 +241,7 @@ class UserRepository {
     required int cigarrosAlDia,
     required int cigarrosPorPaquete,
     required double precioPaquete,
-    AppLocalizations? localizations, // <-- Añade este parámetro opcional
+    AppLocalizations? localizations,
   }) async {
     try {
       await UserDao.actualizarPerfilUsuario(

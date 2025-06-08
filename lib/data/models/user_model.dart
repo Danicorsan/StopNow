@@ -41,10 +41,6 @@ class UserModel {
 
   factory UserModel.fromSupabase(Map<String, dynamic> json) {
 
-    print(json['fecha_dejar_fumar'] != null
-          ? DateTime.tryParse(json['fecha_dejar_fumar'] as String) ??
-              DateTime.now():DateTime.now());
-
     return UserModel(
       nombreUsuario: json['nombre_usuario'] as String? ?? 'Usuario desconocido',
       fotoPerfil: json['foto_perfil'] as String? ?? '',
@@ -63,7 +59,7 @@ class UserModel {
   }
 
   Widget getFotoPerfil() {
-    return CircleAvatar(
+    return const CircleAvatar(
       radius: 50,
       backgroundColor: Colors.grey,
       child: Icon(Icons.person, size: 50),

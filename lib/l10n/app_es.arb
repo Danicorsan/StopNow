@@ -267,6 +267,6 @@
   "frasebienvenida32": "Eres capaz de lograrlo, no te rindas.",
   "logroCompletado": "Logro completado",
   "gestionarPermisos": "Permisos",
-  "gestionarPermisosDesc": "Abre los ajustes del sistema para activar o desactivar las notificaciones de StopNow."
+  "gestionarPermisosDesc": "Abre los ajustes del sistema para activar o desactivar los permisos."
 
 }

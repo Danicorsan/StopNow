@@ -12,6 +12,7 @@ import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vibration/vibration.dart';
 
 class ChatProvider extends ChangeNotifier {
   final List<MessageModel> _mensajes = [];
@@ -19,6 +20,8 @@ class ChatProvider extends ChangeNotifier {
   RealtimeChannel? _canal;
   var isLoading = true;
   var conexion = true;
+  var isLoadingMessage = false;
+  var suscrito = true;
 
   List<MessageModel> get mensajes => List.unmodifiable(_mensajes);
 
@@ -38,9 +41,17 @@ class ChatProvider extends ChangeNotifier {
       // Mostrar mensaje o dejar la lista vacía
       _mensajes.clear();
       conexion = false;
+      suscrito = false;
       notifyListeners();
       return;
     }
+
+    if (!suscrito) {
+      // Si no está suscrito, suscribirse al canal
+      _escucharMensajesNuevos();
+      suscrito = true;
+    }
+
     conexion = true;
     notifyListeners();
 
@@ -101,10 +112,20 @@ class ChatProvider extends ChangeNotifier {
     final connectivity = await Connectivity().checkConnectivity();
     if (connectivity.first == ConnectivityResult.none) {
       buildErrorMessage(localizations.errorSinConexionMensaje, context);
+      suscrito = false;
       return;
     }
+
+    if (!suscrito) {
+      // Si no está suscrito, suscribirse al canal
+      _escucharMensajesNuevos();
+      suscrito = true;
+    }
+
     final user = _supabase.auth.currentUser;
     if (user == null || texto.trim().isEmpty) return;
+    isLoadingMessage = true;
+    notifyListeners();
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final nombreUsuario = userProvider.currentUser!.nombreUsuario;
@@ -115,8 +136,20 @@ class ChatProvider extends ChangeNotifier {
 
     if (exito is BaseResultError) {
       buildErrorMessage(localizations.errorEnviarMensaje, context);
+      isLoadingMessage = false;
+      notifyListeners();
       return;
     }
+
+    // Notificar al usuario de que el mensaje se ha enviado
+    if (await Vibration.hasVibrator()) {
+      Vibration.vibrate(
+        duration: 50,
+        amplitude: 128,
+      );
+    }
+    isLoadingMessage = false;
+    notifyListeners();
   }
 
   Future<void> cargarMensajes() async {

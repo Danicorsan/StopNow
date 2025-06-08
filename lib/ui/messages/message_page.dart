@@ -377,10 +377,15 @@ class _ChatPageState extends State<ChatPage> {
                       const SizedBox(width: 8),
                       CircleAvatar(
                         backgroundColor: colorScheme.primary,
-                        child: IconButton(
-                          icon: Icon(Icons.send, color: colorScheme.onPrimary),
-                          onPressed: _enviarMensaje,
-                        ),
+                        child: chatProvider.isLoadingMessage
+                            ? CircularProgressIndicator(
+                                color: colorScheme.onPrimary,
+                              )
+                            : IconButton(
+                                icon: Icon(Icons.send,
+                                    color: colorScheme.onPrimary),
+                                onPressed: _enviarMensaje,
+                              ),
                       ),
                     ],
                   ),

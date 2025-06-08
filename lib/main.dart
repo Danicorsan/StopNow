@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,11 @@ Future<void> main() async {
     url: SupabaseCredential.url,
     anonKey: SupabaseCredential.anonKey,
   );
+
+  // Bloquear orientación en vertical
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   // Pedir permisos de notificaciones en Android 13 o superior
   if (Platform.isAndroid) {

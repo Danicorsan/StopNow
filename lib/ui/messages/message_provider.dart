@@ -32,8 +32,6 @@ class ChatProvider extends ChangeNotifier {
     isLoading = false;
   }
 
-  //TODO CAMBIAR LLAMADAS A REPOSITORIO Y A USAR BASE_RESULT
-
   Future<void> _cargarMensajes() async {
     final connectivity = await Connectivity().checkConnectivity();
     if (connectivity.first == ConnectivityResult.none) {
@@ -55,7 +53,7 @@ class ChatProvider extends ChangeNotifier {
     }
 
     if (res is BaseResultSuccess) {
-      // Si es un BaseResultSuccess, asumimos que contiene una lista de mapas
+      // Si es un BaseResultSuccess, contiene una lista de mapas
       final List<Map<String, dynamic>> mensajesMap =
           res.data as List<Map<String, dynamic>>;
       if (mensajesMap.isEmpty) {

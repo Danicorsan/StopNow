@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    // Rellenar los campos de texto si los parametros email y password no son nulos
     _emailController.text = widget.email ?? '';
     _passwordController.text = widget.password ?? '';
   }
@@ -50,7 +51,15 @@ class _LoginPageState extends State<LoginPage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: baseAppBar(localizations.iniciarSesion),
+      appBar: baseAppBar(
+        localizations.iniciarSesion,
+        volver: true,
+        onTap: () async {
+          FocusScope.of(context).unfocus();
+          await Future.delayed(const Duration(milliseconds: 200));
+          Navigator.pop(context);
+        },
+      ),
       backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Center(

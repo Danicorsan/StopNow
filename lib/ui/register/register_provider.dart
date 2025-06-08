@@ -24,8 +24,13 @@ class RegisterProvider extends ChangeNotifier {
 
   var errorMessage = "";
 
-  Future<void> setProfileImage(File imageFile) async {
+  Future<void> setProfileImage(File? imageFile) async {
     try {
+      if (imageFile == null) {
+        print("No se ha seleccionado ninguna imagen");
+        return;
+      }
+
       cargandoImagen = true;
       print("Subiendo la imagen");
       final uploadedImageUrl =
@@ -57,7 +62,7 @@ class RegisterProvider extends ChangeNotifier {
             print("Esperando'");
           }
         }(),
-        Future.delayed(const Duration(seconds: 10), () {
+        Future.delayed(const Duration(seconds: 20), () {
           throw TimeoutException("Error al subir la imagen");
         }),
       ]);

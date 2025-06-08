@@ -101,7 +101,11 @@ class _RegisterPageState extends State<RegisterPage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: baseAppBar(localizations.crearCuenta),
+      appBar: baseAppBar(localizations.crearCuenta, volver: true, onTap: () async {
+        FocusScope.of(context).unfocus();
+        await Future.delayed(const Duration(milliseconds: 200));
+        Navigator.pop(context);
+      },),
       backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Center(

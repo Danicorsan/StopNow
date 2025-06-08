@@ -50,7 +50,15 @@ class _LoginPageState extends State<LoginPage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: baseAppBar(localizations.iniciarSesion),
+      appBar: baseAppBar(
+        localizations.iniciarSesion,
+        volver: true,
+        onTap: () async {
+          FocusScope.of(context).unfocus();
+          await Future.delayed(const Duration(milliseconds: 200));
+          Navigator.pop(context);
+        },
+      ),
       backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Center(

@@ -77,19 +77,6 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               colorScheme: colorScheme,
             ),
-            // En tu SettingsPage, añade una opción:
-            _buildSettingsCard(
-              icon: Icons.notifications,
-              title:
-                  localizations.gestionarPermisos, // Añade esta clave a tu l10n
-              subtitle: localizations
-                  .gestionarPermisosDesc, // Añade esta clave a tu l10n
-              color: colorScheme.secondary,
-              onTap: () async {
-                await openAppSettings();
-              },
-              colorScheme: colorScheme,
-            ),
             _buildSettingsCard(
               icon: Icons.replay,
               title: localizations.recaida,
@@ -152,6 +139,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 );
+              },
+              colorScheme: colorScheme,
+            ),
+            _buildSettingsCard(
+              icon: Icons.notifications,
+              title:
+                  localizations.gestionarPermisos, // Añade esta clave a tu l10n
+              subtitle: localizations
+                  .gestionarPermisosDesc, // Añade esta clave a tu l10n
+              color: colorScheme.secondary,
+              onTap: () async {
+                await openAppSettings();
               },
               colorScheme: colorScheme,
             ),

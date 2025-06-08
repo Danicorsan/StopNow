@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    // Rellenar los campos de texto si los parametros email y password no son nulos
     _emailController.text = widget.email ?? '';
     _passwordController.text = widget.password ?? '';
   }

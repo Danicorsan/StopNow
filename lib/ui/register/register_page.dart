@@ -79,8 +79,6 @@ class _RegisterPageState extends State<RegisterPage> {
       if (pickedFile != null) {
         setState(() {
           _selectedImage = File(pickedFile.path);
-          Provider.of<RegisterProvider>(context, listen: false)
-              .setProfileImage(_selectedImage!);
           print('Selected image: ${_selectedImage!.path}');
         });
       }
@@ -101,11 +99,15 @@ class _RegisterPageState extends State<RegisterPage> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: baseAppBar(localizations.crearCuenta, volver: true, onTap: () async {
-        FocusScope.of(context).unfocus();
-        await Future.delayed(const Duration(milliseconds: 200));
-        Navigator.pop(context);
-      },),
+      appBar: baseAppBar(
+        localizations.crearCuenta,
+        volver: true,
+        onTap: () async {
+          FocusScope.of(context).unfocus();
+          await Future.delayed(const Duration(milliseconds: 200));
+          Navigator.pop(context);
+        },
+      ),
       backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Center(
@@ -129,16 +131,50 @@ class _RegisterPageState extends State<RegisterPage> {
                         onTap: () {
                           _pickImage();
                         },
-                        child: CircleAvatar(
-                          radius: 50.r,
-                          backgroundImage: _selectedImage != null
-                              ? FileImage(_selectedImage!)
-                              : null,
-                          backgroundColor: Colors.grey[200],
-                          child: _selectedImage == null
-                              ? Icon(Icons.add_a_photo,
-                                  size: 30, color: colorScheme.primary)
-                              : null,
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            CircleAvatar(
+                              radius: 50.r,
+                              backgroundImage: _selectedImage != null
+                                  ? FileImage(_selectedImage!)
+                                  : null,
+                              backgroundColor: Colors.grey[200],
+                              child: _selectedImage == null
+                                  ? Icon(Icons.add_a_photo,
+                                      size: 30, color: colorScheme.primary)
+                                  : null,
+                            ),
+                            if (_selectedImage != null)
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedImage = null;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 2,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                      size: 22,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     ],
@@ -361,6 +397,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       buildErrorMessage(localizations.revisaCampos, context);
                       return;
                     }
+
+                    await Provider.of<RegisterProvider>(context, listen: false)
+                        .setProfileImage(_selectedImage);
 
                     await registerProvider.register();
 

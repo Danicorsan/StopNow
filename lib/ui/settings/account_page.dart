@@ -41,7 +41,7 @@ class _AccountPageState extends State<AccountPage> {
 
   File? _selectedImage;
   bool _cargandoImagen = false;
-  bool _borrarFoto = false; // NUEVO: para saber si hay que borrar la foto
+  bool _borrarFoto = false;
 
   late String _originalNombreUsuario;
   late String? _originalFotoPerfil;

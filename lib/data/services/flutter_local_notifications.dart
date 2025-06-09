@@ -37,8 +37,8 @@ class AchievementsNotificationService {
       if (scheduledDate.isAfter(DateTime.now())) {
         await _notifications.zonedSchedule(
             i + 100, // Unique id
-            "${localizations.logroCompletado}: ${achievement.title}",
-            achievement.description,
+            localizations.logroCompletado,
+            localizations.logroDesbloqueado(achievement.title),
             scheduledDate,
             const NotificationDetails(
               android: AndroidNotificationDetails(

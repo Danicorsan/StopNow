@@ -265,7 +265,14 @@
   "frasebienvenida30": "Your health is your greatest treasure, take care of it.",
   "frasebienvenida31": "Every day without smoking is a step towards a fuller life.",
   "frasebienvenida32": "You are capable of achieving it, don’t give up.",
-  "logroCompletado" : "Achievement Completed",
+  "logroCompletado" : "Achievement Completed!",
   "gestionarPermisos": "Permission",
-  "gestionarPermisosDesc": "Open system settings to enable or disable permissions."
+  "gestionarPermisosDesc": "Open system settings to enable or disable permissions.",
+  "logroDesbloqueado": "You unlocked {nombreLogro}! Tap to discover it.",
+  "@logroDesbloqueado": {
+    "description": "Notification message when an achievement is unlocked. nombreLogro is the achievement name.",
+    "placeholders": {
+      "nombreLogro": {}
+    }
+  }
 }

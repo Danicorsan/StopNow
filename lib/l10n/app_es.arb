@@ -265,8 +265,14 @@
   "frasebienvenida30": "Tu salud es tu mayor tesoro, cuídala.",
   "frasebienvenida31": "Cada día sin fumar es un paso hacia una vida más plena.",
   "frasebienvenida32": "Eres capaz de lograrlo, no te rindas.",
-  "logroCompletado": "Logro completado",
+  "logroCompletado": "¡Logro completado!",
   "gestionarPermisos": "Permisos",
-  "gestionarPermisosDesc": "Abre los ajustes del sistema para activar o desactivar los permisos."
-
+  "gestionarPermisosDesc": "Abre los ajustes del sistema para activar o desactivar los permisos.",
+  "logroDesbloqueado": "¡Has desbloqueado {nombreLogro}! Pulsa para descubrirlo.",
+  "@logroDesbloqueado": {
+    "description": "Mensaje de notificación cuando se desbloquea un logro. nombreLogro es el nombre del logro.",
+    "placeholders": {
+      "nombreLogro": {}
+    }
+  }
 }

@@ -12,6 +12,8 @@ import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:stopnow/ui/messages/message_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vibration/vibration.dart';
+import 'package:extended_text_field/extended_text_field.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -23,6 +25,25 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
+  bool _mostrarBotonBajar = false;
+  final _textFieldScrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      // Si no está al principio (abajo del todo), muestra el botón
+      if (_scrollController.hasClients) {
+        final mostrar = _scrollController.offset > 100;
+        if (mostrar != _mostrarBotonBajar) {
+          setState(() {
+            _mostrarBotonBajar = mostrar;
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: baseAppBar(localizations.chat),
       drawer: baseDrawer(context),
       backgroundColor: isDarkMode
-          ?  const Color.fromARGB(255, 42, 42, 42)
+          ? const Color.fromARGB(255, 42, 42, 42)
           : const Color.fromARGB(216, 255, 255, 255),
       body: chatProvider.isLoading
           ? Center(
@@ -156,19 +177,6 @@ class _ChatPageState extends State<ChatPage> {
                                                 ),
                                               ),
                                             ),
-
-                                          /*Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 38, right: 8.0),
-                                          child: SizedBox(
-                                            height: 30,
-                                            width: 30,
-                                            child: UserAvatar(
-                                              avatarUrl: mensaje.fotoPerfil,
-                                            ),
-                                          ),
-                                        ),
-                                        */
                                           Flexible(
                                             child: ConstrainedBox(
                                               constraints: BoxConstraints(
@@ -177,134 +185,187 @@ class _ChatPageState extends State<ChatPage> {
                                                         .width *
                                                     0.7,
                                               ),
-                                              child: Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 4),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10,
-                                                        horizontal: 14),
-                                                decoration: BoxDecoration(
-                                                  color: contieneMencion
-                                                      ? const Color.fromARGB(
-                                                          255, 217, 235, 255)
-                                                      : esMio
-                                                          ? colorScheme
-                                                              .secondary
-                                                          : colorScheme
-                                                              .surfaceVariant,
-                                                  border: contieneMencion
-                                                      ? Border.all(
-                                                          color: colorScheme
-                                                              .tertiary,
-                                                          width: 2,
-                                                        )
-                                                      : null,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        const Radius.circular(
-                                                            16),
-                                                    topRight:
-                                                        const Radius.circular(
-                                                            16),
-                                                    bottomLeft: Radius.circular(
-                                                        esMio ? 16 : 0),
-                                                    bottomRight:
-                                                        Radius.circular(
-                                                            esMio ? 0 : 16),
-                                                  ),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: colorScheme.shadow
-                                                          .withOpacity(0.04),
-                                                      blurRadius: 2,
-                                                      offset:
-                                                          const Offset(0, 2),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    if (mensaje.nombreUsuario !=
-                                                            null &&
-                                                        mensaje.nombreUsuario
-                                                            .isNotEmpty &&
-                                                        !esMio)
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                bottom: 2),
-                                                        child: Text(
-                                                          mensaje.nombreUsuario,
-                                                          style: TextStyle(
+                                              // LongPress para mencionar
+                                              child: GestureDetector(
+                                                onLongPress: () {
+                                                  if (mensaje.nombreUsuario !=
+                                                          null &&
+                                                      mensaje.nombreUsuario
+                                                          .isNotEmpty &&
+                                                      !esMio) {
+                                                    final mention =
+                                                        '@${mensaje.nombreUsuario} ';
+                                                    final oldText =
+                                                        _controller.text;
+                                                    final newText = oldText
+                                                                .isEmpty ||
+                                                            oldText
+                                                                .endsWith(' ')
+                                                        ? oldText + mention
+                                                        : '$oldText $mention';
+
+                                                    setState(() {
+                                                      _controller.text =
+                                                          newText;
+                                                    });
+                                                    // Mueve el cursor al final del texto
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      _focusNode.requestFocus();
+                                                      _controller.selection =
+                                                          TextSelection
+                                                              .fromPosition(
+                                                        TextPosition(
+                                                            offset: _controller
+                                                                .text.length),
+                                                      );
+                                                      // Desplaza el campo de texto al final
+                                                      _textFieldScrollController
+                                                          .jumpTo(
+                                                        _textFieldScrollController
+                                                            .position
+                                                            .maxScrollExtent,
+                                                      );
+                                                    });
+
+                                                    Vibration.vibrate(
+                                                        duration: 50);
+                                                  }
+                                                },
+                                                child: Container(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(vertical: 4),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 14),
+                                                  decoration: BoxDecoration(
+                                                    color: contieneMencion
+                                                        ? const Color.fromARGB(
+                                                            255, 217, 235, 255)
+                                                        : esMio
+                                                            ? colorScheme
+                                                                .secondary
+                                                            : colorScheme
+                                                                .surfaceVariant,
+                                                    border: contieneMencion
+                                                        ? Border.all(
                                                             color: colorScheme
-                                                                .primary,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 13,
-                                                          ),
-                                                        ),
+                                                                .tertiary,
+                                                            width: 2,
+                                                          )
+                                                        : null,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          const Radius.circular(
+                                                              16),
+                                                      topRight:
+                                                          const Radius.circular(
+                                                              16),
+                                                      bottomLeft:
+                                                          Radius.circular(
+                                                              esMio ? 16 : 0),
+                                                      bottomRight:
+                                                          Radius.circular(
+                                                              esMio ? 0 : 16),
+                                                    ),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: colorScheme
+                                                            .shadow
+                                                            .withOpacity(0.04),
+                                                        blurRadius: 2,
+                                                        offset:
+                                                            const Offset(0, 2),
                                                       ),
-                                                    Stack(
-                                                      children: [
+                                                    ],
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      if (mensaje.nombreUsuario !=
+                                                              null &&
+                                                          mensaje.nombreUsuario
+                                                              .isNotEmpty &&
+                                                          !esMio)
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                   .only(
-                                                                  right: 48.0),
-                                                          child: contieneMencion
-                                                              ? _buildMensajeConMencion(
-                                                                  mensaje
-                                                                      .mensaje,
-                                                                  myNombreUsuario,
-                                                                  colorScheme,
-                                                                )
-                                                              : Text(
-                                                                  mensaje
-                                                                      .mensaje,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: esMio
-                                                                        ? colorScheme
-                                                                            .onSecondary
-                                                                        : colorScheme
-                                                                            .onSurface,
-                                                                    fontSize:
-                                                                        16,
-                                                                  ),
-                                                                ),
-                                                        ),
-                                                        Positioned(
-                                                          bottom: 0,
-                                                          right: 0,
+                                                                  bottom: 2),
                                                           child: Text(
-                                                            _formatHora(mensaje
-                                                                .fechaEnvio),
+                                                            mensaje
+                                                                .nombreUsuario,
                                                             style: TextStyle(
-                                                              color: esMio
-                                                                  ? colorScheme
-                                                                      .onSecondary
-                                                                      .withOpacity(
-                                                                          0.7)
-                                                                  : contieneMencion
-                                                                      ? Colors
-                                                                          .black87
-                                                                      : colorScheme
-                                                                          .onSurface
-                                                                          .withOpacity(
-                                                                              0.6),
-                                                              fontSize: 11,
+                                                              color: colorScheme
+                                                                  .primary,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 13,
                                                             ),
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                      Stack(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    right:
+                                                                        48.0),
+                                                            child: contieneMencion
+                                                                ? _buildMensajeConMencion(
+                                                                    mensaje
+                                                                        .mensaje,
+                                                                    myNombreUsuario,
+                                                                    colorScheme,
+                                                                  )
+                                                                : Text(
+                                                                    mensaje
+                                                                        .mensaje,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: esMio
+                                                                          ? colorScheme
+                                                                              .onSecondary
+                                                                          : colorScheme
+                                                                              .onSurface,
+                                                                      fontSize:
+                                                                          16,
+                                                                    ),
+                                                                  ),
+                                                          ),
+                                                          Positioned(
+                                                            bottom: 0,
+                                                            right: 0,
+                                                            child: Text(
+                                                              _formatHora(mensaje
+                                                                  .fechaEnvio),
+                                                              style: TextStyle(
+                                                                color: esMio
+                                                                    ? colorScheme
+                                                                        .onSecondary
+                                                                        .withOpacity(
+                                                                            0.7)
+                                                                    : contieneMencion
+                                                                        ? Colors
+                                                                            .black87
+                                                                        : colorScheme
+                                                                            .onSurface
+                                                                            .withOpacity(0.6),
+                                                                fontSize: 11,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -327,7 +388,7 @@ class _ChatPageState extends State<ChatPage> {
                               const SizedBox(height: 16),
                               Text(
                                 localizations
-                                    .sinConexion, // Ejemplo: "Sin conexión a internet"
+                                    .sinConexion, //"Sin conexión a internet"
                                 style: TextStyle(
                                   color: colorScheme.onSurface.withOpacity(0.6),
                                   fontSize: 18,
@@ -355,8 +416,10 @@ class _ChatPageState extends State<ChatPage> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextField(
+                        child: ExtendedTextField(
                           controller: _controller,
+                          focusNode: _focusNode,
+                          scrollController: _textFieldScrollController,
                           style: TextStyle(color: colorScheme.onSurface),
                           decoration: InputDecoration(
                             hintText: localizations.escribeUnMensaje,
@@ -372,6 +435,8 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                           ),
                           onSubmitted: (_) => _enviarMensaje(),
+                          minLines: 1,
+                          maxLines: 2,
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -392,6 +457,22 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ],
             ),
+      floatingActionButton: _mostrarBotonBajar
+          ? Padding(
+              padding: const EdgeInsets.symmetric(vertical: 76, horizontal: 10),
+              child: FloatingActionButton.small(
+                onPressed: () {
+                  _scrollController.animateTo(
+                    0.0,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                  );
+                },
+                backgroundColor: colorScheme.primary,
+                child: const Icon(Icons.arrow_downward),
+              ),
+            )
+          : null,
     );
   }
 
@@ -486,6 +567,8 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     _scrollController.dispose();
     _controller.dispose();
+    _focusNode.dispose();
+    _textFieldScrollController.dispose();
     super.dispose();
   }
 }

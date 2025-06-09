@@ -127,7 +127,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 return null;
               },
               inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
+                LengthLimitingTextInputFormatter(10),
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
               ],
               colorScheme: colorScheme,

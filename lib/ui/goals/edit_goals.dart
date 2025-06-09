@@ -142,7 +142,7 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(12),
+                  LengthLimitingTextInputFormatter(10),
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
                 validator: (value) {

@@ -275,7 +275,7 @@ class _AccountPageState extends State<AccountPage> {
                 colorScheme: colorScheme,
                 context: context,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty || int.tryParse(value) == 0) {
                     return localizations.introduceCantidad;
                   }
                   if (int.tryParse(value) == null) {
@@ -334,10 +334,15 @@ class _AccountPageState extends State<AccountPage> {
                 keyboardType: TextInputType.number,
                 colorScheme: colorScheme,
                 context: context,
-                validator: (value) =>
-                    (value == null || int.tryParse(value) == null)
-                        ? localizations.introduceNumeroValido
-                        : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty || int.tryParse(value) == 0) {
+                    return localizations.introduceCantidad;
+                  }
+                  (int.tryParse(value) == null)
+                      ? localizations.introduceNumeroValido
+                      : null;
+                  return null;
+                },
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(3),
                   FilteringTextInputFormatter.digitsOnly,
@@ -351,7 +356,8 @@ class _AccountPageState extends State<AccountPage> {
                 colorScheme: colorScheme,
                 context: context,
                 validator: (value) =>
-                    (value == null || double.tryParse(value) == null)
+                    (value == null || double.tryParse(value) == null ||
+                        value.isEmpty || double.tryParse(value) == 0)
                         ? localizations.introduceNumeroValido
                         : null,
                 inputFormatters: [

@@ -242,8 +242,9 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                     _buildContainerBarra(porcentaje, colorScheme),
                     const SizedBox(height: 16),
                     Text(
-                      localizations
-                          .ahorroCigarros(dineroAhorrado.toStringAsFixed(2).replaceAll("-", "")),
+                      localizations.ahorroCigarros(dineroAhorrado
+                          .toStringAsFixed(2)
+                          .replaceAll("-", "")),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.green[
@@ -364,9 +365,16 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
             Text(label,
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
-            Text(isZero ? localizations.completado : value,
+            Flexible(
+              child: Text(
+                isZero ? localizations.completado : value,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                    fontWeight: FontWeight.bold, color: colorScheme.onSurface),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                textAlign: TextAlign.right,
+              ),
+            ),
           ],
         ),
       ),

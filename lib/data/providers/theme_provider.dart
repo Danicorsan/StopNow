@@ -24,4 +24,11 @@ class ThemeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> porDefecto() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('isDarkMode');
+    _themeMode = ThemeMode.system; // Reset to system default
+    notifyListeners();
+  }
 }

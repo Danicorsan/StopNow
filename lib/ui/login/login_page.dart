@@ -49,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    var isdarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: baseAppBar(
@@ -65,10 +66,26 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Column(
             children: [
-              Image.asset(
-                'assets/logo-fondo-blanco.png',
-                height: 250.h,
-              ),
+              if (isdarkMode)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(18.w),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.r),
+                      child: Image.asset(
+                        'assets/logo-fondo-azul.png',
+                        fit: BoxFit.contain,
+                        width: 230.w,
+                        height: 230.h,
+                      ),
+                    ),
+                  ),
+                ),
+              if (!isdarkMode)
+                Image.asset(
+                  'assets/logo-fondo-blanco.png',
+                  height: 250.h,
+                ),
               Text(
                 localizations.bienvenido,
                 style: TextStyle(

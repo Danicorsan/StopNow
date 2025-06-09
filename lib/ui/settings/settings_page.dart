@@ -35,7 +35,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     // Elimina el usuario del UserProvider y restablece el tema
     Provider.of<UserProvider>(context, listen: false).clearUser();
-    Provider.of<ThemeProvider>(context, listen: false).toggleTheme(false);
+    Provider.of<ThemeProvider>(context, listen: false).porDefecto();
 
     // Elimina las notificaciones programadas
     await UserRepository.cancelAllNotifications();

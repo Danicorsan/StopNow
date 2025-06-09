@@ -260,7 +260,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                       margin: EdgeInsets.symmetric(
                                           horizontal: 8.w, vertical: 8.h),
                                       decoration: BoxDecoration(
-                                        //TODO: cambiar color del fonodo
                                         color: colorScheme.secondary
                                             .withOpacity(0.08),
                                         borderRadius:

@@ -9,7 +9,6 @@ import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
 import 'package:stopnow/ui/home/home_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:timezone/timezone.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

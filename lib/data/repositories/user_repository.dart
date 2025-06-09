@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -104,7 +102,7 @@ class UserRepository {
 
       await supabase.storage
           .from('avatars')
-          .upload(fileName, imageFile, fileOptions: FileOptions(upsert: true));
+          .upload(fileName, imageFile, fileOptions: const FileOptions(upsert: true));
 
       final signedUrl = await supabase.storage
           .from('avatars')
@@ -247,7 +245,7 @@ class UserRepository {
     required int cigarrosAlDia,
     required int cigarrosPorPaquete,
     required double precioPaquete,
-    AppLocalizations? localizations, // <-- Añade este parámetro opcional
+    AppLocalizations? localizations,
   }) async {
     try {
       await UserDao.actualizarPerfilUsuario(

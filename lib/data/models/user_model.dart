@@ -63,7 +63,7 @@ class UserModel {
   }
 
   Widget getFotoPerfil() {
-    return CircleAvatar(
+    return const CircleAvatar(
       radius: 50,
       backgroundColor: Colors.grey,
       child: Icon(Icons.person, size: 50),

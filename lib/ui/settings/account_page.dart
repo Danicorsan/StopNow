@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_final_fields
 
 import 'dart:io';
 
@@ -41,7 +41,7 @@ class _AccountPageState extends State<AccountPage> {
 
   File? _selectedImage;
   bool _cargandoImagen = false;
-  bool _borrarFoto = false; // NUEVO: para saber si hay que borrar la foto
+  bool _borrarFoto = false;
 
   late String _originalNombreUsuario;
   late String? _originalFotoPerfil;
@@ -61,7 +61,6 @@ class _AccountPageState extends State<AccountPage> {
       _cigarrosAlDiaController.text = user.cigarrosAlDia.toString();
       _fechaDejarDeFumarController.text =
           DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar.toLocal());
-          
       _cigarrosPaqueteController.text = user.cigarrosPorPaquete.toString();
       _precioPaqueteController.text = user.precioPaquete.toString();
 
@@ -144,7 +143,6 @@ class _AccountPageState extends State<AccountPage> {
     final settingsProvider = Provider.of<SettingsProvider>(context);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-
     return Scaffold(
       backgroundColor: colorScheme.background,
       appBar: baseAppBar(
@@ -168,7 +166,9 @@ class _AccountPageState extends State<AccountPage> {
                     onTap: _cargandoImagen ? null : _pickImage,
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: isDarkMode ? const Color.fromARGB(255, 61, 61, 61) : Colors.grey.shade300,
+                      backgroundColor: isDarkMode
+                          ? const Color.fromARGB(255, 61, 61, 61)
+                          : Colors.grey.shade300,
                       backgroundImage: _selectedImage != null
                           ? FileImage(_selectedImage!)
                           : null,
@@ -233,7 +233,7 @@ class _AccountPageState extends State<AccountPage> {
                             _borrarFoto = true;
                           });
                         },
-                        child: CircleAvatar(
+                        child: const CircleAvatar(
                           radius: 16,
                           backgroundColor: Colors.red,
                           child:
@@ -274,7 +274,7 @@ class _AccountPageState extends State<AccountPage> {
                 colorScheme: colorScheme,
                 context: context,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty || int.tryParse(value) == 0) {
                     return localizations.introduceCantidad;
                   }
                   if (int.tryParse(value) == null) {
@@ -333,10 +333,15 @@ class _AccountPageState extends State<AccountPage> {
                 keyboardType: TextInputType.number,
                 colorScheme: colorScheme,
                 context: context,
-                validator: (value) =>
-                    (value == null || int.tryParse(value) == null)
-                        ? localizations.introduceNumeroValido
-                        : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty || int.tryParse(value) == 0) {
+                    return localizations.introduceCantidad;
+                  }
+                  (int.tryParse(value) == null)
+                      ? localizations.introduceNumeroValido
+                      : null;
+                  return null;
+                },
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(3),
                   FilteringTextInputFormatter.digitsOnly,
@@ -350,7 +355,8 @@ class _AccountPageState extends State<AccountPage> {
                 colorScheme: colorScheme,
                 context: context,
                 validator: (value) =>
-                    (value == null || double.tryParse(value) == null)
+                    (value == null || double.tryParse(value) == null ||
+                        value.isEmpty || double.tryParse(value) == 0)
                         ? localizations.introduceNumeroValido
                         : null,
                 inputFormatters: [

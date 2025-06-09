@@ -150,7 +150,7 @@ class _AchievementDetailDialogState extends State<AchievementDetailDialog> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.check_circle, color: Colors.green, size: 28),
+                      const Icon(Icons.check_circle, color: Colors.green, size: 28),
                       const SizedBox(width: 8),
                       Text(
                         widget.localizations.yaDesbloqueado,

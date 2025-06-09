@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously,
 
 import 'dart:io';
 
@@ -156,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     });
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.white,
                                       shape: BoxShape.circle,
                                       boxShadow: [
@@ -166,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                       ],
                                     ),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.close,
                                       color: Colors.red,
                                       size: 22,
@@ -282,7 +282,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onChanged: (value) => registerProvider
                         .setCigarrosAlDia(int.tryParse(value) ?? 0),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty || int.tryParse(value) == 0) {
                         return localizations.introduceCantidad;
                       }
                       if (int.tryParse(value) == null) {
@@ -347,7 +347,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onChanged: (value) => registerProvider
                         .setCigarrosPorPaquete(int.tryParse(value) ?? 0),
                     validator: (value) =>
-                        (value == null || int.tryParse(value) == null)
+                        (value == null || int.tryParse(value) == null || int.tryParse(value) == 0)
                             ? localizations.introduceNumeroValido
                             : null,
                     inputFormatters: [
@@ -364,7 +364,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onChanged: (value) => registerProvider
                         .setPrecioPaquete(double.tryParse(value) ?? 0),
                     validator: (value) =>
-                        (value == null || double.tryParse(value) == null)
+                        (value == null || double.tryParse(value) == null  || double.tryParse(value) == 0)
                             ? localizations.introduceNumeroValido
                             : null,
                     inputFormatters: [

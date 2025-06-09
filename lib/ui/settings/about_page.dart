@@ -40,7 +40,7 @@ class AboutPage extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              "v1.0.0",
+              "v1.1.0",
               style: TextStyle(
                 color: colorScheme.secondary,
                 fontSize: 16.sp,

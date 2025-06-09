@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:async';
 import 'dart:math';
 
@@ -55,7 +53,7 @@ class HomeProvider with ChangeNotifier {
 
   void _startTimer() {
     _timer?.cancel();
-    _timer = Timer.periodic(Duration(seconds: 1), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       notifyListeners();
     });
   }

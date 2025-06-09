@@ -79,15 +79,11 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
 
     final double dineroFaltante =
         (goal.precio - dineroAhorrado).clamp(0, goal.precio);
-    final int cigarrosFaltantes =
+    final double cigarrosFaltantes =
         ((goal.precio - dineroAhorrado) / precioPorCigarro)
-            .ceil()
-            .clamp(0, double.infinity)
-            .toInt();
-    final double minutosFaltantes =
-        ((goal.precio - dineroAhorrado) / precioPorCigarro * 11)
             .clamp(0, double.infinity);
-
+    final double diasRestantes =
+        cigarrosAlDia > 0 ? cigarrosFaltantes / cigarrosAlDia : 0;
     final double porcentaje = (dineroAhorrado / goal.precio).clamp(0, 1);
 
     return Scaffold(
@@ -246,8 +242,9 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                     _buildContainerBarra(porcentaje, colorScheme),
                     const SizedBox(height: 16),
                     Text(
-                      localizations
-                          .ahorroCigarros(dineroAhorrado.toStringAsFixed(2)),
+                      localizations.ahorroCigarros(dineroAhorrado
+                          .toStringAsFixed(2)
+                          .replaceAll("-", "")),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.green[
@@ -266,14 +263,13 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
                     const SizedBox(height: 10),
                     _buildContainerSecundario(
                       label: localizations.cigarrosFaltantes,
-                      value: "$cigarrosFaltantes",
+                      value: "${cigarrosFaltantes.ceil()}",
                       colorScheme: colorScheme,
                     ),
                     const SizedBox(height: 10),
                     _buildContainerSecundario(
                       label: localizations.tiempoRestante,
-                      value:
-                          _formatearTiempoFaltante(minutosFaltantes, context),
+                      value: formatearTiempoRestante(diasRestantes, context),
                       colorScheme: colorScheme,
                     ),
                     const SizedBox(height: 24),
@@ -369,9 +365,16 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
             Text(label,
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
-            Text(isZero ? localizations.completado : value,
+            Flexible(
+              child: Text(
+                isZero ? localizations.completado : value,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                    fontWeight: FontWeight.bold, color: colorScheme.onSurface),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                textAlign: TextAlign.right,
+              ),
+            ),
           ],
         ),
       ),
@@ -434,33 +437,32 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     );
   }
 
-  String _formatearTiempoFaltante(
-      double minutosFaltantes, BuildContext context) {
+  String formatearTiempoRestante(double diasRestantes, BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    if (minutosFaltantes == 0) {
-      return "0";
-    } else if (minutosFaltantes < 1) {
-      return localizations.menosDeUnMinutoMinuscula;
-    } else if (minutosFaltantes < 60) {
-      final min = minutosFaltantes.floor();
-      if (min == 1) {
-        return "1 ${localizations.minutoMinusculaSingular}";
-      }
-      return "$min ${localizations.minutosMinusculaPlural}";
-    } else if (minutosFaltantes < 1440) {
-      // menos de 24 horas
-      final horas = (minutosFaltantes / 60).floor();
-      if (horas == 1) {
-        return "1 ${localizations.horaMinusculaSingular}";
-      }
-      return "$horas ${localizations.horasMinusculaPlural}";
+    if (diasRestantes <= 0) {
+      return localizations.completado;
+    }
+
+    final int dias = diasRestantes.floor();
+    final double horasDec = (diasRestantes - dias) * 24;
+    final int horas = horasDec.floor();
+    final double minutosDec = (horasDec - horas) * 60;
+    final int minutos = minutosDec.floor();
+
+    if (dias > 0) {
+      // Ejemplo: "2 días 5 horas"
+      return "$dias ${dias == 1 ? localizations.diaMinusculaSingular : localizations.diasMinusculaPlural} "
+          "$horas ${horas == 1 ? localizations.horaMinusculaSingular : localizations.horasMinusculaPlural}";
+    } else if (horas > 0) {
+      // Ejemplo: "5 horas 12 minutos"
+      return "$horas ${horas == 1 ? localizations.horaMinusculaSingular : localizations.horasMinusculaPlural} "
+          "$minutos ${minutos == 1 ? localizations.minutoMinusculaSingular : localizations.minutosMinusculaPlural}";
+    } else if (minutos > 0) {
+      // Ejemplo: "12 minutos"
+      return "$minutos ${minutos == 1 ? localizations.minutoMinusculaSingular : localizations.minutosMinusculaPlural}";
     } else {
-      final dias = (minutosFaltantes / 1440).floor();
-      if (dias == 1) {
-        return "1 ${localizations.diaMinusculaSingular}";
-      }
-      return "$dias ${localizations.diasMinusculaPlural}";
+      return localizations.menosDeUnMinutoMinuscula;
     }
   }
 }

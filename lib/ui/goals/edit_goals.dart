@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -140,7 +142,7 @@ class _EditGoalsPageState extends State<EditGoalsPage> {
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(12),
+                  LengthLimitingTextInputFormatter(10),
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
                 validator: (value) {

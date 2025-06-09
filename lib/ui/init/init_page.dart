@@ -44,7 +44,7 @@ class _InitPageState extends State<InitPage> {
     final prefs = await SharedPreferences.getInstance();
     final hasAccount = prefs.getBool('hasAccount') ?? false;
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     if (hasAccount) {
       // Si hay cuenta, carga usuario desde SQLite (ya debe estar sincronizado tras login)

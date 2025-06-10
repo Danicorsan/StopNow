@@ -54,6 +54,8 @@ class UserDao {
 
     final json = response;
 
+    print(json);
+
     return UserModel.fromSupabase(
       json,
     );
@@ -72,6 +74,8 @@ class UserDao {
     if (response.isEmpty) {
       throw Exception('Error al obtener objetivos: $response');
     }
+
+    print('Objetivos obtenidos: $response');
 
     return List<Map<String, dynamic>>.from(response);
   }
@@ -98,6 +102,8 @@ class UserDao {
     if (response.isEmpty) {
       throw Exception('Error al obtener articulos: $response');
     }
+
+    print('Lecturas obtenidas: $response');
 
     return List<Map<String, dynamic>>.from(response);
   }

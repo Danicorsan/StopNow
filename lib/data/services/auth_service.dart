@@ -36,6 +36,8 @@ class AuthService {
     final user = _client.auth.currentUser;
     if (user == null) return null;
 
+    print(user.id); // Imprime el ID del usuario actual para depuración
+
     final usuarioActual = await UserDao.traerUsuario(
         user.id); // Llama al DAO para obtener el usuario
 

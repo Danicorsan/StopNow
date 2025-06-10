@@ -23,10 +23,12 @@ class AchievementsNotificationService {
     required DateTime fechaDejarFumar,
     required AppLocalizations localizations,
   }) async {
+    print('[Notificaciones] Cancelando notificaciones previas...');
     await _notifications.cancelAll();
 
     final achievements =
         AchievementModel.getLocalizedAchievements(localizations);
+    print('[Notificaciones] Logros a programar: ${achievements.length}');
 
     for (int i = 0; i < achievements.length; i++) {
       final achievement = achievements[i];
@@ -34,7 +36,12 @@ class AchievementsNotificationService {
           tz.TZDateTime.from(fechaDejarFumar, tz.local);
       TZDateTime scheduledDate = fechaDejarFumarTZ.add(achievement.duration);
 
+      print('[Notificaciones] Logro: ${achievement.title}');
+      print('[Notificaciones] Fecha programada: $scheduledDate');
+
       if (scheduledDate.isAfter(DateTime.now())) {
+        print(
+            '[Notificaciones] Programando notificación para "${achievement.title}" en $scheduledDate');
         await _notifications.zonedSchedule(
             i + 100,
             localizations.logroCompletado,
@@ -51,7 +58,10 @@ class AchievementsNotificationService {
             ),
             androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
             matchDateTimeComponents: DateTimeComponents.dateAndTime);
+      } else {
+        print('[Notificaciones] No se programa porque la fecha ya pasó.');
       }
     }
+    print('[Notificaciones] Programación de notificaciones finalizada.');
   }
 }

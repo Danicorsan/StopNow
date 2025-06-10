@@ -123,6 +123,7 @@ class UserRepository {
       );
       return BaseResultSuccess(true);
     } catch (e) {
+      print('Error al subir objetivo: $e');
       return BaseResultError('Error al subir objetivo: $e');
     }
   }
@@ -152,6 +153,7 @@ class UserRepository {
       );
       return BaseResultSuccess(true);
     } catch (e) {
+      print('Error al borrar objetivo: $e');
       return BaseResultError('Error al borrar objetivo: $e');
     }
   }
@@ -192,6 +194,7 @@ class UserRepository {
       return BaseResultSuccess(
           response.map<ReadingModel>((a) => ReadingModel.fromMap(a)).toList());
     } catch (e) {
+      print('Error al cargarrrrrrrrrrrrrrrrrrrrrrrrrrrrrr artículos: $e');
       return BaseResultError('Error al cargar artículos: $e');
     }
   }
@@ -228,6 +231,7 @@ class UserRepository {
       );
       return BaseResultSuccess(true);
     } catch (e) {
+      print('Error al actualizar objetivo: $e');
       return BaseResultError('Error al actualizar objetivo: $e');
     }
   }

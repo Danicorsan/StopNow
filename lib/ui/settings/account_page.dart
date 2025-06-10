@@ -61,7 +61,6 @@ class _AccountPageState extends State<AccountPage> {
       _cigarrosAlDiaController.text = user.cigarrosAlDia.toString();
       _fechaDejarDeFumarController.text =
           DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar.toLocal());
-
       _cigarrosPaqueteController.text = user.cigarrosPorPaquete.toString();
       _precioPaqueteController.text = user.precioPaquete.toString();
 

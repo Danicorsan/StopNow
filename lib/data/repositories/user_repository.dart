@@ -50,7 +50,7 @@ class UserRepository {
     int cigarrosPorPaquete,
     double precioPaquete,
   ) async {
-    // 1. Chequeo de nombre de usuario
+    // Miramos si hay un usuario con el mismo nombre de usuario
     try {
       final nombres =
           await UserDao.nombresDeUsuarios(nombreUsuario: nombreUsuario);
@@ -76,7 +76,6 @@ class UserRepository {
           precioPaquete: precioPaquete,
         );
       } catch (e) {
-        // Aquí no puedes borrar el usuario de Supabase desde el cliente
         return BaseResultError('Error al guardar los datos del usuario.');
       }
 

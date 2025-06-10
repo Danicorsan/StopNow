@@ -15,6 +15,16 @@ class ProfileProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
+    if (userId == null) {
+      // Si no se pasa un userId, se carga el usuario actual
+      isCurrentUser = true;
+      notifyListeners();
+    } else {
+      // Si se pasa un userId, se carga el usuario especifico
+      isCurrentUser = false;
+      notifyListeners();
+    }
+
     // Si no tiene conexion, carga el usuario de sqlite
     final conexion = await UserRepository.tienesConexion();
 

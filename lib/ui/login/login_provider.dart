@@ -55,7 +55,7 @@ class LoginProvider extends ChangeNotifier {
 
       // Guardar el usuario en el UserProvider
       Provider.of<UserProvider>(context, listen: false).setUser(user);
-      await saveUserStatus(true); // Solo guardamos el booleano
+      await saveUserStatus(true);
       loginState = LoginState.success;
 
       notifyListeners();

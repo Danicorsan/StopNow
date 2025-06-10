@@ -49,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    var isdarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: baseAppBar(
@@ -65,10 +66,26 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Column(
             children: [
-              Image.asset(
-                'assets/logo-fondo-blanco.png',
-                height: 250.h,
-              ),
+              if (isdarkMode)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(18.w),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.r),
+                      child: Image.asset(
+                        'assets/logo-fondo-azul.png',
+                        fit: BoxFit.contain,
+                        width: 230.w,
+                        height: 230.h,
+                      ),
+                    ),
+                  ),
+                ),
+              if (!isdarkMode)
+                Image.asset(
+                  'assets/logo-fondo-blanco.png',
+                  height: 250.h,
+                ),
               Text(
                 localizations.bienvenido,
                 style: TextStyle(
@@ -166,35 +183,6 @@ class _LoginPageState extends State<LoginPage> {
                 thickness: 1,
                 color: colorScheme.outline.withOpacity(0.2),
               ),
-              /*
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.surfaceVariant,
-                  fixedSize: Size(250.w, 50.h),
-                  shadowColor: colorScheme.shadow,
-                  elevation: 5,
-                ),
-                onPressed: () {
-                  // Futuro login con Google
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    FlutterLogo(size: 30.sp),
-                    Text(
-                      'Continuar con Google',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
-              //SizedBox(height: 25.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

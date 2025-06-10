@@ -102,9 +102,7 @@ class HomeProvider with ChangeNotifier {
     int days = now.day - start.day;
 
     if (days < 0) {
-      // Restar un mes y sumar los días del mes anterior
       months--;
-      // Calcular días en el mes anterior a 'now'
       DateTime prevMonth = DateTime(now.year, now.month, 0);
       days += prevMonth.day;
     }
@@ -138,8 +136,6 @@ class HomeProvider with ChangeNotifier {
     Duration diff = now.difference(start);
     return diff.inSeconds % 60;
   }
-
-  /// Cambia los cálculos a minutos para mostrar progreso desde el primer minuto
 
   double getCigarrosEvitados() {
     if (user == null) return 0;

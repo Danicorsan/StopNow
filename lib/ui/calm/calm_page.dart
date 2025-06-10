@@ -124,7 +124,7 @@ class _CalmPageState extends State<CalmPage> {
               color: colorScheme.shadow.withOpacity(0.5),
               spreadRadius: 5.r,
               blurRadius: 7.r,
-              offset: Offset(0.r, 3.r), // changes position of shadow
+              offset: Offset(0.r, 3.r),
             ),
           ],
         ),

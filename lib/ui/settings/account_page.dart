@@ -57,14 +57,14 @@ class _AccountPageState extends State<AccountPage> {
     if (user != null) {
       _userNameController.text = user.nombreUsuario;
       _fotoPerfilController.text =
-          user.fotoPerfil; // Assuming email is stored in fotoPerfil
+          user.fotoPerfil;
       _cigarrosAlDiaController.text = user.cigarrosAlDia.toString();
       _fechaDejarDeFumarController.text =
           DateFormat('yyyy-MM-dd HH:mm').format(user.fechaDejarFumar.toLocal());
       _cigarrosPaqueteController.text = user.cigarrosPorPaquete.toString();
       _precioPaqueteController.text = user.precioPaquete.toString();
 
-      // Guardar originales
+      // Guardar originales para comparar cambios
       _originalNombreUsuario = user.nombreUsuario;
       _originalFotoPerfil = user.fotoPerfil;
       _originalCigarrosAlDia = user.cigarrosAlDia;
@@ -212,7 +212,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   ),
 
-                  // Botón "X" para quitar la imagen
+                  // Botón para borrar foto
                   if (_selectedImage != null ||
                       (!_borrarFoto &&
                           Provider.of<UserProvider>(context, listen: false)
@@ -399,7 +399,6 @@ class _AccountPageState extends State<AccountPage> {
 
           String? fotoPerfilUrl = user.fotoPerfil;
 
-          // Si hay una nueva imagen seleccionada, súbela y obtén la nueva URL
           if (_selectedImage != null) {
             final exito = await settingsProvider.actualizarFotoPerfil(
                 _selectedImage!, context);
@@ -416,7 +415,7 @@ class _AccountPageState extends State<AccountPage> {
               return;
             }
           } else if (_borrarFoto) {
-            fotoPerfilUrl = null; // Si se quitó la foto, sube null
+            fotoPerfilUrl = null; 
           }
 
           final result = await settingsProvider.actualizarPerfil(

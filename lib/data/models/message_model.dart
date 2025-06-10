@@ -22,7 +22,7 @@ class MessageModel {
       nombreUsuario: map['nombre_usuario'],
       mensaje: map['mensaje'],
       fechaEnvio: DateTime.parse(map['fecha_envio']).toLocal(),
-      fotoPerfil: map['foto_perfil'], // NUEVO
+      fotoPerfil: map['foto_perfil'],
     );
   }
 }

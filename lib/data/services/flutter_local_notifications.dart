@@ -43,7 +43,7 @@ class AchievementsNotificationService {
         print(
             '[Notificaciones] Programando notificación para "${achievement.title}" en $scheduledDate');
         await _notifications.zonedSchedule(
-            i + 100, // Unique id
+            i + 100,
             localizations.logroCompletado,
             localizations.logroDesbloqueado(achievement.title),
             scheduledDate,

@@ -8,8 +8,11 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    var isdarkMode = theme.brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.background,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(20.w),
@@ -22,7 +25,9 @@ class WelcomePage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.r),
                     child: Image.asset(
-                      'assets/logo-fondo-azul.png',
+                      isdarkMode
+                          ? 'assets/logo-fondo-azul.png'
+                          : 'assets/logo-fondo-blanco.png',
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -41,8 +46,8 @@ class WelcomePage extends StatelessWidget {
                         Navigator.pushNamed(context, '/login');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 21, 56, 102),
-                        foregroundColor: Colors.white,
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                         textStyle: TextStyle(fontSize: 18.sp),
                         shape: RoundedRectangleBorder(
@@ -60,11 +65,10 @@ class WelcomePage extends StatelessWidget {
                         Navigator.pushNamed(context, '/register');
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 21, 56, 102),
+                        foregroundColor: colorScheme.primary,
+                        side: BorderSide(color: colorScheme.primary),
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                         textStyle: TextStyle(fontSize: 18.sp),
-                        side: const BorderSide(
-                            color: Color.fromARGB(255, 21, 56, 102)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
                         ),

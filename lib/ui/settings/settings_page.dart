@@ -35,7 +35,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     // Elimina el usuario del UserProvider y restablece el tema
     Provider.of<UserProvider>(context, listen: false).clearUser();
-    Provider.of<ThemeProvider>(context, listen: false).toggleTheme(false);
+    Provider.of<ThemeProvider>(context, listen: false).porDefecto();
 
     // Elimina las notificaciones programadas
     await UserRepository.cancelAllNotifications();
@@ -105,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text(
-                          localizations.cancelar, // O "Cancelar"
+                          localizations.cancelar,
                           style: TextStyle(color: colorScheme.primary),
                         ),
                       ),
@@ -145,9 +145,9 @@ class _SettingsPageState extends State<SettingsPage> {
             _buildSettingsCard(
               icon: Icons.notifications,
               title:
-                  localizations.gestionarPermisos, // Añade esta clave a tu l10n
+                  localizations.gestionarPermisos,
               subtitle: localizations
-                  .gestionarPermisosDesc, // Añade esta clave a tu l10n
+                  .gestionarPermisosDesc,
               color: colorScheme.secondary,
               onTap: () async {
                 await openAppSettings();
@@ -224,7 +224,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 40),
             Center(
               child: Text(
-                "StopNow v1.0.0",
+                "StopNow v1.1.1",
                 style: TextStyle(
                   color: colorScheme.onBackground.withOpacity(0.7),
                   fontWeight: FontWeight.w500,

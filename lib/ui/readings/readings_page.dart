@@ -21,7 +21,7 @@ class _ReadingsPageState extends State<ReadingsPage> {
   @override
   void initState() {
     super.initState();
-    // Para asegurarnos de que los artículos se carguen después de que el widget se haya construido,
+    // Para asegurarnos de que los artículos se carguen después de que el widget se haya construido
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final locale = Localizations.localeOf(context).languageCode;
       context.read<ReadingsProvider>().cargarArticulos(locale);
@@ -102,7 +102,7 @@ class _ReadingsPageState extends State<ReadingsPage> {
                                   Icon(Icons.person,
                                       size: 18, color: colorScheme.secondary),
                                   const SizedBox(width: 6),
-                                  // Envuelve el autor en un Flexible para evitar overflow
+                                  // lexible para evitar overflow
                                   Flexible(
                                     child: Text(
                                       articulo.autor!,

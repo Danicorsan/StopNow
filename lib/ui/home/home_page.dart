@@ -57,8 +57,6 @@ class _HomePageState extends State<HomePage> {
             final fechaDejarFumar = user?.fechaDejarFumar;
             final now = DateTime.now();
 
-            // Si la fecha de dejar de fumar es en el futuro
-
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const Divider(),
 
+                // Si la fecha de dejar de fumar es en el futuro
                 fechaDejarFumar!.isAfter(now)
                     ? Center(
                         child: Padding(
@@ -338,8 +337,8 @@ class _HomePageState extends State<HomePage> {
                     localizations.anios, valueStyle, labelStyle),
                 _buildTimeBlock("${homeProvider.getMeses()}",
                     localizations.meses.toLowerCase(), valueStyle, labelStyle),
-                _buildTimeBlock("${homeProvider.getDias()}", localizations.dias.toLowerCase(),
-                    valueStyle, labelStyle),
+                _buildTimeBlock("${homeProvider.getDias()}",
+                    localizations.dias.toLowerCase(), valueStyle, labelStyle),
               ],
             ),
             const Divider(color: Colors.white, thickness: 1),

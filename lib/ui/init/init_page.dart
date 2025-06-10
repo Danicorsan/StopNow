@@ -47,7 +47,7 @@ class _InitPageState extends State<InitPage> {
     await Future.delayed(const Duration(seconds: 2));
 
     if (hasAccount) {
-      // Si hay cuenta, carga usuario desde SQLite (ya debe estar sincronizado tras login)
+      // Si hay cuenta, carga usuario desde SQLite
       final offlineUser = await LocalDbHelper.getUserProgress();
       if (offlineUser != null) {
         Provider.of<UserProvider>(context, listen: false).setUser(offlineUser);

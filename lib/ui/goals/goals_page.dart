@@ -76,7 +76,7 @@ class _GoalsPageState extends State<GoalsPage> {
               ),
               itemBuilder: (context, index) {
                 final goal = goals[index];
-                // Si es el último y hay impar, lo centramos
+                // Si es el último y es impar, lo centramos
                 final isLast =
                     index == goals.length - 1 && goals.length % 2 != 0;
                 return Align(

@@ -45,7 +45,7 @@ class _UserAvatarState extends State<UserAvatar> {
     final colorScheme = theme.colorScheme;
 
     return GestureDetector(
-      onTap: null, // Activa _updateAvatar si deseas permitir edición
+      onTap: null,
       child: CircleAvatar(
         radius: 50,
         backgroundColor: colorScheme.primary.withOpacity(0.1),

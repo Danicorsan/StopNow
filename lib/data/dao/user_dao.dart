@@ -47,7 +47,7 @@ class UserDao {
     await supabase.from('public.objetivos').delete().eq('id', id);
   }
 
-  // Método para actualizar un usuario existente en la base de datos
+  // Método para actualizar un usuario en la base de datos
   static Future<UserModel?> traerUsuario(String id) async {
     final response =
         await supabase.from('public.users').select('*').eq('id', id).single();
@@ -80,7 +80,7 @@ class UserDao {
     return List<Map<String, dynamic>>.from(response);
   }
 
-  // Método para actualizar solo la fecha_dejar_fumar de un usuario (para recaída)
+  // Método para actualizar solo la fecha_dejar_fumar de un usuario para recaída
   static Future<void> actualizarFechaDejarFumar() async {
     DateTime nuevaFecha = DateTime.now();
     final userId = supabase.auth.currentUser?.id;
@@ -183,9 +183,9 @@ await _supabase.from('public.chat_mensajes').insert({
 
   static Future<void> borrarFotoPerfilAntigua(String urlFoto) async {
     final storage = Supabase.instance.client.storage;
-    const bucket = 'avatars'; // Cambia por el nombre de tu bucket
+    const bucket = 'avatars';
     final path =
-        urlFoto.split('/').last; // O ajusta según tu estructura de URLs
+        urlFoto.split('/').last;
     await storage.from(bucket).remove([path]);
   }
 

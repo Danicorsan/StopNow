@@ -38,7 +38,6 @@ class ChatProvider extends ChangeNotifier {
   Future<void> _cargarMensajes() async {
     final connectivity = await Connectivity().checkConnectivity();
     if (connectivity.first == ConnectivityResult.none) {
-      // Mostrar mensaje o dejar la lista vacía
       _mensajes.clear();
       conexion = false;
       suscrito = false;

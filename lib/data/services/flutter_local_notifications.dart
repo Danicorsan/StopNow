@@ -36,7 +36,7 @@ class AchievementsNotificationService {
 
       if (scheduledDate.isAfter(DateTime.now())) {
         await _notifications.zonedSchedule(
-            i + 100, // Unique id
+            i + 100,
             localizations.logroCompletado,
             localizations.logroDesbloqueado(achievement.title),
             scheduledDate,

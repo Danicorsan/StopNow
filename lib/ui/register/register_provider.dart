@@ -44,7 +44,7 @@ class RegisterProvider extends ChangeNotifier {
     }
   }
 
-  // Modifica el método register
+  
   Future<void> register() async {
     registerState = RegisterState.loading;
     notifyListeners();

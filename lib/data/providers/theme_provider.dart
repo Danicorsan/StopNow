@@ -28,7 +28,7 @@ class ThemeProvider extends ChangeNotifier {
   Future<void> porDefecto() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('isDarkMode');
-    _themeMode = ThemeMode.system; // Reset to system default
+    _themeMode = ThemeMode.system; // Vuelve al modo del sistema
     notifyListeners();
   }
 }

@@ -69,7 +69,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     final int cigarrosPorPaquete = user?.cigarrosPorPaquete ?? 1;
     final int cigarrosAlDia = user?.cigarrosAlDia ?? 1;
 
-    // --- Cálculo actualizado en tiempo real ---
+    // Cálculo actualizado en tiempo real
     final Duration duracion = DateTime.now().difference(goal.fechaCreacion);
     final double diasDesdeGoal = duracion.inSeconds / Duration.secondsPerDay;
     final double cigarrosEvitados = diasDesdeGoal * cigarrosAlDia;
@@ -187,7 +187,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Resumen motivacional
+                    // Resumen
                     Container(
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
@@ -336,7 +336,7 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
   }) {
     final localizations = AppLocalizations.of(context)!;
 
-    // Normaliza el valor para detectar cualquier "cero"
+    // Cualquier valor que sea 0, 0.0 o 0.00 se considera "completado"
     final normalized =
         value.replaceAll('€', '').replaceAll(' ', '').replaceAll(',', '.');
     final isZero =
@@ -451,15 +451,15 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     final int minutos = minutosDec.floor();
 
     if (dias > 0) {
-      // Ejemplo: "2 días 5 horas"
+      // "2 días 5 horas"
       return "$dias ${dias == 1 ? localizations.diaMinusculaSingular : localizations.diasMinusculaPlural} "
           "$horas ${horas == 1 ? localizations.horaMinusculaSingular : localizations.horasMinusculaPlural}";
     } else if (horas > 0) {
-      // Ejemplo: "5 horas 12 minutos"
+      // "5 horas 12 minutos"
       return "$horas ${horas == 1 ? localizations.horaMinusculaSingular : localizations.horasMinusculaPlural} "
           "$minutos ${minutos == 1 ? localizations.minutoMinusculaSingular : localizations.minutosMinusculaPlural}";
     } else if (minutos > 0) {
-      // Ejemplo: "12 minutos"
+      // "12 minutos"
       return "$minutos ${minutos == 1 ? localizations.minutoMinusculaSingular : localizations.minutosMinusculaPlural}";
     } else {
       return localizations.menosDeUnMinutoMinuscula;

@@ -49,9 +49,9 @@ final ThemeData lightTheme = ThemeData(
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF1E3A5F), // Más suave y profundo que #153866
+  primaryColor: const Color(0xFF1E3A5F),
   scaffoldBackgroundColor:
-      const Color(0xFF0D1524), // Más oscuro, mejora contraste
+      const Color(0xFF0D1524),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xFF1E3A5F),
     foregroundColor: Colors.white,
@@ -64,10 +64,10 @@ final ThemeData darkTheme = ThemeData(
     ),
   ),
   colorScheme: const ColorScheme.dark(
-    primary: Color(0xFF3B82F6), // Azul vívido, pero amigable con dark theme
-    secondary: Color(0xFF60A5FA), // Un azul más claro para contraste
-    background: Color(0xFF0D1524), // Combina con scaffoldBackground
-    surface: Color(0xFF1C2A3A), // Ligeramente más claro que background
+    primary: Color(0xFF3B82F6),
+    secondary: Color(0xFF60A5FA),
+    background: Color(0xFF0D1524),
+    surface: Color(0xFF1C2A3A),
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onBackground: Colors.white,
@@ -78,11 +78,11 @@ final ThemeData darkTheme = ThemeData(
     foregroundColor: Colors.white,
   ),
   cardColor: const Color(0xFF1C2A3A),
-  dividerColor: const Color(0xFF334155), // Gris-azulado más equilibrado
+  dividerColor: const Color(0xFF334155),
   iconTheme: const IconThemeData(color: Color(0xFF60A5FA)),
   textTheme: const TextTheme(
     bodyLarge: TextStyle(color: Colors.white),
-    bodyMedium: TextStyle(color: Color(0xFF93C5FD)), // Azul claro y legible
+    bodyMedium: TextStyle(color: Color(0xFF93C5FD)),
     titleLarge: TextStyle(color: Colors.white),
     titleMedium: TextStyle(color: Color(0xFFBFDBFE)),
   ),

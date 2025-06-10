@@ -45,8 +45,8 @@ Future<void> main() async {
   // Pedir permisos de notificaciones en Android 13 o superior
   if (Platform.isAndroid) {
     final androidInfo = await DeviceInfoPlugin().androidInfo;
+    // Android 13 o superior
     if (androidInfo.version.sdkInt >= 33) {
-      // Android 13 o superior
       await Permission.notification.request();
     }
   }
@@ -54,7 +54,7 @@ Future<void> main() async {
   // Iniciamos las notificaciones
   await AchievementsNotificationService.init();
 
-  // Carga offline antes de runApp
+  // Carga offline
   final connectivity = await Connectivity().checkConnectivity();
   UserModel? offlineUser;
   if (connectivity.first == ConnectivityResult.none) {

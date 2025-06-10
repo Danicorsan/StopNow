@@ -105,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text(
-                          localizations.cancelar, // O "Cancelar"
+                          localizations.cancelar,
                           style: TextStyle(color: colorScheme.primary),
                         ),
                       ),
@@ -145,9 +145,9 @@ class _SettingsPageState extends State<SettingsPage> {
             _buildSettingsCard(
               icon: Icons.notifications,
               title:
-                  localizations.gestionarPermisos, // Añade esta clave a tu l10n
+                  localizations.gestionarPermisos,
               subtitle: localizations
-                  .gestionarPermisosDesc, // Añade esta clave a tu l10n
+                  .gestionarPermisosDesc,
               color: colorScheme.secondary,
               onTap: () async {
                 await openAppSettings();

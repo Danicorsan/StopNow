@@ -183,35 +183,6 @@ class _LoginPageState extends State<LoginPage> {
                 thickness: 1,
                 color: colorScheme.outline.withOpacity(0.2),
               ),
-              /*
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.surfaceVariant,
-                  fixedSize: Size(250.w, 50.h),
-                  shadowColor: colorScheme.shadow,
-                  elevation: 5,
-                ),
-                onPressed: () {
-                  // Futuro login con Google
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    FlutterLogo(size: 30.sp),
-                    Text(
-                      'Continuar con Google',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
-              //SizedBox(height: 25.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -31,7 +31,7 @@ class AuthService {
     return user;
   }
 
-  // Obtener el usuario actual desde la base de datos usando el `sub`
+  // Obtener el usuario actual desde la base de datos
   Future<UserModel?> getCurrentUser() async {
     final user = _client.auth.currentUser;
     if (user == null) return null;

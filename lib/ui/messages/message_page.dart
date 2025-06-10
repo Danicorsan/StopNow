@@ -33,7 +33,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      // Si no está al principio (abajo del todo), muestra el botón
+      // Si no está a abajo del todo muestra el botón
       if (_scrollController.hasClients) {
         final mostrar = _scrollController.offset > 100;
         if (mostrar != _mostrarBotonBajar) {
@@ -113,7 +113,7 @@ class _ChatPageState extends State<ChatPage> {
 
                                 return KeyedSubtree(
                                   key: ValueKey(mensaje
-                                      .id), // Para asegurarnos que no se mezclen las fotos de perfil
+                                      .id), // Para asegurarnos que no se mezclen las fotos de perfil y que sea unico cada mensaje
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,

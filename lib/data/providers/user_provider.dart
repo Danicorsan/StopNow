@@ -9,8 +9,10 @@ class UserProvider extends ChangeNotifier {
     _currentUser = usuarioInicial;
   }
 
+  /// Obtiene el usuario actual.
   UserModel? get currentUser => _currentUser;
 
+  /// Actualiza el usuario actual y notifica.
   void setUser(UserModel user) {
     _currentUser = user;
     // Guarda también en SQLite para offline

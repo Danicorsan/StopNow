@@ -15,11 +15,12 @@ class AchievementsNotificationService {
     await _notifications.initialize(settings);
   }
 
-  static Future<void> cancelAll() async {
+
+  static Future<void> cancelarTodas() async {
     await _notifications.cancelAll();
   }
 
-  static Future<void> scheduleAchievementNotifications({
+  static Future<void> programarNotificacionLogro({
     required DateTime fechaDejarFumar,
     required AppLocalizations localizations,
   }) async {

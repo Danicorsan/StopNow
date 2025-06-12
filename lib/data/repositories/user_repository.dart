@@ -17,7 +17,7 @@ class UserRepository {
   static final AuthService _authService = AuthService();
   static final supabase = Supabase.instance.client;
 
-  // Método para iniciar sesión
+  /// Método para iniciar sesión
   static Future<BaseResult> login(String correo, String pass) async {
     try {
       final response = await _authService.signIn(correo, pass);
@@ -31,6 +31,7 @@ class UserRepository {
     return BaseResultSuccess(true);
   }
 
+  /// Metodo para obtener el ID del usuario actual
   static String getId() {
     final userId = supabase.auth.currentUser?.id;
     if (userId == null) {
@@ -39,7 +40,7 @@ class UserRepository {
     return userId;
   }
 
-  // Metodo para registrarse
+  /// Metodo para registrarse
   static Future<BaseResult> register(
     String correo,
     String pass,
@@ -50,8 +51,8 @@ class UserRepository {
     int cigarrosPorPaquete,
     double precioPaquete,
   ) async {
-    // Miramos si hay un usuario con el mismo nombre de usuario
     try {
+      // Miramos si hay un usuario con el mismo nombre de usuario
       final nombres =
           await UserDao.nombresDeUsuarios(nombreUsuario: nombreUsuario);
       if (nombres.isNotEmpty) {
@@ -85,14 +86,15 @@ class UserRepository {
     }
   }
 
-  //metodo para obtener el usuario actual
+  /// Metodo para obtener el usuario actual
   static Future<UserModel?> usuarioActual() async {
     final user = await _authService.getCurrentUser();
     if (user == null) return null;
     return user;
   }
 
-  static Future<BaseResult> uploadProfileImage(File imageFile) async {
+  /// Metodo para subir la imagen de perfil del usuario
+  static Future<BaseResult> subirImagenPerfil(File imageFile) async {
     try {
       final fileExt = extension(imageFile.path);
       final fecha = DateTime.now().millisecondsSinceEpoch;
@@ -113,6 +115,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para subir un objetivo
   static Future<BaseResult> subirObjetivo(GoalModel goal) async {
     try {
       await UserDao.insertarObjetivo(
@@ -128,6 +131,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para traer los objetivos del usuario
   static Future<BaseResult> obtenerObjetivos() async {
     try {
       final userId = supabase.auth.currentUser?.id;
@@ -146,6 +150,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para borrar un objetivo
   static Future<BaseResult> borrarObjetivo(String id) async {
     try {
       await UserDao.borrarObjetivo(
@@ -158,6 +163,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para actualizar la fecha de dejar de fumar
   static Future<BaseResult> reiniciarFechaFumar(
       AppLocalizations? localizations) async {
     try {
@@ -168,9 +174,9 @@ class UserRepository {
       DateTime fechaDejarFumar = DateTime.now();
       final response = await UserDao.actualizarFechaDejarFumar();
 
-      // Programar notificaciones si se pasa localizations
+      // Programar notificaciones
       if (localizations != null) {
-        await AchievementsNotificationService.scheduleAchievementNotifications(
+        await AchievementsNotificationService.programarNotificacionLogro(
           fechaDejarFumar: fechaDejarFumar,
           localizations: localizations,
         );
@@ -182,7 +188,7 @@ class UserRepository {
     }
   }
 
-  // Metodo para traer articulos de lectura
+  /// Metodo para traer articulos de lectura
   static Future<BaseResult> traerArticulos(String locale) async {
     try {
       final response = await UserDao.obtenerArticulos(locale);
@@ -199,6 +205,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para enviar un mensaje
   static Future<BaseResult> enviarMensaje(
       String texto, String nombreUsuario, String fotoPerfil) async {
     try {
@@ -216,6 +223,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para actualizar un objetivo
   static Future<BaseResult> actualizarObjetivo({
     required String id,
     required String nombreNuevo,
@@ -236,6 +244,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para actualizar el perfil del usuario
   static Future<BaseResult> actualizarPerfilUsuario({
     required String id,
     required String nombreUsuario,
@@ -257,9 +266,9 @@ class UserRepository {
         precioPaquete: precioPaquete,
       );
 
-      // Recalcula notificaciones si se pasa localizations
+      // Reprograma las notificaciones si se pasa localizations
       if (localizations != null) {
-        await AchievementsNotificationService.scheduleAchievementNotifications(
+        await AchievementsNotificationService.programarNotificacionLogro(
           fechaDejarFumar: fechaDejarFumar,
           localizations: localizations,
         );
@@ -271,6 +280,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para obtener los mensajes del chat
   static Future<BaseResult> getMensajes() async {
     try {
       final response = await UserDao.obtenerMensajes();
@@ -281,6 +291,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para actualizar el nombre de usuario y foto de perfil en los mensajes del chat
   static Future<BaseResult> actualizarMensajesNombreYFoto({
     required String userId,
     required String? nuevaFotoPerfil,
@@ -298,6 +309,7 @@ class UserRepository {
     }
   }
 
+  /// Metodo para borrar la foto de perfil antigua
   static Future<BaseResult> borrarFotoPerfilAntigua(String urlFoto) async {
     try {
       await UserDao.borrarFotoPerfilAntigua(urlFoto);
@@ -317,6 +329,6 @@ class UserRepository {
   }
 
   static Future<void> cancelAllNotifications() async {
-    await AchievementsNotificationService.cancelAll();
+    await AchievementsNotificationService.cancelarTodas();
   }
 }

@@ -32,7 +32,7 @@ class RegisterProvider extends ChangeNotifier {
       cargandoImagen = true;
       print("Subiendo la imagen");
       final uploadedImageUrl =
-          await UserRepository.uploadProfileImage(imageFile);
+          await UserRepository.subirImagenPerfil(imageFile);
 
       if (uploadedImageUrl is BaseResultSuccess) {
         fotoEmail = uploadedImageUrl.data as String;

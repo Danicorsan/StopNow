@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Devuelve una lista de frases motivadoras para mostrar en la pantalla de inicio.
 List<String> getFrasesMotivadoras(AppLocalizations loc) => [
       loc.frasebienvenida1,
       loc.frasebienvenida2,

@@ -93,7 +93,7 @@ class SettingsProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final result = await UserRepository.uploadProfileImage(imageFile);
+    final result = await UserRepository.subirImagenPerfil(imageFile);
 
     //final cambiar = await UserRepository.cambiarTodoFotoPerfil(imageFile);
 

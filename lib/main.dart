@@ -45,7 +45,6 @@ Future<void> main() async {
   // Pedir permisos de notificaciones en Android 13 o superior
   if (Platform.isAndroid) {
     final androidInfo = await DeviceInfoPlugin().androidInfo;
-    // Android 13 o superior
     if (androidInfo.version.sdkInt >= 33) {
       await Permission.notification.request();
     }
@@ -79,7 +78,7 @@ Future<void> main() async {
       ChangeNotifierProvider(
         create: (_) => RegisterProvider(),
       ),
-      ChangeNotifierProvider(
+      ChangeNotifierProvider( 
           create: (_) => UserProvider(usuarioInicial: offlineUser)),
       ChangeNotifierProvider(create: (_) => ReadingsProvider()),
     ],
@@ -92,6 +91,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Inicializa ScreenUtil para el diseño responsivo
     return ScreenUtilInit(
       designSize: const Size(392.72727272727275, 826.9090909090909),
       minTextAdapt: true,

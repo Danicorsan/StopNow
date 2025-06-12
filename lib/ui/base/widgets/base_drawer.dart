@@ -8,6 +8,7 @@ import 'package:stopnow/routes/app_routes.dart';
 import 'package:stopnow/ui/base/widgets/user_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Drawer base para la aplicación.
 Drawer baseDrawer(BuildContext context) {
   final user = Provider.of<UserProvider>(context).currentUser;
   final localizations = AppLocalizations.of(context)!;

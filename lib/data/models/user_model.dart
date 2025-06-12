@@ -19,26 +19,6 @@ class UserModel {
     required this.fechaRegistro,
   });
 
-  UserModel copyWith({
-    String? nombreUsuario,
-    String? fotoPerfil,
-    DateTime? fechaDejarFumar,
-    int? cigarrosAlDia,
-    int? cigarrosPorPaquete,
-    double? precioPaquete,
-    DateTime? fechaRegistro,
-  }) {
-    return UserModel(
-      nombreUsuario: nombreUsuario ?? this.nombreUsuario,
-      fotoPerfil: fotoPerfil ?? this.fotoPerfil,
-      fechaDejarFumar: fechaDejarFumar ?? this.fechaDejarFumar,
-      cigarrosAlDia: cigarrosAlDia ?? this.cigarrosAlDia,
-      cigarrosPorPaquete: cigarrosPorPaquete ?? this.cigarrosPorPaquete,
-      precioPaquete: precioPaquete ?? this.precioPaquete,
-      fechaRegistro: fechaRegistro ?? this.fechaRegistro,
-    );
-  }
-
   factory UserModel.fromSupabase(Map<String, dynamic> json) {
 
     print(json['fecha_dejar_fumar'] != null
@@ -59,14 +39,6 @@ class UserModel {
           ? DateTime.tryParse(json['fecha_registro'] as String) ??
               DateTime.now()
           : DateTime.now(),
-    );
-  }
-
-  Widget getFotoPerfil() {
-    return const CircleAvatar(
-      radius: 50,
-      backgroundColor: Colors.grey,
-      child: Icon(Icons.person, size: 50),
     );
   }
 

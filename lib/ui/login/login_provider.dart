@@ -48,7 +48,7 @@ class LoginProvider extends ChangeNotifier {
       }
       
       // Programar notificaciones de logros al iniciar sesión
-      await AchievementsNotificationService.scheduleAchievementNotifications(
+      await AchievementsNotificationService.programarNotificacionLogro(
         fechaDejarFumar: user.fechaDejarFumar,
         localizations: localizations,
       );

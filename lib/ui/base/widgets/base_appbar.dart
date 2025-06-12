@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// AppBar base para la aplicación.
 AppBar baseAppBar(String title,
     {bool volver = false,
     BuildContext? context,

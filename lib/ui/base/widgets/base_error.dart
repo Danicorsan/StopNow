@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Muestra un mensaje de error en la parte inferior de la pantalla
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> buildErrorMessage(
     String mensaje, BuildContext context) {
   final localizations = AppLocalizations.of(context)!;
@@ -20,6 +21,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> buildErrorMessage(
   );
 }
 
+/// Muestra un mensaje correcto en la parte inferior de la pantalla
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> buildSuccesMessage(
     String mensaje, BuildContext context) {
   final localizations = AppLocalizations.of(context)!;

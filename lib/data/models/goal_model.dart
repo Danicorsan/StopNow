@@ -26,12 +26,4 @@ class GoalModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'usuarioId': usuarioId,
-        'nombre': nombre,
-        'descripcion': descripcion,
-        'precio': precio,
-        'fecha_creado': fechaCreacion.toUtc().toIso8601String(),
-      };
 }

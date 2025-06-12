@@ -7,6 +7,7 @@ class AchievementModel {
 
   AchievementModel(this.title, this.description, this.duration);
 
+  /// Método para obtener todos los logros traducidos
   static List<AchievementModel> getLocalizedAchievements(AppLocalizations loc) {
     return [
       AchievementModel(

@@ -314,14 +314,14 @@ Widget _buildThemeSwitchCard(BuildContext context,
       trailing: Switch(
         value: isDark,
         onChanged: (value) {
-          themeProvider.toggleTheme(value);
+          themeProvider.cambiarTema(value);
         },
         activeColor: colorScheme.secondary,
         inactiveThumbColor: colorScheme.primary,
         inactiveTrackColor: colorScheme.primary.withOpacity(0.1),
       ),
       onTap: () {
-        themeProvider.toggleTheme(!isDark);
+        themeProvider.cambiarTema(!isDark);
       },
     ),
   );

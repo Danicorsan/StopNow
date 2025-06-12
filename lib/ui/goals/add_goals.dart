@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:stopnow/data/models/goal_model.dart';
 import 'package:stopnow/data/repositories/user_repository.dart';
 import 'package:stopnow/ui/base/widgets/base_error.dart';
+import 'package:stopnow/ui/base/widgets/base_textfield.dart';
 import 'package:stopnow/ui/goals/goals_provider.dart';
 import 'package:stopnow/ui/base/widgets/base_appbar.dart';
 import 'package:stopnow/ui/base/widgets/base_drawer.dart';
@@ -91,7 +92,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
         child: ListView(
           children: [
             SizedBox(height: 20.h,),
-            _buildTextField(
+            baseTextField(
               controller: _nombreController,
               label: localizations.nombre,
               icon: Icons.workspaces_outlined,
@@ -105,15 +106,17 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 return null;
               },
               colorScheme: colorScheme,
+              context: context,
             ),
-            _buildTextField(
+            baseTextField(
               controller: _descripcionController,
               label: localizations.descripcion,
               icon: Icons.description,
               validator: (value) => null,
               colorScheme: colorScheme,
+              context: context,
             ),
-            _buildTextField(
+            baseTextField(
               controller: _precioController,
               label: localizations.cuantoCuesta,
               icon: Icons.attach_money,
@@ -131,6 +134,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
               ],
               colorScheme: colorScheme,
+              context: context,
             ),
             SizedBox(height: 30.h),
           ],

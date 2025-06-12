@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// Campo de texto personalizado con icono, validación y estilo.
 Widget baseTextField({
   required TextEditingController controller,
   required String label,

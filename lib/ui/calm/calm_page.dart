@@ -15,12 +15,14 @@ class CalmPage extends StatefulWidget {
 class _CalmPageState extends State<CalmPage> {
   CalmProvider? _calmProvider;
 
+  // Inicializa el CalmProvider cuando las dependencias cambian
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _calmProvider ??= Provider.of<CalmProvider>(context, listen: false);
   }
 
+  // Método para manejar el evento de retroceso del dispositivo
   Future<bool> _onWillPop() async {
     if (_calmProvider?.init == true) {
       _calmProvider?.reset();
@@ -30,6 +32,7 @@ class _CalmPageState extends State<CalmPage> {
     return true; // Salir
   }
 
+  // Método para obtener el texto de la fase actual
   String getPhaseText(CalmPhase phase) {
     final localizations = AppLocalizations.of(context)!;
     switch (phase) {
@@ -112,6 +115,7 @@ class _CalmPageState extends State<CalmPage> {
     );
   }
 
+  /// Construye el contenedor principal de la técnica de calma.
   Widget _buildCalmContainer(
       CalmProvider calmProvider, ColorScheme colorScheme) {
     return Center(

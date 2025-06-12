@@ -11,6 +11,7 @@ class LocalDbHelper {
     return _db!;
   }
 
+  /// Inicializa la base de datos SQLite y crea la tabla si no existe.
   static Future<Database> _initDb() async {
     final dbPath = await getDatabasesPath();
     return openDatabase(
@@ -33,6 +34,7 @@ class LocalDbHelper {
     );
   }
 
+  /// Guarda el progreso del usuario en la base de datos.
   static Future<void> saveUserProgress(UserModel user) async {
     final db = await database;
     await db.delete('user_progress'); // Solo guardamos uno
@@ -47,11 +49,13 @@ class LocalDbHelper {
     });
   }
 
+  /// Elimina la información del usuario de la base de datos.
   static Future<void> deleteUserProgress() async {
     final db = await database;
-    await db.delete('user_progress'); // Elimina el registro del usuario
+    await db.delete('user_progress');
   }
 
+  /// Obtiene el progreso del usuario desde la base de datos.
   static Future<UserModel?> getUserProgress() async {
     final db = await database;
     final maps = await db.query('user_progress');

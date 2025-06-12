@@ -65,25 +65,43 @@ class _DetailGoalsPageState extends State<DetailGoalsPage> {
     final colorScheme = theme.colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
+    // Datos del usuario
     final double precioPaquete = user?.precioPaquete ?? 0;
     final int cigarrosPorPaquete = user?.cigarrosPorPaquete ?? 1;
     final int cigarrosAlDia = user?.cigarrosAlDia ?? 1;
 
     // Cálculo actualizado en tiempo real
+
+    // Duración desde que se creó el objetivo
     final Duration duracion = DateTime.now().difference(goal.fechaCreacion);
+    
+    // Dias desde el objetivo
     final double diasDesdeGoal = duracion.inSeconds / Duration.secondsPerDay;
+    
+    // Cálculo de cigarros evitados
     final double cigarrosEvitados = diasDesdeGoal * cigarrosAlDia;
+    
+    // Precio por cigarro
     final double precioPorCigarro =
         precioPaquete / (cigarrosPorPaquete == 0 ? 1 : cigarrosPorPaquete);
+
+    // Dinero ahorrado 
     final double dineroAhorrado = cigarrosEvitados * precioPorCigarro;
 
+    // Dinero faltante para alcanzar el objetivo
     final double dineroFaltante =
         (goal.precio - dineroAhorrado).clamp(0, goal.precio);
+
+    // Cigarros faltantes
     final double cigarrosFaltantes =
         ((goal.precio - dineroAhorrado) / precioPorCigarro)
             .clamp(0, double.infinity);
+    
+    // Días restantes para alcanzar el objetivo haciendo el cálculo
     final double diasRestantes =
         cigarrosAlDia > 0 ? cigarrosFaltantes / cigarrosAlDia : 0;
+
+    // Porcentaje de progreso
     final double porcentaje = (dineroAhorrado / goal.precio).clamp(0, 1);
 
     return Scaffold(

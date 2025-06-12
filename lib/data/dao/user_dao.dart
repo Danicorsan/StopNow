@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class UserDao {
   static final supabase = Supabase.instance.client;
 
-  // Método para insertar un nuevo usuario en la base de datos cuando se registra
+  /// Método para insertar un nuevo usuario en la base de datos cuando se registra
   static Future<void> insertarUsuario({
     required String id,
     required String nombreUsuario,
@@ -25,7 +25,7 @@ class UserDao {
     });
   }
 
-  // Método para insertar un nuevo objetivo en la base de datos cuando se registra
+  /// Método para insertar un nuevo objetivo en la base de datos
   static Future<void> insertarObjetivo({
     required String idUsuario,
     required String nombreObjetivo,
@@ -40,14 +40,14 @@ class UserDao {
     });
   }
 
-  // Método para borrar objetivo en la base de datos
+  /// Método para borrar objetivo en la base de datos
   static Future<void> borrarObjetivo({
     required String id,
   }) async {
     await supabase.from('public.objetivos').delete().eq('id', id);
   }
 
-  // Método para actualizar un usuario en la base de datos
+  /// Método para traer un usuario en la base de datos
   static Future<UserModel?> traerUsuario(String id) async {
     final response =
         await supabase.from('public.users').select('*').eq('id', id).single();
@@ -61,8 +61,8 @@ class UserDao {
     );
   }
 
-  // Metodo para traer todos los objetivos de un usuario ordenados por la fecha
-  //de creacion
+  /// Metodo para traer todos los objetivos de un usuario ordenados por la fecha
+  ///de creacion
   static Future<List<Map<String, dynamic>>> obtenerObjetivos(
       String userId) async {
     final response = await supabase
@@ -80,7 +80,7 @@ class UserDao {
     return List<Map<String, dynamic>>.from(response);
   }
 
-  // Método para actualizar solo la fecha_dejar_fumar de un usuario para recaída
+  /// Método para actualizar solo la fecha_dejar_fumar de un usuario por recaída
   static Future<void> actualizarFechaDejarFumar() async {
     DateTime nuevaFecha = DateTime.now();
     final userId = supabase.auth.currentUser?.id;
@@ -89,7 +89,7 @@ class UserDao {
     }).eq('id', userId!);
   }
 
-  // Metodo para traer los articulos de lectura del usuario
+  /// Metodo para traer los articulos de lectura del usuario
   static Future<List<Map<String, dynamic>>> obtenerArticulos(
       String locale) async {
     //LENGUAJE del movil
@@ -119,6 +119,7 @@ await _supabase.from('public.chat_mensajes').insert({
     });
   */
 
+  /// Método para insertar un mensaje en el chat
   static Future<void> insertarMensaje(
       String texto, String nombreUsuario, String fotoPerfil) async {
     await supabase.from('public.chat_mensajes').insert({
@@ -129,6 +130,7 @@ await _supabase.from('public.chat_mensajes').insert({
     });
   }
 
+  /// Método para actualizar un objetivo existente
   static Future<void> actualizarObjetivo({
     required String id,
     required String nombreNuevo,
@@ -142,6 +144,7 @@ await _supabase.from('public.chat_mensajes').insert({
     }).eq('id', id);
   }
 
+  /// Método para actualizar el perfil del usuario
   static Future<void> actualizarPerfilUsuario({
     required String id,
     required String nombreUsuario,
@@ -161,6 +164,7 @@ await _supabase.from('public.chat_mensajes').insert({
     }).eq('id', id);
   }
 
+  /// Método para obtener los mensajes del chat ordenados por fecha de envío
   static obtenerMensajes() async {
     final response = await supabase
         .from('public.chat_mensajes')
@@ -170,6 +174,7 @@ await _supabase.from('public.chat_mensajes').insert({
     return List<Map<String, dynamic>>.from(response);
   }
 
+  /// Método para actualizar el nombre de usuario y foto de perfil en los mensajes del chat
   static Future<void> actualizarMensajesNombreYFoto({
     required String userId,
     required String? nuevaFotoPerfil,
@@ -181,6 +186,7 @@ await _supabase.from('public.chat_mensajes').insert({
     }).eq('usuario_id', userId);
   }
 
+  /// Método para borrar la foto de perfil antigua del almacenamiento
   static Future<void> borrarFotoPerfilAntigua(String urlFoto) async {
     final storage = Supabase.instance.client.storage;
     const bucket = 'avatars';
@@ -189,6 +195,7 @@ await _supabase.from('public.chat_mensajes').insert({
     await storage.from(bucket).remove([path]);
   }
 
+  /// Método para verificar si un nombre de usuario ya existe
   static nombresDeUsuarios({required String nombreUsuario}) {
     return supabase
         .from('public.users')

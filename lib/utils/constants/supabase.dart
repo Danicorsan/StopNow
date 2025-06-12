@@ -1,3 +1,6 @@
+
+// CUANDO SE PONGA PUBLICO, SE DEBE CAMBIAR LA URL Y EL ANON KEY
+
 class SupabaseCredential {
   static const String url = 'https://lobqmpwqesuhavuminux.supabase.co';
   static const String anonKey =

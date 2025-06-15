@@ -1,5 +1,6 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Modelo de logro que representa un logro del usuario
 class AchievementModel {
   final String title;
   final String description;

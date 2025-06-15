@@ -1,3 +1,4 @@
+/// Clase que representa un mensaje en el chat
 class MessageModel {
   final String id;
   final String usuarioId;

@@ -27,6 +27,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+// Bienvenida a StopNow. 
+// Proyecto desarrollado por Daniel Cortés Sánchez.
+
 Future<void> main() async {
   // Aseguramos que los bindings de Flutter estén inicializados
   WidgetsFlutterBinding.ensureInitialized();
@@ -123,3 +126,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

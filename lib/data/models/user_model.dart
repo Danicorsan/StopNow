@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-
+/// Modelo de usuario que representa la información del usuario en la aplicación
 class UserModel {
   final String nombreUsuario;
   final String fotoPerfil;

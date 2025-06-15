@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:stopnow/data/models/user_model.dart';
 
+/// Clase que maneja la base de datos local para guardar el progreso del usuario.
 class LocalDbHelper {
   static Database? _db;
 

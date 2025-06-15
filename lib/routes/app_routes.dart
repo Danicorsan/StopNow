@@ -22,6 +22,7 @@ import 'package:stopnow/ui/settings/account_page.dart';
 import 'package:stopnow/ui/settings/settings_page.dart';
 import 'package:stopnow/ui/welcome/welcome_page.dart';
 
+/// Clase que define las rutas de la aplicación y genera las rutas correspondientes.
 class AppRoutes {
   static const String home = '/home';
   static const String login = '/login';

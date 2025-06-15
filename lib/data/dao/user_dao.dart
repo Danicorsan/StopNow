@@ -1,6 +1,7 @@
 import 'package:stopnow/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Clase que maneja las operaciones de base de datos relacionadas con el usuario.
 class UserDao {
   static final supabase = Supabase.instance.client;
 

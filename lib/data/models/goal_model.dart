@@ -1,3 +1,4 @@
+/// Representa a un objetivo del usuario.
 class GoalModel {
   final String id;
   final String usuarioId;

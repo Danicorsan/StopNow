@@ -1,3 +1,4 @@
+/// Representa un modelo de lectura.
 class ReadingModel {
   final String id;
   final String titulo;

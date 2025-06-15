@@ -81,6 +81,7 @@ class ChatProvider extends ChangeNotifier {
   void _escucharMensajesNuevos() {
     _canal = _supabase.channel('public:public.chat_mensajes')
       ..onPostgresChanges(
+        // Escucha de inserts de nuevos mensajes
         event: PostgresChangeEvent.insert,
         schema: 'public',
         table: 'public.chat_mensajes',
@@ -91,6 +92,7 @@ class ChatProvider extends ChangeNotifier {
         },
       )
       ..onPostgresChanges(
+        // Escucha de updates de mensajes
         event: PostgresChangeEvent.update,
         schema: 'public',
         table: 'public.chat_mensajes',
